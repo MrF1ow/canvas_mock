@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  api-server:
+    image: api-server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    networks:
+      - final-project-mongobongo
+
+  # Host name for database service will be 'mongo'
+  # This is the name we will use in our connection string
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - final-project-mongobongo
+    volumes:
+      - mongo-data:/data/db
+
+# Create a network for our services
+# This will allow the services to communicate with each other
+# using the service name as the hostname
+networks:
+  final-project-mongobongo:
+    driver: bridge
+
+# Create a volume for our database data
+# This will allow us to persist the data even if the container is removed
+volumes:
+  mongo-data:
+    driver: local
