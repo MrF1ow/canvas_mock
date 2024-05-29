@@ -5,10 +5,12 @@ import { Monitor } from '../helpers/monitor';
 
 // Types
 import {
+  RequestAuthorization,
   RequestType,
   ServerRequest,
   ServerResponse,
 } from '../types';
+import { AUTHORIZATION_TYPE } from '../config';
 
 /**
  * Abstract handler class.
@@ -30,14 +32,21 @@ export class Handler {
   protected _path: string;
 
   /**
+   * Whether this handler requires authorization.
+   */
+  protected _authorization: RequestAuthorization;
+
+  /**
    * Instantiates a new handler.
    * 
    * @param {RequestType} method Request type.
    * @param {string} path Request path.
+   * @param {RequestAuthorization} authorization Authorization type for this endpoint.
    */
   constructor(
     method: RequestType,
     path: string,
+    authorization: RequestAuthorization = AUTHORIZATION_TYPE.NONE,
   ) {
     if (!Handler._database) {
       Handler._database = getDatabase();
@@ -47,6 +56,7 @@ export class Handler {
 
     this._method = method;
     this._path = path;
+    this._authorization = authorization;
   }
 
   /**
@@ -94,5 +104,12 @@ export class Handler {
    */
   getPath(): string {
     return this._path;
+  }
+
+  /**
+   * Whether this endpoint requires authorization.
+   */
+  getAuthorization(): RequestAuthorization {
+    return this._authorization;
   }
 }
