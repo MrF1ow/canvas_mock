@@ -13,7 +13,7 @@ import {
   UserDataAccessObject,
 } from './daos';
 import { MESSAGE_DATABASE_CONNECTION_SUCCESS } from '../../config/messages';
-import { Database } from '../database';
+import { AbstractDatabase } from '../abstract-database';
 import { Environment } from '../../helpers/environment';
 import { Monitor } from '../../helpers/monitor';
 import DatabaseUrlMissingError from '../../errors/database-url-missing';
@@ -23,7 +23,7 @@ mongoose.set('strictQuery', false);
 /**
  * Database connection to MongoDB.
  */
-export class MongoDatabase extends Database {
+export class MongoDatabase extends AbstractDatabase {
   /**
    * Instantiates MongoDatabase with correct queries.
    */

@@ -1,8 +1,11 @@
 // Packages
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 
 // Local Imports
-import { DEVELOPMENT_URL, PRODUCTION_URL } from "../config";
+import {
+  DEVELOPMENT_URL,
+  PRODUCTION_URL,
+} from '../config';
 
 // Setting up DotEnv
 dotenv.config();
@@ -24,13 +27,23 @@ export class Environment {
     .substring(7);
 
   /**
+   * Retrieves the port the server should run on.
+   *
+   * @default 3000
+   * @returns {number} Server port.
+   */
+  static getPort(): number {
+    return (parseInt(process.env.PORT, 10) as number) || 3000;
+  }
+
+  /**
    * Retrieves name of database to use.
    *
    * @default 'development'
    * @returns {string} Name of database.
    */
   static getDatabaseName(): string {
-    return (process.env.DATABASE_NAME as string) || "development";
+    return (process.env.DATABASE_NAME as string) || 'development';
   }
 
   /**
@@ -40,7 +53,7 @@ export class Environment {
    * @returns {string} Password for connecting with database if needed.
    */
   static getDatabasePassword(): string {
-    return (process.env.DATABASE_PASSWORD as string) || "";
+    return (process.env.DATABASE_PASSWORD as string) || '';
   }
 
   /**
@@ -50,7 +63,7 @@ export class Environment {
    * @returns {string} URL for connecting with database if needed.
    */
   static getDatabaseUrl(): string {
-    return (process.env.DATABASE_URL as string) || "mongodb://localhost:27017/";
+    return (process.env.DATABASE_URL as string) || 'mongodb://localhost:27017/';
   }
 
   /**
@@ -60,7 +73,7 @@ export class Environment {
    * @returns {string} Username for connecting with database if needed.
    */
   static getDatabaseUser(): string {
-    return (process.env.DATABASE_USER as string) || "server";
+    return (process.env.DATABASE_USER as string) || 'server';
   }
 
   /**
@@ -70,7 +83,7 @@ export class Environment {
    * @returns {string} Type of database to use.
    */
   static getDatabaseType(): string {
-    return process.env.DATABASE_TYPE || "cache";
+    return process.env.DATABASE_TYPE || 'cache';
   }
 
   /**
@@ -83,7 +96,7 @@ export class Environment {
     if (process.env.ORIGIN_URL && process.env.ORIGIN_URL.length) {
       return process.env.ORIGIN_URL;
     }
-    if (process.env.ENVIRONMENT === "production") {
+    if (process.env.ENVIRONMENT === 'production') {
       return PRODUCTION_URL;
     }
     return DEVELOPMENT_URL;
@@ -100,23 +113,13 @@ export class Environment {
   }
 
   /**
-   * Retrieves server state.
-   *
-   * @default Environment._generateState
-   * @returns {string} Server state.
-   */
-  static getState(): string {
-    return process.env.STATE || Environment._generateState;
-  }
-
-  /**
    * Whether log layer DEBUG is enabled.
    *
    * @default false
    * @returns {boolean} Whether log layer DEBUG is enabled.
    */
   static isDebugLayerEnabled(): boolean {
-    return process.env.ENABLE_DEBUG_LAYER === "true";
+    return process.env.ENABLE_DEBUG_LAYER === 'true';
   }
 
   /**
@@ -126,7 +129,7 @@ export class Environment {
    * @returns {boolean} Whether log layer PROGRESS is enabled.
    */
   static isProgressLayerEnabled(): boolean {
-    return process.env.ENABLE_PROGRESS_LAYER === "true";
+    return process.env.ENABLE_PROGRESS_LAYER === 'true';
   }
 
   /**
@@ -136,7 +139,7 @@ export class Environment {
    * @returns {boolean} Whether log layer SUCCESS is enabled.
    */
   static isSuccessLayerEnabled(): boolean {
-    return process.env.ENABLE_SUCCESS_LAYER === "true";
+    return process.env.ENABLE_SUCCESS_LAYER === 'true';
   }
 
   /**
@@ -146,7 +149,7 @@ export class Environment {
    * @returns {boolean} Whether log layer UPDATE is enabled.
    */
   static isUpdateLayerEnabled(): boolean {
-    return process.env.ENABLE_UPDATE_LAYER === "true";
+    return process.env.ENABLE_UPDATE_LAYER === 'true';
   }
 
   /**
@@ -156,6 +159,6 @@ export class Environment {
    * @returns {boolean} Whether log layer WARNING is enabled.
    */
   static isWarningLayerEnabled(): boolean {
-    return process.env.ENABLE_WARNING_LAYER === "true";
+    return process.env.ENABLE_WARNING_LAYER === 'true';
   }
 }

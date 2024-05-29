@@ -6,7 +6,7 @@ import { CourseModel } from '../models';
 import { DataAccessObject } from './dao';
 
 // Types
-import { Course as CourseInterface } from '../../../types';
+import { Course as CourseInterface } from '../../../types/tables';
 import { DataAccessObjectInterface as DataAccessObjectInterface } from '../../../types/database';
 
 /**
