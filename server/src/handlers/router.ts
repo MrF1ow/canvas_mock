@@ -5,8 +5,18 @@ import {
 } from 'express';
 
 // Local Imports
-import { REQUEST_TYPE } from '../config';
+import {
+  optionalAuthorization,
+  requiresAuthorization,
+} from '../helpers/authorization';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../config';
 import { Handler } from './handler';
+
+// Types
+import { Middleware } from '../types';
 
 /**
  * Wrapper around express router.
@@ -55,29 +65,37 @@ export class Router {
     for (let i = 0; i < this._routes.length; i += 1) {
       const handler = this._routes[i];
 
+      const middleware = [ handler.execute ] as Middleware[];
+
+      if (handler.getAuthorization() === AUTHORIZATION_TYPE.REQUIRED) {
+        middleware.unshift(requiresAuthorization);
+      } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.OPTIONAL) {
+        middleware.unshift(optionalAuthorization);
+      }
+
       switch (handler.getMethod()) {
         case REQUEST_TYPE.POST:
           app.post(
             handler.getPath(),
-            handler.execute,
+            ...middleware,
           );
           break;
         case REQUEST_TYPE.PATCH:
           app.patch(
             handler.getPath(),
-            handler.execute,
+            ...middleware,
           );
           break;
         case REQUEST_TYPE.DELETE:
           app.patch(
             handler.getPath(),
-            handler.execute,
+            ...middleware,
           );
           break;
         default:
           app.get(
             handler.getPath(),
-            handler.execute,
+            ...middleware,
           );
           break;
           
