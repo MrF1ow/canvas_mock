@@ -1,42 +1,28 @@
-export interface Assignment {
-  _id?: string;
-  courseId: string;
-  title: string;
-  points: number;
-  due: Date;
-}
+// Packages
+import {
+  Request,
+  Response,
+} from 'express';
 
-export interface Course {
-  _id?: string;
-  subject: string;
-  number: string;
-  title: string;
-  term: string;
-  instructorId: string;
-}
+/**
+ * API request object.
+ */
+export type ServerRequest = Request;
 
-export interface Submission {
-  _id?: string;
-  assignmentId: string;
-  studentId: string;
-  timestamp: Date;
-  grade: number;
-  file: string;
-}
+/**
+ * API response object.
+ */
+export type ServerResponse = Response;
 
-export interface Enrolled {
-  studentId: string;
-  courseId: string;
-}
+/**
+ * Basic object type.
+ */
+export type Dictionary<T> = Record<string, T>;
 
-export type UserRole = 'student'
-| 'admin'
-| 'instructor';
-
-export interface User {
-  _id?: string;
-  name: string;
-  email: string;
-  password: string;
-  role: UserRole;
-}
+/**
+ * Various request types.
+ */
+export type RequestType = 'get'
+| 'patch'
+| 'post'
+| 'delete';

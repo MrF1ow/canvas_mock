@@ -14,7 +14,7 @@ import {
 /**
  * Abstract Data Access Object
  */
-export class DataAccessObject<T> {
+export class AbstractDataAccessObject<T> {
   /**
    * Clears all items from the table.
    *

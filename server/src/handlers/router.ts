@@ -1,0 +1,87 @@
+// Packages
+import {
+  Application,
+  Router as ExpressRouter,
+} from 'express';
+
+// Local Imports
+import { REQUEST_TYPE } from '../config';
+import { Handler } from './handler';
+
+/**
+ * Wrapper around express router.
+ */
+export class Router {
+  /**
+   * Path for routes under this router.
+   */
+  protected _path: string;
+
+  /**
+   * Instance of express router.
+   */
+  protected _router: ExpressRouter;
+
+  /**
+   * Various handlers.
+   */
+  protected _routes = [] as Handler[];
+
+  /**
+   * Instantiates an router wrapper.
+   */
+  constructor(path: string) {
+    this._path = path;
+    this._router = ExpressRouter();
+
+    this._initialize();
+  }
+
+  /**
+   * Initializes all routes.
+   * 
+   * @returns {void}
+   */
+  _initialize(): void {
+  }
+
+  /**
+   * Apply various routes to application.
+   *
+   * @param {Application} app Express application. 
+   * @returns {void}
+   */
+  apply(app: Application): void {
+    for (let i = 0; i < this._routes.length; i += 1) {
+      const handler = this._routes[i];
+
+      switch (handler.getMethod()) {
+        case REQUEST_TYPE.POST:
+          app.post(
+            handler.getPath(),
+            handler.execute,
+          );
+          break;
+        case REQUEST_TYPE.PATCH:
+          app.patch(
+            handler.getPath(),
+            handler.execute,
+          );
+          break;
+        case REQUEST_TYPE.DELETE:
+          app.patch(
+            handler.getPath(),
+            handler.execute,
+          );
+          break;
+        default:
+          app.get(
+            handler.getPath(),
+            handler.execute,
+          );
+          break;
+          
+      }
+    }
+  }
+}

@@ -528,12 +528,4 @@ export interface DatabaseInterface {
    * @returns {boolean} Whether or not the database is connected.
    */
   isConnected: () => boolean;
-
-  /**
-   * Get's a data access object.
-   * 
-   * @param {string} name Name of data access object.
-   * @returns {DataAccessObjectInterface} Data access object.
-   */
-  getDao: (name: string) => DataAccessObject<unknown>;
 }

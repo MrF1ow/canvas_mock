@@ -6,7 +6,7 @@ import { AssignmentModel } from '../models';
 import { DataAccessObject } from './dao';
 
 // Types
-import { Assignment as AssignmentInterface } from '../../../types';
+import { Assignment as AssignmentInterface } from '../../../types/tables';
 import { DataAccessObjectInterface as DataAccessObjectInterface } from '../../../types/database';
 
 /**

@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 // Local Imports
-import { DataAccessObject } from './dao';
+import { AbstractDataAccessObject } from './abstract-dao';
 
 // Types
 import {
@@ -9,38 +9,38 @@ import {
   Enrolled,
   Submission,
   User,
-} from '../types';
+} from '../types/tables';
 import { DataAccessObjectInterface } from '../types/database';
 import UsedAbstractDatabaseError from '../errors/used-abstract-database-error';
 
 /**
  * Abstract Database interface, only implement inherited classes.
  */
-export class Database {
+export class AbstractDatabase {
   /**
    * Data access object for Assignments.
    */
-  assignments: DataAccessObjectInterface<Assignment> = new DataAccessObject<Assignment>();
+  assignments: DataAccessObjectInterface<Assignment> = new AbstractDataAccessObject<Assignment>();
 
   /**
    * Data access object for Courses.
    */
-  courses: DataAccessObjectInterface<Course> = new DataAccessObject<Course>();
+  courses: DataAccessObjectInterface<Course> = new AbstractDataAccessObject<Course>();
 
   /**
    * Data access object for Submissions.
    */
-  submissions: DataAccessObjectInterface<Submission> = new DataAccessObject<Submission>();
+  submissions: DataAccessObjectInterface<Submission> = new AbstractDataAccessObject<Submission>();
 
   /**
    * Data access object for Users.
    */
-  users: DataAccessObjectInterface<User> = new DataAccessObject<User>();
+  users: DataAccessObjectInterface<User> = new AbstractDataAccessObject<User>();
 
   /**
    * Data access object for Enrolleds.
    */
-  enrolled: DataAccessObjectInterface<Enrolled> = new DataAccessObject<Enrolled>();
+  enrolled: DataAccessObjectInterface<Enrolled> = new AbstractDataAccessObject<Enrolled>();
 
   /**
    * Connects to database.
@@ -56,18 +56,5 @@ export class Database {
    */
   isConnected(): boolean {
     return false;
-  }
-
-  /**
-   * Get's a data access object.
-   * 
-   * @param {string} name Name of data access object.
-   * @returns {DataAccessObjectInterface} Data access object.
-   */
-  getDao(name: string): DataAccessObject<any> {
-    switch (name) {
-      default:
-        return this.users;
-    }
   }
 }

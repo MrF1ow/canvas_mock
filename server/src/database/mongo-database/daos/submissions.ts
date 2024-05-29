@@ -6,7 +6,7 @@ import { SubmissionModel } from '../models';
 import { DataAccessObject } from './dao';
 
 // Types
-import { Submission as SubmissionInterface } from '../../../types';
+import { Submission as SubmissionInterface } from '../../../types/tables';
 import { DataAccessObjectInterface as DataAccessObjectInterface } from '../../../types/database';
 
 /**

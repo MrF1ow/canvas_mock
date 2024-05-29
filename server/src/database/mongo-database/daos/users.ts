@@ -6,7 +6,7 @@ import { UserModel } from '../models';
 import { DataAccessObject } from './dao';
 
 // Types
-import { User as UserInterface } from '../../../types';
+import { User as UserInterface } from '../../../types/tables';
 import { DataAccessObjectInterface as DataAccessObjectInterface } from '../../../types/database';
 
 /**

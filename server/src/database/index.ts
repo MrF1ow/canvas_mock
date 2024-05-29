@@ -1,5 +1,5 @@
 // Local Imports
-import { Database as DatabaseClass } from './database';
+import { AbstractDatabase } from './abstract-database';
 import { MongoDatabase } from './mongo-database';
 import { CacheDatabase } from './cache-database';
 import { DATABASE_TYPE } from '../config';
@@ -8,7 +8,7 @@ import { Environment } from '../helpers/environment';
 /**
  * Static instance of the database.
  */
-let DatabaseInstace: DatabaseClass | null = null;
+let DatabaseInstace: AbstractDatabase | null = null;
 
 /**
  * Generates database based on environmental variables.
@@ -29,8 +29,8 @@ const initializeDatabase = (): void => {
  *
  * @returns {Database} The database.
  */
-export const getDatabase = (): DatabaseClass => {
+export const getDatabase = (): AbstractDatabase => {
   initializeDatabase();
 
-  return DatabaseInstace as DatabaseClass;
+  return DatabaseInstace as AbstractDatabase;
 };

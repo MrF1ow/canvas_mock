@@ -6,7 +6,7 @@ import { EnrolledModel } from '../models';
 import { DataAccessObject } from './dao';
 
 // Types
-import { Enrolled as EnrolledInterface } from '../../../types';
+import { Enrolled as EnrolledInterface } from '../../../types/tables';
 import { DataAccessObjectInterface as DataAccessObjectInterface } from '../../../types/database';
 
 /**
