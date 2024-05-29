@@ -1,8 +1,5 @@
 // Packages
-import {
-  model,
-  Schema,
-} from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const schema = new Schema({
   assignmentId: {
@@ -27,8 +24,8 @@ const schema = new Schema({
 
   file: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 
-export const SubmissionModel = model('Submission', schema);
+export const SubmissionModel = model("Submission", schema);

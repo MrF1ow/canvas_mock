@@ -1,0 +1,21 @@
+{
+  "name": "mongobongo-api-server",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/database/index.ts",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.6.2",
+    "mongoose": "^8.4.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "nodemon": "^3.1.1",
+    "typescript": "^5.4.5"
+  }
+}
