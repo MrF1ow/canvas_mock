@@ -80,7 +80,6 @@ export class Router {
             handler.execute,
           );
           break;
-          
       }
     }
   }
