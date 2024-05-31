@@ -145,6 +145,16 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
   }
 
   /**
+   * Counts the number of documents in a collection.
+   *
+   * @param {QueryConditions} filter The filter to apply to the query.
+   * @returns {Promise<number>} The number of items.
+   */
+  async count(filter: QueryConditions = {}): Promise<number> {
+    return this._model.countDocuments(filter);
+  }
+
+  /**
    * Deletes all items or a subset of items from the Database.
    *
    * @param {QueryConditions} filter The filter to apply to the query.

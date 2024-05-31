@@ -37,7 +37,8 @@ export type RequestType = 'get'
  */
 export type RequestAuthorization = 'none'
 | 'required'
-| 'optional';
+| 'optional'
+| 'admin';
 
 /**
  * Database type enum.

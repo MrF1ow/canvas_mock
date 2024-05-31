@@ -108,6 +108,16 @@ export class DataAccessObject<T> extends AbstractDataAccessObject<T> implements 
   }
 
   /**
+   * Counts the number of documents in a collection.
+   *
+   * @param {QueryConditions} filter The filter to apply to the query.
+   * @returns {Promise<number>} The number of items.
+   */
+  async count(filter: QueryConditions = {}): Promise<number> {
+    return this._items.length;
+  }
+
+  /**
    * Finds all of the item in the Database.
    *
    * @param {QueryConditions} [filter = {}] The filter to apply to the query.

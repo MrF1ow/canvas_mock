@@ -1,6 +1,13 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import {
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +28,7 @@ export class DeleteCourseHandler extends Handler {
     super(
       REQUEST_TYPE.DELETE,
       '/:id',
+      AUTHORIZATION_TYPE.REQUIRED,
     );
   }
 
@@ -35,6 +43,36 @@ export class DeleteCourseHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse path parameters.
+      const { id } = req.params || {};
+
+      // Check for all required parameters.
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      // Delete and check if successful.
+      const status = await Handler._database.courses.deleteById(id);
+
+      // If unsuccessful.
+      if (!status) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
+            'Course',
+            'ID',
+            id,
+          ),
+        });
+        return;
+      }
+
+      res.status(204).send({});
     } catch (error) {
       Monitor.log(
         DeleteCourseHandler,

@@ -1,5 +1,8 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import {
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
 import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
@@ -9,6 +12,7 @@ import {
   ServerRequest,
   ServerResponse,
 } from '../../types';
+import { Assignment } from '../../types/tables';
 
 /**
  * Returns a list containing the Assignment IDs of all Assignments for the Course.
@@ -35,6 +39,31 @@ export class GetCourseAssignmentsHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse path parameters.
+      const { id } = req.params || {};
+
+      // Check for all required parameters.
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      // Gather all assignments by that course Id.
+      const assignments = await Handler._database.assignments.find({ courseId: id });
+
+      // The documentation isn't clear if we're supposed to return Ids or objects,
+      // The comments say just Ids, but the yaml specifies objects.
+      res.status(200).send({
+        assignments: assignments.map((assignment: Assignment) => assignment._id),
+      });
+      // res.status(200).send({
+      //   assignments,
+      // });
     } catch (error) {
       Monitor.log(
         GetCourseAssignmentsHandler,

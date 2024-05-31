@@ -1,5 +1,9 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import {
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
 import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
@@ -35,6 +39,38 @@ export class GetCourseHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse path parameters.
+      const { id } = req.params || {};
+
+      // Check for all required parameters.
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      // Retrieve the course by Id.
+      const course = await Handler._database.courses.findById(id);
+
+      // Did it exist?
+      if (!course) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
+            'Course',
+            'ID',
+            id,
+          ),
+        });
+        return;
+      }
+
+      res.status(200).send({
+        course,
+      });
     } catch (error) {
       Monitor.log(
         GetCourseHandler,
