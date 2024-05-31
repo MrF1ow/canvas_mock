@@ -112,4 +112,11 @@ export class Handler {
   getAuthorization(): RequestAuthorization {
     return this._authorization;
   }
+
+  /**
+   * Retrieves database instance.
+   */
+  static getDatabase(): AbstractDatabase {
+    return Handler._database;
+  }
 }

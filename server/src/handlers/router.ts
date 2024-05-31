@@ -7,6 +7,7 @@ import {
 // Local Imports
 import {
   optionalAuthorization,
+  requiresAdmin,
   requiresAuthorization,
 } from '../helpers/authorization';
 import {
@@ -71,6 +72,8 @@ export class Router {
         middleware.unshift(requiresAuthorization);
       } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.OPTIONAL) {
         middleware.unshift(optionalAuthorization);
+      } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.ADMIN) {
+        middleware.unshift(requiresAdmin);
       }
 
       switch (handler.getMethod()) {
@@ -87,7 +90,7 @@ export class Router {
           );
           break;
         case REQUEST_TYPE.DELETE:
-          app.patch(
+          app.delete(
             handler.getPath(),
             ...middleware,
           );

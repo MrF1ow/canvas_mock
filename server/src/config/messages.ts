@@ -51,6 +51,19 @@ export const MESSAGE_HANDLER_PARAMETER_MISSING = (
 ) => `${parameter} for ${item} not provided`;
 
 /**
+ * Error message thrown when an item is requested that doesn't exist.
+ *
+ * @param {string} item Item attempted to be found or updated.
+ * @param {string} parameter Name of parameter searched.
+ * @returns {string} Error message.
+ */
+export const MESSAGE_HANDLER_ITEM_NOT_FOUND = (
+  item: string,
+  parameter: string,
+  value: string,
+) => `${item} by the ${parameter} '${value}' not found.`;
+
+/**
  * Error for invalid authentication request.
  * 
  * @constant

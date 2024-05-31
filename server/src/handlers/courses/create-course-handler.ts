@@ -1,6 +1,12 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import {
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +27,7 @@ export class CreateCourseHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/',
+      AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -35,6 +42,83 @@ export class CreateCourseHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse request body.
+      const {
+        subject,
+        number,
+        title,
+        term,
+        instructorId,
+      } = req.body || {};
+
+      // Check for all required parameters.
+      if (!subject) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Subject',
+          ),
+        });
+        return;
+      }
+      if (!number) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Course number',
+          ),
+        });
+        return;
+      }
+      if (!title) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Title',
+          ),
+        });
+        return;
+      }
+      if (!term) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Term',
+          ),
+        });
+        return;
+      }
+      if (!instructorId) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Instructor',
+          ),
+        });
+        return;
+      }
+
+      // Create the course.
+      await Handler._database.courses.insert({
+        subject,
+        number,
+        title,
+        term,
+        instructorId,
+      });
+
+      // Find the course we just inserted.
+      const course = await Handler._database.courses.findOne({
+        subject,
+        number,
+        title,
+        term,
+        instructorId,
+      });
+
+      res.status(201).send({
+        id: course._id,
+      });
     } catch (error) {
       Monitor.log(
         CreateCourseHandler,

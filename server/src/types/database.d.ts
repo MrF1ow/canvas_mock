@@ -438,6 +438,14 @@ export interface DataAccessObjectInterface<T> {
   dropTable: () => Promise<void>;
 
   /**
+   * Counts the number of documents in a collection.
+   *
+   * @param {QueryConditions} filter The filter to apply to the query.
+   * @returns {Promise<number>} The number of items.
+   */
+  count: (filter: QueryConditions = {}) => Promise<number>;
+
+  /**
    * Finds all of the item in the Database.
    *
    * @param {QueryConditions} filter The filter to apply to the query.
@@ -488,14 +496,15 @@ export interface DataAccessObjectInterface<T> {
   /**
    * Updates one item in the Database matching the filter.
    *
-   * @param {QueryConditions} filter
-   * @param {QueryUpdate} update
-   * @param {boolean} insertNew
+   * @param {QueryConditions} filter Which document.
+   * @param {QueryUpdate} update Update to document.
+   * @param {boolean} insertNew Whether to insert a new row.
    * @returns {Promise<boolean>} Whether the item was updated.
    */
   update: (
     conditions: QueryConditions,
     update: QueryUpdate,
+    insertNew?: boolean,
   ) => Promise<number>;
 
   /**

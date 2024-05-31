@@ -123,7 +123,17 @@ export type UserRole = 'student'
 /**
  * An object representing information about a Tarpaulin application user.
  */
-export interface User {
+export interface User extends PublicUser {
+  /**
+   * The User's plain-text password.  This is required when creating a new User and when logging in.
+   */
+  password: string;
+}
+
+/**
+ * Public data about a user.
+ */
+export interface PublicUser {
   /**
    * User's unique identifier.
    */
@@ -138,11 +148,6 @@ export interface User {
    * Email address for the User.  This is required to be unique among all Users.
    */
   email: string;
-
-  /**
-   * The User's plain-text password.  This is required when creating a new User and when logging in.
-   */
-  password: string;
 
   /**
    * Permission role of the User.  Can be either 'admin', 'instructor', or 'student'.

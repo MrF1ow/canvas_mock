@@ -1,6 +1,6 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +21,7 @@ export class CreateCourseStudentsHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/:id/students',
+      AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -35,6 +36,68 @@ export class CreateCourseStudentsHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse path parameters.
+      const { id } = req.params || {};
+
+      // Parse body paramters.
+      const {
+        add = undefined,
+        remove = undefined,
+      } = req.body || {};
+
+      // Check for all required parameters.
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      // Request body is required.
+      if ((add === undefined
+        || !(add instanceof Array)
+        || !add.length)
+        && (remove === undefined
+        || !(remove instanceof Array)
+        || !remove.length)) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'Remove or add student IDs',
+          ),
+        });
+        return;
+      }
+
+      if (remove !== undefined
+        && remove instanceof Array
+        && remove.length) {
+        await Handler._database.enrolled.delete({
+          courseId: id,
+          studentId: {
+            $in: remove,
+          },
+        });
+      }
+      if (add !== undefined
+        && add instanceof Array
+        && add.length) {
+        const promises = [];
+
+        for (let i = 0; i < add.length; i += 1) {
+          promises.push(Handler._database.enrolled.insert({
+            courseId: id,
+            studentId: add[i],
+          }));
+        }
+
+        await Promise.all(promises);
+      }
+
+      res.status(200).send({});
     } catch (error) {
       Monitor.log(
         CreateCourseStudentsHandler,

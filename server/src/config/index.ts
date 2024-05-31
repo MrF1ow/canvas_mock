@@ -8,6 +8,7 @@ import {
   RequestAuthorization,
   RequestType,
 } from '../types';
+import { UserRole } from '../types/tables';
 
 /**
  * Various request types enum.
@@ -39,8 +40,17 @@ export const AUTHORIZATION_TYPE = {
   NONE: 'none',
   REQUIRED: 'required',
   OPTIONAL: 'optional',
+  ADMIN: 'admin',
 } as Dictionary<RequestAuthorization>;
 
+/**
+ * Different user role types.
+ */
+export const USER_ROLE = {
+  STUDENT: 'student',
+  ADMIN: 'admin',
+  INSTRUCTOR: 'instructor',
+} as Dictionary<UserRole>;
 
 /**
  * Developmental URL.
@@ -56,3 +66,8 @@ export const PRODUCTION_URL = '';
  * Salt work factor.
  */
 export const SALT_WORK_FACTOR = 8;
+
+/**
+ * Default pagination size.
+ */
+export const PAGE_SIZE = 25;
