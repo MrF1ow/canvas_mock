@@ -21,7 +21,7 @@ export class CreateCourseStudentsHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/:id/students',
-      AUTHORIZATION_TYPE.REQUIRED,
+      AUTHORIZATION_TYPE.ADMIN,
     );
   }
 

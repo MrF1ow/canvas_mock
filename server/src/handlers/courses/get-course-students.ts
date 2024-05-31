@@ -2,8 +2,9 @@
 import {
   MESSAGE_HANDLER_PARAMETER_MISSING,
   MESSAGE_INTERNAL_SERVER_ERROR,
+  MESSAGE_UNAUTHORIZED_ERROR,
 } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
 import { cleanUser } from '../../helpers/authorization';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
@@ -29,6 +30,7 @@ export class GetCourseStudentsHandler extends Handler {
     super(
       REQUEST_TYPE.GET,
       '/:id/students',
+      AUTHORIZATION_TYPE.REQUIRED,
     );
   }
 
@@ -43,7 +45,15 @@ export class GetCourseStudentsHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
-      // Parse path parameters.
+      // Check for authentication.
+      if (!req.user) {
+        res.status(403).send({
+          error: MESSAGE_UNAUTHORIZED_ERROR,
+        });
+        return;
+      }
+
+      // Parse request parameters.
       const { id } = req.params || {};
 
       // Check for all required parameters.
@@ -55,6 +65,21 @@ export class GetCourseStudentsHandler extends Handler {
           ),
         });
         return;
+      }
+
+      // Get the user.
+      const user = await Handler._database.users.findById(req.user);
+
+      // Check their role.
+      if (user.role !== USER_ROLE.ADMIN) {
+        const course = await Handler._database.courses.findById(id);
+
+        if (course.instructorId !== req.user) {
+          res.status(403).send({
+            error: MESSAGE_UNAUTHORIZED_ERROR,
+          });
+          return;
+        }
       }
 
       // Get enrolled students.

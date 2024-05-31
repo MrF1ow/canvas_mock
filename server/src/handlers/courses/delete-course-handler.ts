@@ -28,7 +28,7 @@ export class DeleteCourseHandler extends Handler {
     super(
       REQUEST_TYPE.DELETE,
       '/:id',
-      AUTHORIZATION_TYPE.REQUIRED,
+      AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -57,11 +57,29 @@ export class DeleteCourseHandler extends Handler {
         return;
       }
 
+      // Get all assignments.
+      const assignments = await Handler._database.assignments.find({ courseId: id });
+
       // Delete and check if successful.
-      const status = await Handler._database.courses.deleteById(id);
+      const promises = [];
+
+      promises.push(Handler._database.courses.deleteById(id));
+      promises.push(Handler._database.enrolled.delete({ courseId: id }));
+
+      // Delete all submissions to assignments.
+      for (let i = 0; i < assignments.length; i += 1) {
+        const assignment = assignments[i];
+
+        promises.push(Handler._database.submissions.delete({ assignmentId: assignment._id }));
+      }
+
+      await Promise.all(promises);
+
+      // Now delete assignments.
+      await Handler._database.assignments.delete({ courseId: id });
 
       // If unsuccessful.
-      if (!status) {
+      if (!(await promises[0])) {
         res.status(404).send({
           error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
             'Course',

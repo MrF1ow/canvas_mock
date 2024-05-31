@@ -1,6 +1,6 @@
 // Local Imports
 import { MESSAGE_HANDLER_ITEM_NOT_FOUND, MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -23,6 +23,7 @@ export class EditCourseHandler extends Handler {
     super(
       REQUEST_TYPE.PATCH,
       '/:id',
+      AUTHORIZATION_TYPE.ADMIN,
     );
   }
 

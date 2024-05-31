@@ -1,6 +1,14 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import {
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+  MESSAGE_UNAUTHORIZED_ERROR
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +29,7 @@ export class GetCourseRosterHandler extends Handler {
     super(
       REQUEST_TYPE.GET,
       '/:id/roster',
+      AUTHORIZATION_TYPE.REQUIRED,
     );
   }
 
@@ -35,6 +44,44 @@ export class GetCourseRosterHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Check for authentication.
+      if (!req.user) {
+        res.status(403).send({
+          error: MESSAGE_UNAUTHORIZED_ERROR,
+        });
+        return;
+      }
+
+      // Parse request parameters.
+      const { id } = req.params || {};
+
+      // Check for all required parameters.
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'course',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      // Get the user.
+      const user = await Handler._database.users.findById(req.user);
+
+      // Check their role.
+      if (user.role !== USER_ROLE.ADMIN) {
+        const course = await Handler._database.courses.findById(id);
+
+        if (course.instructorId !== req.user) {
+          res.status(403).send({
+            error: MESSAGE_UNAUTHORIZED_ERROR,
+          });
+          return;
+        }
+      }
+
+      res.status(200).send({});
     } catch (error) {
       Monitor.log(
         GetCourseRosterHandler,
