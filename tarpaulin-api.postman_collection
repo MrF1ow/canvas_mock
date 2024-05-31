@@ -1,0 +1,599 @@
+{
+	"info": {
+		"_postman_id": "9606104d-0c78-4902-a72c-479c7ad7d7a9",
+		"name": "The Tarpaulin API",
+		"description": "StartFragmentThe Tarpaulin API you implement must support all of the endpoints described in the Tarpaulin OpenAPI specification. You can load this specification into the editor at swagger.io to see automatically-generated documentation for all the API endpoints you’ll need to implement for the final project. Importantly, you are free to implement these endpoints however you see fit. For example, you may use whatever database you want, and you may design your API architecture to meet your own needs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34407826"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "login",
+					"item": [
+						{
+							"name": "Authenticate User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"younga8@oregonstate.edu\",\r\n    \"password\": \"weak_password123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/user/login",
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "[id]",
+					"item": [
+						{
+							"name": "Get User By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "/users/:id",
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of a User.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Andrew Young\",\r\n    \"email\": \"younga8@oregonstate.edu\",\r\n    \"password\": \"weak_password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/users",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "[id]",
+					"item": [
+						{
+							"name": "students",
+							"item": [
+								{
+									"name": "Get Students By Course ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "/courses/:id/students",
+											"path": [
+												"courses",
+												":id",
+												"students"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Enrollment By Course ID",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"add\": [ \"123\", \"456\" ],\r\n    \"remove\": [ \"789\", \"012\" ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "/courses/:id/students",
+											"path": [
+												"courses",
+												":id",
+												"students"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "roster",
+							"item": [
+								{
+									"name": "Get Roster By Course ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "/courses/:id/roster",
+											"path": [
+												"courses",
+												":id",
+												"roster"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "assignments",
+							"item": [
+								{
+									"name": "Get Assignments By Course ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "/courses/:id/assignments",
+											"path": [
+												"courses",
+												":id",
+												"assignments"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Course By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "/courses/:id",
+									"path": [
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Course By ID",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"subject\": \"CS\",\r\n    \"number\": \"493\",\r\n    \"title\": \"Cloud Application Development\",\r\n    \"term\": \"sp22\",\r\n    \"instructorId\": \"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/courses/:id",
+									"path": [
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Course By ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "/courses/:id",
+									"path": [
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/courses?page=1&subject=CS&number=493&term=sp22",
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page of Courses to fetch."
+								},
+								{
+									"key": "subject",
+									"value": "CS",
+									"description": "Fetch only Courses with the specified subject code."
+								},
+								{
+									"key": "number",
+									"value": "493",
+									"description": "Fetch only Courses with the specified course number."
+								},
+								{
+									"key": "term",
+									"value": "sp22",
+									"description": "Fetch only Courses in the specified academic term."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subject\": \"CS\",\r\n    \"number\": \"493\",\r\n    \"title\": \"Cloud Application Development\",\r\n    \"term\": \"sp22\",\r\n    \"instructorId\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/courses",
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "assignments",
+			"item": [
+				{
+					"name": "[id]",
+					"item": [
+						{
+							"name": "submissions",
+							"item": [
+								{
+									"name": "Get Submissions By Assignment ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "/assignment/:id/submissions?page=1&studentId=123",
+											"path": [
+												"assignment",
+												":id",
+												"submissions"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1",
+													"description": "Page of Submissions to fetch."
+												},
+												{
+													"key": "studentId",
+													"value": "123",
+													"description": "Fetch assignments only for the specified student ID.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Submission",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"assignmentId\": \"123\",\r\n    \"studentId\": \"123\",\r\n    \"timestamp\": \"2022-06-14T17:00:00-07:00\",\r\n    \"grade\": 94.5,\r\n    \"file\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "/assignments/:id/submissions",
+											"path": [
+												"assignments",
+												":id",
+												"submissions"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "123",
+													"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Assignment By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "/assignments/:id",
+									"path": [
+										"assignments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Assignment By ID",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"courseId\": \"123\",\r\n    \"title\": \"Assignment 3\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "/assignments/:id",
+									"path": [
+										"assignments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Assignment By ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "/assignments/:id",
+									"path": [
+										"assignments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "123",
+											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Assignment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"123\",\r\n    \"title\": \"Assignment 3\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/assignments",
+							"path": [
+								"assignments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "submissions/[id]",
+			"item": [
+				{
+					"name": "Update Submission By ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"assignmentId\": \"123\",\r\n    \"studentId\": \"123\",\r\n    \"timestamp\": \"2022-06-14T17:00:00-07:00\",\r\n    \"grade\": 94.5,\r\n    \"file\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/submissions/:id",
+							"path": [
+								"submissions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "123",
+									"description": "Unique ID of a Submission.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "media/submissions/[filename]",
+			"item": [
+				{
+					"name": "Download Submission By Filename",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/media/submissions/:filename",
+							"path": [
+								"media",
+								"submissions",
+								":filename"
+							],
+							"variable": [
+								{
+									"key": "filename",
+									"value": "123.pdf",
+									"description": "Unique name of submission file to be downloaded."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

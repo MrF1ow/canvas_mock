@@ -1,6 +1,9 @@
 // Local Imports
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +24,7 @@ export class EditSubmissionHandler extends Handler {
     super(
       REQUEST_TYPE.PATCH,
       '/assignments/:id',
+      AUTHORIZATION_TYPE.REQUIRED,
     );
   }
 

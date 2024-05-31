@@ -1,0 +1,11 @@
+{
+  "name": "final-project-mongobongo",
+  "version": "1.0.0",
+  "description": "Tarpaulin Server",
+  "main": "/server/src/index.ts",
+  "scripts": {
+    "docker": "docker-compose up"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -90,7 +90,7 @@ export class Router {
           );
           break;
         case REQUEST_TYPE.DELETE:
-          app.patch(
+          app.delete(
             handler.getPath(),
             ...middleware,
           );
