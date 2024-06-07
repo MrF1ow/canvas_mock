@@ -1,18 +1,24 @@
-version: "3.8"
 services:
   api-server:
-    image: api-server
+    container_name: api-server
+    restart: always
+    # Build the server image using the Dockerfile in the server directory
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: .env
     ports:
       - "8000:8000"
     depends_on:
-      - mongo
+      - mongoDB
     networks:
       - final-project-mongobongo
 
   # Host name for database service will be 'mongo'
   # This is the name we will use in our connection string
-  mongo:
-    image: mongo
+  mongoDB:
+    container_name: mongodb
+    image: mongo:latest
     ports:
       - "27017:27017"
     networks:
