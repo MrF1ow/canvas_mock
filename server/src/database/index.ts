@@ -8,18 +8,18 @@ import { Environment } from '../helpers/environment';
 /**
  * Static instance of the database.
  */
-let DatabaseInstace: AbstractDatabase | null = null;
+let DatabaseInstance: AbstractDatabase | null = null;
 
 /**
  * Generates database based on environmental variables.
  */
 const initializeDatabase = (): void => {
-  if (!DatabaseInstace) {
+  if (!DatabaseInstance) {
     if (Environment.getDatabaseType() === DATABASE_TYPE.MONGO
       || Environment.getDatabaseType() === DATABASE_TYPE.MONGO_LOCAL) {
-      DatabaseInstace = new MongoDatabase();
+      DatabaseInstance = new MongoDatabase();
     } else {
-      DatabaseInstace = new CacheDatabase();
+      DatabaseInstance = new CacheDatabase();
     }
   }
 };
@@ -32,5 +32,5 @@ const initializeDatabase = (): void => {
 export const getDatabase = (): AbstractDatabase => {
   initializeDatabase();
 
-  return DatabaseInstace as AbstractDatabase;
+  return DatabaseInstance as AbstractDatabase;
 };

@@ -15,12 +15,12 @@ import {
   TokenData,
 } from '../types';
 import { PublicUser, User } from '@/types/tables';
-import { Handler } from '@/handlers/handler';
+import { Handler } from '../handlers/handler';
 
 /**
  * Generates and encrypts an authorization token.
  *
- * @param {string} user User ID. 
+ * @param {string} user User ID.
  */
 export const generateToken = (user: string): string => {
   const payload = {

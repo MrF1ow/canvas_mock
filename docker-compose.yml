@@ -1,34 +1,36 @@
-version: "3.8"
 services:
   api-server:
-    image: api-server
+    container_name: api-server
+    restart: always
+    # Build the server image using the Dockerfile in the server directory
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: ./server/.env
     ports:
       - "8000:8000"
-    depends_on:
-      - mongo
-    networks:
-      - final-project-mongobongo
 
-  # Host name for database service will be 'mongo'
-  # This is the name we will use in our connection string
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    networks:
-      - final-project-mongobongo
-    volumes:
-      - mongo-data:/data/db
+  # # Host name for database service will be 'mongo'
+  # # This is the name we will use in our connection string
+  # mongoDB:
+  #   container_name: mongodb
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   networks:
+  #     - final-project-mongobongo
+  #   volumes:
+  #     - mongo-data:/data/db
 
-# Create a network for our services
-# This will allow the services to communicate with each other
-# using the service name as the hostname
-networks:
-  final-project-mongobongo:
-    driver: bridge
+# # Create a network for our services
+# # This will allow the services to communicate with each other
+# # using the service name as the hostname
+# networks:
+#   final-project-mongobongo:
+#     driver: bridge
 
-# Create a volume for our database data
-# This will allow us to persist the data even if the container is removed
-volumes:
-  mongo-data:
-    driver: local
+# # Create a volume for our database data
+# # This will allow us to persist the data even if the container is removed
+# volumes:
+#   mongo-data:
+#     driver: local
