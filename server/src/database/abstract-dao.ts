@@ -32,6 +32,16 @@ export class AbstractDataAccessObject<T> {
   }
 
   /**
+   * Counts the number of documents in from the Database.
+   *
+   * @param {QueryConditions} filter The filter to apply to the query.
+   * @returns {Promise<number>} The number of documents.
+   */
+  count(conditions: QueryConditions = {}): Promise<number> {
+    throw new UsedAbstractDAOError();
+  }
+
+  /**
    * Deletes all items or a subset of items from the Database.
    *
    * @param {QueryConditions} filter The filter to apply to the query.
