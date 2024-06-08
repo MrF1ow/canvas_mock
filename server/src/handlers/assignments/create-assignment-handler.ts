@@ -1,8 +1,15 @@
 // Local Imports
-import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_HANDLER_ITEM_NOT_FOUND, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import {
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+  MESSAGE_UNAUTHORIZED_ERROR
+} from '../../config/messages';
+
 import {
   AUTHORIZATION_TYPE,
   REQUEST_TYPE,
+  USER_ROLE,
 } from '../../config';
 
 import { Monitor } from '../../helpers/monitor';
@@ -40,7 +47,6 @@ export class CreateAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
-      // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
 
       const {
         courseId,
@@ -111,6 +117,23 @@ export class CreateAssignmentHandler extends Handler {
         });
 
         return;
+      }
+
+      const user = await Handler._database.users.findById(req.user);
+
+      // If user is an instructor, check if the course is taught by the instructor
+      if (user.role === USER_ROLE.INSTRUCTOR){
+        const course = await Handler._database.courses.findById(courseId);
+
+        // If the instructor is not the instructor of the course they are trying to create an assignment for
+        if (course.instructorId !== req.user){
+          // Send an unauthorized error
+          res.status(403).send({
+            error: MESSAGE_UNAUTHORIZED_ERROR,
+          });
+
+          return;
+        }
       }
 
       await Handler._database.assignments.insert({

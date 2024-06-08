@@ -58,6 +58,8 @@ export class GetCourseAssignmentsHandler extends Handler {
 
       // The documentation isn't clear if we're supposed to return Ids or objects,
       // The comments say just Ids, but the yaml specifies objects.
+
+      // the response needs to be paginated
       res.status(200).send({
         assignments: assignments.map((assignment: Assignment) => assignment._id),
       });
