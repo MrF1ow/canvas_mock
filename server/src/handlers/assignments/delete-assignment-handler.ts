@@ -1,6 +1,10 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { 
+  MESSAGE_INTERNAL_SERVER_ERROR,
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_HANDLER_PARAMETER_MISSING
+} from '../../config/messages';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +25,7 @@ export class DeleteAssignmentHandler extends Handler {
     super(
       REQUEST_TYPE.DELETE,
       '/:id',
+      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -35,6 +40,34 @@ export class DeleteAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+        // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
+
+      const { id } = req.params || {};
+
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'assignment',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      const assignment = await Handler._database.assignments.deleteById(id);
+
+      if (!assignment) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
+            'assignment',
+            'ID',
+            id,
+          ),
+        });
+        return;
+      }
+
+      res.status(204).send();
     } catch (error) {
       Monitor.log(
         DeleteAssignmentHandler,

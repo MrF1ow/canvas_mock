@@ -9,6 +9,7 @@ import {
   optionalAuthorization,
   requiresAdmin,
   requiresAuthorization,
+  requiresInstructor,
 } from '../helpers/authorization';
 import {
   AUTHORIZATION_TYPE,
@@ -74,6 +75,8 @@ export class Router {
         middleware.unshift(optionalAuthorization);
       } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.ADMIN) {
         middleware.unshift(requiresAdmin);
+      } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.INSTRUCTOR){
+        middleware.unshift(requiresInstructor);
       }
 
       switch (handler.getMethod()) {
