@@ -35,7 +35,6 @@ export class GetAssignmentSubmissionsHandler extends Handler {
    */
   async execute(req: ServerRequest, res: ServerResponse): Promise<void> {
     try {
-      // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
 
       // Parse path parameters.
       const { id } = req.params || {};
@@ -75,7 +74,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
         return;
       }
 
-      // NEED TO BE PAGINATED
+      // ADD CODE FOR PAGINATION
 
       const submissions = await Handler._database.submissions.find({
         assignmentId: id,
