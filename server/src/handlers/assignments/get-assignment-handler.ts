@@ -1,6 +1,8 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_HANDLER_ITEM_NOT_FOUND, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import {
+  REQUEST_TYPE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -35,6 +37,35 @@ export class GetAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      // Parse path parameters.
+      const { id } = req.params || {};
+
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'assignment',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      const assignment = await Handler._database.assignments.findOne({ id });
+
+      if (!assignment) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
+            'assignment',
+            'ID',
+            id,
+          ),
+        });
+        return;
+      }
+
+      res.status(200).send({
+        assignment,
+      });
     } catch (error) {
       Monitor.log(
         GetAssignmentHandler,

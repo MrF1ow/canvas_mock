@@ -1,6 +1,11 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import {
+  MESSAGE_INTERNAL_SERVER_ERROR,
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_UNAUTHORIZED_ERROR,
+} from '../../config/messages';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +26,7 @@ export class DeleteAssignmentHandler extends Handler {
     super(
       REQUEST_TYPE.DELETE,
       '/:id',
+      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -35,6 +41,51 @@ export class DeleteAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+      const { id } = req.params || {};
+
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'assignment',
+            'ID',
+          ),
+        });
+        return;
+      }
+
+      const assignment = await Handler._database.assignments.findById(id);
+
+      const user = await Handler._database.users.findById(req.user);
+      // If user is an instructor, check if the course is taught by the instructor
+      if (user.role === USER_ROLE.INSTRUCTOR) {
+        const course = await Handler._database.courses.findById(assignment.courseId);
+
+        // If the instructor is not the instructor of the course they are trying to create an assignment for
+        if (course.instructorId !== req.user) {
+          // Send an unauthorized error
+          res.status(403).send({
+            error: MESSAGE_UNAUTHORIZED_ERROR,
+          });
+
+          return;
+        }
+      }
+
+      const status = await Handler._database.assignments.deleteById(id);
+
+      if (!status) {
+        res.status(404).send({
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
+            'assignment',
+            'ID',
+            id,
+          ),
+        });
+        return;
+      }
+
+      res.status(204).send();
     } catch (error) {
       Monitor.log(
         DeleteAssignmentHandler,

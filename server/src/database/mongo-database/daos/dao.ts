@@ -151,7 +151,9 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<number>} The number of items.
    */
   async count(filter: QueryConditions = {}): Promise<number> {
-    return this._model.countDocuments(filter);
+    const results = this._model.countDocuments(filter);
+    console.log(results);
+    return results;
   }
 
   /**

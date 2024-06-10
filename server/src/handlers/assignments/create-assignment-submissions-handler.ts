@@ -1,6 +1,6 @@
 // Local Imports
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -21,6 +21,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/:id/submissions',
+      AUTHORIZATION_TYPE.STUDENT,
     );
   }
 
@@ -35,6 +36,17 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+      const { id } = req.params || {};
+
+      if (!id) {
+        res.status(404).send({
+          error: MESSAGE_INTERNAL_SERVER_ERROR,
+        });
+        return;
+      }
+
+      // ADD CODE TO ACCEPT MULTIPART FORM DATA
+
     } catch (error) {
       Monitor.log(
         CreateAssignmentSubmissionsHandler,
