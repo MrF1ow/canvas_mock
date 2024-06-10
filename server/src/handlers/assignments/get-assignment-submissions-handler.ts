@@ -4,13 +4,15 @@ import {
   MESSAGE_HANDLER_PARAMETER_MISSING,
   MESSAGE_HANDLER_ITEM_NOT_FOUND,
   MESSAGE_UNAUTHORIZED_ERROR,
-} from "../../config/messages";
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from "../../config";
-import { Monitor } from "../../helpers/monitor";
-import { Handler } from "../handler";
+} from '../../config/messages';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
+import { paginate } from '../../helpers/pagination';
+import { Monitor } from '../../helpers/monitor';
+import { Handler } from '../handler';
+import { SubmissionModel } from '@/database/mongo-database/models';
 
 // Types
-import { ServerRequest, ServerResponse } from "../../types";
+import { ServerRequest, ServerResponse } from '../../types';
 
 /**
  * Returns the list of all Submissions for an Assignment.  This list should be paginated.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can fetch the Submissions for an Assignment.
@@ -22,8 +24,8 @@ export class GetAssignmentSubmissionsHandler extends Handler {
   constructor() {
     super(
       REQUEST_TYPE.GET,
-      "/:id/submissions",
-      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN
+      '/:id/submissions',
+      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
     );
   }
 
@@ -41,7 +43,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
 
       if (!id) {
         res.status(404).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "ID"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'ID'),
         });
         return;
       }
@@ -53,7 +55,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
       // If user is an instructor, check if the course is taught by the instructor
       if (user.role === USER_ROLE.INSTRUCTOR) {
         const course = await Handler._database.courses.findById(
-          assignment.courseId
+          assignment.courseId,
         );
 
         // If the instructor is not the instructor of the course they are trying to create an assignment for
@@ -69,16 +71,28 @@ export class GetAssignmentSubmissionsHandler extends Handler {
 
       if (!assignment) {
         res.status(404).send({
-          error: MESSAGE_HANDLER_ITEM_NOT_FOUND("assignment", "ID", id),
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND('assignment', 'ID', id),
         });
         return;
       }
 
-      // ADD CODE FOR PAGINATION
+      // ADD CODE FOR PAGINATION (HELP SOS)
 
-      const submissions = await Handler._database.submissions.find({
-        assignmentId: id,
-      });
+      const page = parseInt(req.query.page as string, 10) || 1;
+
+      const submissions = await paginate(
+        SubmissionModel,
+        page,
+        10,
+        {
+          assignmentId: id,
+        },
+      );
+
+
+      // const submissions = await Handler._database.submissions.find({
+      //   assignmentId: id,
+      // });
 
       res.status(200).send({
         submissions,
@@ -87,7 +101,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
       Monitor.log(
         GetAssignmentSubmissionsHandler,
         error,
-        Monitor.Layer.WARNING
+        Monitor.Layer.WARNING,
       );
 
       res.status(500).send({

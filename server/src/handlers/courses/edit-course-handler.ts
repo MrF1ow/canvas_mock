@@ -120,7 +120,7 @@ export class EditCourseHandler extends Handler {
           error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
             'Course',
             'ID',
-            id
+            id,
           ),
         });
         return;

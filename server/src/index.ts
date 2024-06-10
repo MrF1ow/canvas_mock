@@ -9,6 +9,6 @@ import { Server } from './server';
 const main = (): void => {
   const server = new Server();
   server.start();
-}
+};
 
 main();

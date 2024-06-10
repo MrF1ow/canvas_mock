@@ -37,10 +37,10 @@ export class GetAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
-        // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
+      // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
 
 
-       // Parse path parameters.
+      // Parse path parameters.
       const { id } = req.params || {};
 
       if (!id) {
@@ -60,7 +60,7 @@ export class GetAssignmentHandler extends Handler {
           error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
             'assignment',
             'ID',
-             id
+            id,
           ),
         });
         return;

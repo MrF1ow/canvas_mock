@@ -45,7 +45,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
         return;
       }
 
-    // ADD CODE TO ACCEPT MULTIPART FORM DATA
+      // ADD CODE TO ACCEPT MULTIPART FORM DATA
 
     } catch (error) {
       Monitor.log(

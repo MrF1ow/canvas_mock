@@ -57,12 +57,12 @@ export class DeleteAssignmentHandler extends Handler {
       const assignment = await Handler._database.assignments.findById(id);
 
       const user = await Handler._database.users.findById(req.user);
-        // If user is an instructor, check if the course is taught by the instructor
-      if (user.role === USER_ROLE.INSTRUCTOR){
+      // If user is an instructor, check if the course is taught by the instructor
+      if (user.role === USER_ROLE.INSTRUCTOR) {
         const course = await Handler._database.courses.findById(assignment.courseId);
 
         // If the instructor is not the instructor of the course they are trying to create an assignment for
-        if (course.instructorId !== req.user){
+        if (course.instructorId !== req.user) {
           // Send an unauthorized error
           res.status(403).send({
             error: MESSAGE_UNAUTHORIZED_ERROR,

@@ -75,7 +75,7 @@ export class Router {
         middleware.unshift(optionalAuthorization);
       } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.ADMIN) {
         middleware.unshift(requiresAdmin);
-      } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.INSTRUCTOR){
+      } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.INSTRUCTOR) {
         middleware.unshift(requiresInstructor);
       }
 

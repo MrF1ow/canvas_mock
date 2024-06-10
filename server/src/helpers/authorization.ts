@@ -33,7 +33,7 @@ export const generateToken = (user: string): string => {
     {
       expiresIn: '24h',
     },
-  )
+  );
 };
 
 /**
@@ -154,7 +154,7 @@ export const requiresInstructor = async (
   const authorizationHeader = (req.get('Authorization') || '').split(' ');
   const token = authorizationHeader[0] === 'Bearer' ? authorizationHeader[1] : null;
 
-  try{
+  try {
     const { sub } = decodeToken(token);
     req.user = sub;
 
@@ -172,7 +172,7 @@ export const requiresInstructor = async (
       error: MESSAGE_AUTHENTICATION_ERROR,
     });
   }
-}
+};
 
 /**
  * Validates a request.

@@ -3,7 +3,7 @@ import {
   MESSAGE_HANDLER_PARAMETER_MISSING,
   MESSAGE_HANDLER_ITEM_NOT_FOUND,
   MESSAGE_INTERNAL_SERVER_ERROR,
-  MESSAGE_UNAUTHORIZED_ERROR
+  MESSAGE_UNAUTHORIZED_ERROR,
 } from '../../config/messages';
 
 import {
@@ -67,7 +67,7 @@ export class CreateAssignmentHandler extends Handler {
         });
 
         return;
-      }else{
+      } else {
         const course = await Handler._database.courses.findOne({
           _id: courseId,
         });
@@ -122,11 +122,11 @@ export class CreateAssignmentHandler extends Handler {
       const user = await Handler._database.users.findById(req.user);
 
       // If user is an instructor, check if the course is taught by the instructor
-      if (user.role === USER_ROLE.INSTRUCTOR){
+      if (user.role === USER_ROLE.INSTRUCTOR) {
         const course = await Handler._database.courses.findById(courseId);
 
         // If the instructor is not the instructor of the course they are trying to create an assignment for
-        if (course.instructorId !== req.user){
+        if (course.instructorId !== req.user) {
           // Send an unauthorized error
           res.status(403).send({
             error: MESSAGE_UNAUTHORIZED_ERROR,
@@ -141,7 +141,7 @@ export class CreateAssignmentHandler extends Handler {
         title,
         points,
         due,
-      })
+      });
 
       const assignment = await Handler._database.assignments.findOne({
         courseId,
@@ -152,7 +152,7 @@ export class CreateAssignmentHandler extends Handler {
 
       res.status(201).send({
         id: assignment._id,
-      })
+      });
     } catch (error) {
       Monitor.log(
         CreateAssignmentHandler,
