@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Local Imports
-import { Environment } from "./environment";
+import { Environment } from './environment';
 
 // Types
-import { Dictionary } from "../types";
+import { Dictionary } from '../types';
 
 /**
  * This class replaces console.log for a more standardized
@@ -15,7 +15,7 @@ export class Monitor {
    *
    * @constant
    */
-  static STD_OUT_ESCAPE_CODE_RESET = "\x1b[0m";
+  static STD_OUT_ESCAPE_CODE_RESET = '\x1b[0m';
 
   /**
    * Format for different monitor layers.
@@ -23,11 +23,11 @@ export class Monitor {
    * @constant
    */
   static STD_OUT_MONITOR_LAYER_NAME_FORMATING = {
-    0: "\x1b[90m", // DEBUG Grey
-    1: "\x1b[91m", // WARNING Red
-    2: "\x1b[33m", // UPDATE Yellow
-    3: "\x1b[32m", // SUCCESS Green
-    4: "\x1b[32m", // PROGRESS Blue
+    0: '\x1b[90m', // DEBUG Grey
+    1: '\x1b[91m', // WARNING Red
+    2: '\x1b[33m', // UPDATE Yellow
+    3: '\x1b[32m', // SUCCESS Green
+    4: '\x1b[32m', // PROGRESS Blue
   } as Dictionary<string>;
 
   /**
@@ -36,11 +36,11 @@ export class Monitor {
    * @constant
    */
   static STD_OUT_MONITOR_LAYER_MESSAGE_FORMATING = {
-    0: "\x1b[90m", // DEBUG
-    1: "\x1b[37m", // WARNING
-    2: "\x1b[37m", // UPDATE
-    3: "\x1b[37m", // UPDATE
-    4: "\x1b[37m", // UPDATE
+    0: '\x1b[90m', // DEBUG
+    1: '\x1b[37m', // WARNING
+    2: '\x1b[37m', // UPDATE
+    3: '\x1b[37m', // UPDATE
+    4: '\x1b[37m', // UPDATE
   } as Dictionary<string>;
 
   /**
@@ -70,7 +70,7 @@ export class Monitor {
         }]:${Monitor.STD_OUT_ESCAPE_CODE_RESET}`,
         `${Monitor.STD_OUT_MONITOR_LAYER_MESSAGE_FORMATING[`${layer}`]}${text}${
           Monitor.STD_OUT_ESCAPE_CODE_RESET
-        }`
+        }`,
       );
     }
   }
@@ -89,7 +89,7 @@ export class Monitor {
         }]:${Monitor.STD_OUT_ESCAPE_CODE_RESET}`,
         `${Monitor.STD_OUT_MONITOR_LAYER_MESSAGE_FORMATING[`${layer}`]}${text}${
           Monitor.STD_OUT_ESCAPE_CODE_RESET
-        }`
+        }`,
       );
     }
   }

@@ -1,5 +1,5 @@
 // Packages
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose';
 
 const schema = new Schema({
   name: {
@@ -19,8 +19,8 @@ const schema = new Schema({
 
   role: {
     type: String,
-    default: "student",
+    default: 'student',
   },
 });
 
-export const UserModel = model("User", schema);
+export const UserModel = model('User', schema);

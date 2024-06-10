@@ -51,6 +51,17 @@ export const MESSAGE_HANDLER_PARAMETER_MISSING = (
 ) => `${parameter} for ${item} not provided`;
 
 /**
+ * Success message for a successful request.
+ * 
+ * @param {string} item Item successfully found or updated.
+ * @param {string} parameter Name of parameter searched.
+ */
+export const MESSAGE_HANDLER_UPDATE_SUCCESS = (
+  item: string,
+  parameter: string,
+) => `${item} by the ${parameter} successfully updated.`;
+
+/**
  * Error message thrown when an item is requested that doesn't exist.
  *
  * @param {string} item Item attempted to be found or updated.

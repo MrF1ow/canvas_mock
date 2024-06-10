@@ -58,8 +58,8 @@ export class Server {
           Server,
           `Server is running on port ${Environment.getPort()}`,
           Monitor.Layer.SUCCESS,
-        )
-      }
+        );
+      },
     );
   }
 
