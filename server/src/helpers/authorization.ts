@@ -3,7 +3,10 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // Local Imports
-import { MESSAGE_AUTHENTICATION_ERROR, MESSAGE_UNAUTHORIZED_ERROR } from '../config/messages';
+import {
+  MESSAGE_AUTHENTICATION_ERROR,
+  MESSAGE_UNAUTHORIZED_ERROR,
+} from '../config/messages';
 import { SALT_WORK_FACTOR, USER_ROLE } from '../config';
 import { Environment } from './environment';
 
@@ -14,7 +17,10 @@ import {
   ServerResponse,
   TokenData,
 } from '../types';
-import { PublicUser, User } from '@/types/tables';
+import {
+  PublicUser,
+  User,
+} from '../types/tables';
 import { Handler } from '../handlers/handler';
 
 /**
@@ -33,7 +39,7 @@ export const generateToken = (user: string): string => {
     {
       expiresIn: '24h',
     },
-  )
+  );
 };
 
 /**

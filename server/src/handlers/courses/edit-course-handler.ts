@@ -1,6 +1,13 @@
 // Local Imports
-import { MESSAGE_HANDLER_ITEM_NOT_FOUND, MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
+import {
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -10,7 +17,7 @@ import {
   ServerRequest,
   ServerResponse,
 } from '../../types';
-import { DatabaseColumnTypes } from '@/types/database';
+import { DatabaseColumnTypes } from '../../types/database';
 
 /**
  * Performs a partial update on the data for the Course.  Note that enrolled students and assignments cannot be modified via this endpoint.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course can update Course information.
@@ -120,7 +127,7 @@ export class EditCourseHandler extends Handler {
           error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
             'Course',
             'ID',
-            id
+            id,
           ),
         });
         return;

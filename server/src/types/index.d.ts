@@ -12,7 +12,7 @@ export interface ServerRequest extends Request {
    * User ID.
    */
   user?: string;
-};
+}
 
 /**
  * API response object.
@@ -55,7 +55,7 @@ export interface TokenData {
    * User ID.
    */
   sub: string;
-};
+}
 
 /**
  * Middleware function.

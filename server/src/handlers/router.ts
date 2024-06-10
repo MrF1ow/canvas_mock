@@ -79,25 +79,25 @@ export class Router {
       switch (handler.getMethod()) {
         case REQUEST_TYPE.POST:
           app.post(
-            handler.getPath(),
+            `${this._path}${handler.getPath()}`,
             ...middleware,
           );
           break;
         case REQUEST_TYPE.PATCH:
           app.patch(
-            handler.getPath(),
+            `${this._path}${handler.getPath()}`,
             ...middleware,
           );
           break;
         case REQUEST_TYPE.DELETE:
           app.delete(
-            handler.getPath(),
+            `${this._path}${handler.getPath()}`,
             ...middleware,
           );
           break;
         default:
           app.get(
-            handler.getPath(),
+            `${this._path}${handler.getPath()}`,
             ...middleware,
           );
           break;

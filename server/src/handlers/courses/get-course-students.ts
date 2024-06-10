@@ -4,8 +4,11 @@ import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_UNAUTHORIZED_ERROR,
 } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
-import { cleanUser } from '../../helpers/authorization';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -14,10 +17,7 @@ import {
   ServerRequest,
   ServerResponse,
 } from '../../types';
-import {
-  Enrolled,
-  User,
-} from '@/types/tables';
+import { Enrolled } from '../../types/tables';
 
 /**
  * Returns a list containing the User IDs of all students currently enrolled in the Course.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course can fetch the list of enrolled students.
@@ -83,12 +83,12 @@ export class GetCourseStudentsHandler extends Handler {
       }
 
       // Get enrolled students.
-      const enrolled = await Handler._database.enrolled.find({ courseId: id });
+      const enrollment = await Handler._database.enrolled.find({ courseId: id });
 
       // The documentation isn't clear if we're supposed to return Ids or objects,
       // The comments say just Ids, but the yaml specifies objects.
       res.status(200).send({
-        students: enrolled.map((enrolled: Enrolled) => enrolled.studentId),
+        students: enrollment.map((enrolled: Enrolled) => enrolled.studentId),
       });
       // const users = await Handler._database.users.find({
       //   _id: {
