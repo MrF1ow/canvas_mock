@@ -27,6 +27,16 @@ export class Environment {
     .substring(7);
 
   /**
+   * Whether to populate the database  with mock data.
+   *
+   * @default 'false'
+   * @returns {boolean} Whether to populate the database  with mock data.
+   */
+  static useMockData(): boolean {
+    return (`${process.env.USE_MOCK_DATA}`== 'true');
+  }
+
+  /**
    * Retrieves the port the server should run on.
    *
    * @default 3000

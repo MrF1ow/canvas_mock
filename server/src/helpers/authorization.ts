@@ -7,8 +7,12 @@ import {
   MESSAGE_AUTHENTICATION_ERROR,
   MESSAGE_UNAUTHORIZED_ERROR,
 } from '../config/messages';
-import { SALT_WORK_FACTOR, USER_ROLE } from '../config';
+import {
+  SALT_WORK_FACTOR,
+  USER_ROLE,
+} from '../config';
 import { Environment } from './environment';
+import { Handler } from '../handlers/handler';
 
 // Types
 import {
@@ -21,7 +25,6 @@ import {
   PublicUser,
   User,
 } from '../types/tables';
-import { Handler } from '../handlers/handler';
 
 /**
  * Generates and encrypts an authorization token.
