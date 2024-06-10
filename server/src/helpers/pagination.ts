@@ -1,6 +1,9 @@
-// packages
+// Local Imports
+import { AbstractDataAccessObject } from '../database/abstract-dao';
+import { PAGE_SIZE } from '../config';
 
-import { Model, Document } from 'mongoose';
+// Types
+import { QueryConditions } from '../types/database';
 
 /**
  * Paginates the results of a query on the given model.
@@ -12,12 +15,25 @@ import { Model, Document } from 'mongoose';
  * @returns {Promise<Array<T>>} The paginated documents.
  */
 export async function paginate<T>(
-  model: Model<T & Document>,
+  model: AbstractDataAccessObject<T>,
   page: number,
-  limit: number,
-  query: Object,
-): Promise<Array<T>> {
-  const skip = (page - 1) * limit;
-  const results = await model.find(query).skip(skip).limit(limit).exec();
-  return results;
+  query: QueryConditions,
+): Promise<any> {
+  const items = await model.find(
+    query,
+    {},
+    {},
+    (page - 1) * PAGE_SIZE,
+    PAGE_SIZE,
+  );
+
+  const count = await model.count(query);
+
+  return {
+    pageNumber: page,
+    totalPages: Math.ceil(count / PAGE_SIZE),
+    pageSize: PAGE_SIZE,
+    totalCount: count,
+    items,
+  };
 }
