@@ -37,9 +37,6 @@ export class GetAssignmentHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
-      // ADD CHECK FOR INSTRUCTOR ID with COURSE ID (make sure instructor is the instructor of the course)
-
-
       // Parse path parameters.
       const { id } = req.params || {};
 

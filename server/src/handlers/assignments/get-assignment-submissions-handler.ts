@@ -9,7 +9,6 @@ import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
 import { paginate } from '../../helpers/pagination';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
-import { SubmissionModel } from '@/database/mongo-database/models';
 
 // Types
 import { ServerRequest, ServerResponse } from '../../types';
@@ -81,22 +80,25 @@ export class GetAssignmentSubmissionsHandler extends Handler {
       const page = parseInt(req.query.page as string, 10) || 1;
 
       const submissions = await paginate(
-        SubmissionModel,
+        Handler._database.submissions,
         page,
-        10,
         {
-          assignmentId: id,
-        },
+        assignmentId: id,
+        }
       );
 
+      const { totalPages } = submissions;
 
-      // const submissions = await Handler._database.submissions.find({
-      //   assignmentId: id,
-      // });
+      const links = {
+        firstPage: '/assignments/:id/submissions?page=1',
+        lastPage: '/assignments/:id/submissions?page=' + totalPages,
+      }
 
       res.status(200).send({
-        submissions,
+        links,
+        ...submissions,
       });
+
     } catch (error) {
       Monitor.log(
         GetAssignmentSubmissionsHandler,

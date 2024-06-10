@@ -60,20 +60,6 @@ export class EditAssignmentHandler extends Handler {
         return;
       }
 
-      // Checking if rows changed instead of checking if assignment exists to avoid unnecessary query
-
-      // const assignment = await Handler._database.assignments.findOne({ id });
-      // if (!assignment) {
-      //   res.status(404).send({
-      //     error: MESSAGE_HANDLER_ITEM_NOT_FOUND(
-      //       'assignment',
-      //       'ID',
-      //       id,
-      //     ),
-      //   });
-      //   return;
-      // }
-
       const {
         courseId = undefined,
         title = undefined,
