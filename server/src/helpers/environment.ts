@@ -33,7 +33,7 @@ export class Environment {
    * @returns {boolean} Whether to populate the database  with mock data.
    */
   static useMockData(): boolean {
-    return (`${process.env.USE_MOCK_DATA}`== 'true');
+    return (`${process.env.USE_MOCK_DATA}` == 'true');
   }
 
   /**
