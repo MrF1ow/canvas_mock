@@ -106,7 +106,7 @@ export const requiresAuthorization = async (
   const token = authorizationHeader[0] === 'Bearer' ? authorizationHeader[1] : null;
 
   try {
-    const { sub } = decodeToken(token);
+    const { sub = '' } = decodeToken(token);
     req.user = sub;
 
     next();
@@ -131,7 +131,7 @@ export const requiresAdmin = async (
   const token = authorizationHeader[0] === 'Bearer' ? authorizationHeader[1] : null;
 
   try {
-    const { sub } = decodeToken(token);
+    const { sub = '' } = decodeToken(token);
     req.user = sub;
 
     const user = await Handler.getDatabase().users.findById(sub);
@@ -164,12 +164,12 @@ export const requiresInstructor = async (
   const token = authorizationHeader[0] === 'Bearer' ? authorizationHeader[1] : null;
 
   try {
-    const { sub } = decodeToken(token);
+    const { sub = '' } = decodeToken(token);
     req.user = sub;
 
     const user = await Handler.getDatabase().users.findById(sub);
 
-    if (user.role !== USER_ROLE.INSTRUCTOR) {
+    if (user.role !== USER_ROLE.INSTRUCTOR && user.role !== USER_ROLE.ADMIN) {
       res.status(403).send({
         error: MESSAGE_UNAUTHORIZED_ERROR,
       });
@@ -197,7 +197,7 @@ export const optionalAuthorization = async (
   const token = authorizationHeader[0] === 'Bearer' ? authorizationHeader[1] : null;
 
   try {
-    const { sub } = decodeToken(token);
+    const { sub = '' } = decodeToken(token);
     req.user = sub;
   } catch (error) {
     req.user = null;
