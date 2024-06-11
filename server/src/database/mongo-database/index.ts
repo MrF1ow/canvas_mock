@@ -35,6 +35,7 @@ export class MongoDatabase extends AbstractDatabase {
     this.enrolled = new EnrolledDataAccessObject();
     this.submissions = new SubmissionDataAccessObject();
     this.users = new UserDataAccessObject();
+    this.mongoClient = null;
   }
 
   /**
@@ -47,22 +48,24 @@ export class MongoDatabase extends AbstractDatabase {
 
     const authorizedUrl = Environment.getDatabaseUrl()
       .replace("<user>", Environment.getDatabaseUser())
-      .replace("<password>", Environment.getDatabasePassword());
+      .replace("<password>", Environment.getDatabasePassword())
+      .replace("<host>", Environment.getDatabaseHost())
+      .replace("<port>", `${Environment.getDatabasePort()}`)
 
-    // utilizing mongoose to connect to the database, no need for Express.js or external server
-    await connect(authorizedUrl);
+      console.log(`== URL: ${authorizedUrl}`);
 
-    console.log(authorizedUrl);
 
-    // setup GridFS for file storage
-    // const client = mongoose.connection.getClient() as unknown as MongoClient;
-    // await setupGridFs(client);
+    this.mongoClient = await MongoClient.connect(authorizedUrl);
 
     Monitor.log(
       MongoDatabase,
       MESSAGE_DATABASE_CONNECTION_SUCCESS,
       Monitor.Layer.UPDATE
     );
+  }
+
+  client(): MongoClient {
+    return mongoose.connection.getClient() as unknown as MongoClient;
   }
 
   /**

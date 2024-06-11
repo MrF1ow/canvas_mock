@@ -63,7 +63,8 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
 
       req.file.originalname = encryptedFileName + "." + extension;
 
-      const client = mongoose.connection.getClient() as unknown as MongoClient;
+      // upload the submission to the database
+      const client = Handler._database.mongoClient as MongoClient;
       await uploadSubmission(client, req.file);
 
       // clear the buffer after uploading
