@@ -4,8 +4,6 @@ import {
   Response,
 } from 'express';
 
-import multer from "multer"
-
 /**
  * API request object.
  */
@@ -63,8 +61,8 @@ export interface TokenData {
  * Middleware function.
  *
  */
-export type Middleware = multer.Multer | ((
+export type Middleware = (
   req?: ServerRequest,
   res?: ServerResponse,
   next?: Middleware,
-) => Promise<void> | void);
+) => Promise<void> | void;
