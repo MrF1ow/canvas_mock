@@ -1,5 +1,6 @@
 // Packages
 import mongoose, { connect, connection } from "mongoose";
+import { MongoClient } from "mongodb";
 
 // Local Imports
 import {
@@ -49,12 +50,13 @@ export class MongoDatabase extends AbstractDatabase {
       .replace("<password>", Environment.getDatabasePassword());
 
     // utilizing mongoose to connect to the database, no need for Express.js or external server
-    const database = await connect(authorizedUrl);
+    await connect(authorizedUrl);
 
-    // set up GridFs for the database
-    if (this.isConnected()) {
-      await setupGridFs(database.connection);
-    }
+    console.log(authorizedUrl);
+
+    // setup GridFS for file storage
+    // const client = mongoose.connection.getClient() as unknown as MongoClient;
+    // await setupGridFs(client);
 
     Monitor.log(
       MongoDatabase,

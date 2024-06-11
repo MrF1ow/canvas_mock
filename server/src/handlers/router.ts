@@ -20,7 +20,6 @@ import { Handler } from './handler';
 
 // Types
 import { Middleware } from '../types';
-import multer from 'multer';
 
 /**
  * Wrapper around express router.
