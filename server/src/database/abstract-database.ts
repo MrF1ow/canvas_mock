@@ -12,6 +12,7 @@ import {
 } from '../types/tables';
 import { DataAccessObjectInterface } from '../types/database';
 import UsedAbstractDatabaseError from '../errors/used-abstract-database-error';
+import { AnyBulkWriteOperation } from 'mongoose';
 
 /**
  * Abstract Database interface, only implement inherited classes.
@@ -20,17 +21,20 @@ export class AbstractDatabase {
   /**
    * Data access object for Assignments.
    */
-  assignments: DataAccessObjectInterface<Assignment> = new AbstractDataAccessObject<Assignment>();
+  assignments: DataAccessObjectInterface<Assignment> =
+    new AbstractDataAccessObject<Assignment>();
 
   /**
    * Data access object for Courses.
    */
-  courses: DataAccessObjectInterface<Course> = new AbstractDataAccessObject<Course>();
+  courses: DataAccessObjectInterface<Course> =
+    new AbstractDataAccessObject<Course>();
 
   /**
    * Data access object for Submissions.
    */
-  submissions: DataAccessObjectInterface<Submission> = new AbstractDataAccessObject<Submission>();
+  submissions: DataAccessObjectInterface<Submission> =
+    new AbstractDataAccessObject<Submission>();
 
   /**
    * Data access object for Users.
@@ -40,7 +44,13 @@ export class AbstractDatabase {
   /**
    * Data access object for Enrolleds.
    */
-  enrolled: DataAccessObjectInterface<Enrolled> = new AbstractDataAccessObject<Enrolled>();
+  enrolled: DataAccessObjectInterface<Enrolled> =
+    new AbstractDataAccessObject<Enrolled>();
+
+  /**
+   * Mongo client.
+   */
+  mongoClient: any;
 
   /**
    * Connects to database.

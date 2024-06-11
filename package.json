@@ -4,7 +4,13 @@
   "description": "Tarpaulin Server",
   "main": "/server/src/index.ts",
   "scripts": {
-    "docker": "docker-compose up"
+    "docker": "docker-compose --env-file .env up",
+    "docker:exec": "docker exec -it mongo-server /bin/bash",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart",
+    "docker:stop": "docker-compose stop",
+    "mongo-shell": "mongosh --username root --password helloworld1208 --authenticationDatabase admin"
   },
   "author": "",
   "license": "ISC"

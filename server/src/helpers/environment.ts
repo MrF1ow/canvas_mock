@@ -52,8 +52,29 @@ export class Environment {
    * @default 3000
    * @returns {number} Server port.
    */
-  static getPort(): number {
-    return (parseInt(process.env.PORT, 10) as number) || 3000;
+  static getServerPort(): number {
+    return (parseInt(process.env.SERVER_PORT, 10) as number) || 3000;
+  }
+
+  /**
+   * Retrieves the port the database should run on.
+   *
+   * @default 27017
+   * @returns {number} Database port.
+   */
+  static getDatabasePort(): number {
+    return (parseInt(process.env.DATABASE_PORT, 10) as number) || 27017;
+  }
+
+
+  /**
+   * Retrieves the host the server should run on.
+   *
+   * @default 'localhost'
+   * @returns {string} Server host.
+   */
+  static getDatabaseHost(): string {
+    return (process.env.DATABASE_HOST as string) || 'localhost';
   }
 
   /**
@@ -73,7 +94,7 @@ export class Environment {
    * @returns {string} Password for connecting with database if needed.
    */
   static getDatabasePassword(): string {
-    return (process.env.DATABASE_PASSWORD as string) || '';
+    return (process.env.MONGO_INITDB_ROOT_PASSWORD as string) || '';
   }
 
   /**
@@ -93,7 +114,7 @@ export class Environment {
    * @returns {string} Username for connecting with database if needed.
    */
   static getDatabaseUser(): string {
-    return (process.env.DATABASE_USER as string) || 'server';
+    return (process.env.MONGO_INITDB_ROOT_USERNAME as string) || 'server';
   }
 
   /**

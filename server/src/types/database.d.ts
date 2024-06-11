@@ -2,6 +2,8 @@
  * Types intended for using MongoDB, a NoSQL database.
  */
 
+import { ServerRequest } from '.';
+
 /**
  * Single database row.
  */

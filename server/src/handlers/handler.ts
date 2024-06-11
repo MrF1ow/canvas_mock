@@ -37,8 +37,13 @@ export class Handler {
   protected _authorization: RequestAuthorization;
 
   /**
+   * Whether this handler requires a file upload.
+   */
+  protected _upload: boolean;
+
+  /**
    * Instantiates a new handler.
-   * 
+   *
    * @param {RequestType} method Request type.
    * @param {string} path Request path.
    * @param {RequestAuthorization} authorization Authorization type for this endpoint.
@@ -47,6 +52,7 @@ export class Handler {
     method: RequestType,
     path: string,
     authorization: RequestAuthorization = AUTHORIZATION_TYPE.NONE,
+    upload = false,
   ) {
     if (!Handler._database) {
       Handler._database = getDatabase();
@@ -57,6 +63,7 @@ export class Handler {
     this._method = method;
     this._path = path;
     this._authorization = authorization;
+    this._upload = upload;
   }
 
   /**
@@ -65,11 +72,7 @@ export class Handler {
    * @param {ServerRequest} req Incoming request.
    * @param {ServerResponse} res Outgoing response.
    */
-  async execute(
-    req: ServerRequest,
-    res: ServerResponse,
-  ): Promise<void> {
-  }
+  async execute(req: ServerRequest, res: ServerResponse): Promise<void> {}
 
   /**
    * Connects to the database.
@@ -111,6 +114,13 @@ export class Handler {
    */
   getAuthorization(): RequestAuthorization {
     return this._authorization;
+  }
+
+  /**
+   * Whether this endpoint requires file upload.
+   */
+  getUpload(): boolean {
+    return this._upload;
   }
 
   /**
