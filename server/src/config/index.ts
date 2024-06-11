@@ -55,7 +55,7 @@ export const USER_ROLE = {
 /**
  * Developmental URL.
  */
-export const DEVELOPMENT_URL = `http://localhost:${Environment.getPort()}`;
+export const DEVELOPMENT_URL = `http://localhost:${Environment.getServerPort()}`;
 
 /**
  * Production URL.

@@ -39,7 +39,6 @@ export class GetAssignmentHandler extends Handler {
     try {
       // Parse path parameters.
       const { id } = req.params || {};
-
       if (!id) {
         res.status(404).send({
           error: MESSAGE_HANDLER_PARAMETER_MISSING(

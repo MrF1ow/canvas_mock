@@ -59,6 +59,7 @@ export interface TokenData {
 
 /**
  * Middleware function.
+ *
  */
 export type Middleware = (
   req?: ServerRequest,

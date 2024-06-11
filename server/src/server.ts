@@ -52,11 +52,11 @@ export class Server {
     UserRoutes.apply(Server._app);
 
     Server._app.listen(
-      Environment.getPort(),
+      Environment.getServerPort(),
       () => {
         Monitor.log(
           Server,
-          `Server is running on port ${Environment.getPort()}`,
+          `Server is running on port ${Environment.getServerPort()}`,
           Monitor.Layer.SUCCESS,
         );
       },
