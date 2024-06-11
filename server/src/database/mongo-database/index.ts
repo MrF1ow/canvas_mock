@@ -1,5 +1,5 @@
 // Packages
-import mongoose, { connect, connection } from 'mongoose';
+import mongoose from 'mongoose';
 import { MongoClient } from 'mongodb';
 
 // Local Imports
@@ -25,6 +25,11 @@ mongoose.connection.setMaxListeners(20);
  */
 export class MongoDatabase extends AbstractDatabase {
   /**
+   * Reference to MongoClient.
+   */
+  protected _client: MongoClient | null;
+ 
+  /**
    * Instantiates MongoDatabase with correct queries.
    */
   constructor() {
@@ -35,7 +40,8 @@ export class MongoDatabase extends AbstractDatabase {
     this.enrolled = new EnrolledDataAccessObject();
     this.submissions = new SubmissionDataAccessObject();
     this.users = new UserDataAccessObject();
-    this.mongoClient = null;
+
+    this._client = null;
   }
 
   /**
@@ -52,28 +58,9 @@ export class MongoDatabase extends AbstractDatabase {
       .replace('<host>', Environment.getDatabaseHost())
       .replace('<port>', `${Environment.getDatabasePort()}`);
 
+    this._client = await MongoClient.connect(authorizedUrl);
 
-    this.mongoClient = await MongoClient.connect(authorizedUrl);
-
-    Monitor.log(
-      MongoDatabase,
-      `Connecting to ${authorizedUrl}`,
-      Monitor.Layer.UPDATE,
-    );
-
-    // utilizing mongoose to connect to the database, no need for Express.js or external server
-    // await connect(
-    //   authorizedUrl,
-    //   {
-    //     auth: {
-    //       username: Environment.getDatabaseUser(),
-    //       password: Environment.getDatabasePassword(),
-    //     },
-    //     dbName: 'business_db',
-    //   }
-    // );
-
-    if (this.isConnected()) {
+    if (this.isConnected) {
       Monitor.log(
         MongoDatabase,
         MESSAGE_DATABASE_CONNECTION_SUCCESS,
@@ -82,14 +69,19 @@ export class MongoDatabase extends AbstractDatabase {
     } else {
       Monitor.log(
         MongoDatabase,
-        'Couldn\'t Connect',
-        Monitor.Layer.WARNING,
+        'Failure to connect.',
+        Monitor.Layer.UPDATE,
       );
     }
   }
 
-  client(): MongoClient {
-    return mongoose.connection.getClient() as unknown as MongoClient;
+  /**
+   * Retrieves MongoClient object.
+   *
+   * @returns {MongoClient | null} MongoClient object.
+   */
+  client(): MongoClient | null {
+    return this._client;
   }
 
   /**
@@ -98,8 +90,8 @@ export class MongoDatabase extends AbstractDatabase {
    * @returns {boolean} Whether the class is connected to the database.
    */
   isConnected(): boolean {
-    return connection && 'readyState' in connection
-      ? connection.readyState === 1
+    return mongoose.connection && 'readyState' in mongoose.connection
+      ? mongoose.connection.readyState === 1
       : false;
   }
 }

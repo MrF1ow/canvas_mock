@@ -11,7 +11,11 @@ import {
 } from '../../types';
 
 /**
- * Returns information about the specified User.  If the User has the 'instructor' role, the response should include a list of the IDs of the Courses the User teaches (i.e. Courses whose `instructorId` field matches the ID of this User).  If the User has the 'student' role, the response should include a list of the IDs of the Courses the User is enrolled in.  Only an authenticated User whose ID matches the ID of the requested User can fetch this information.
+ * Returns information about the specified User.  If the User has the 'instructor' role, the response 
+ * should include a list of the IDs of the Courses the User teaches (i.e. Courses whose `instructorId` 
+ * field matches the ID of this User).  If the User has the 'student' role, the response should include 
+ * a list of the IDs of the Courses the User is enrolled in.  Only an authenticated User whose ID matches 
+ * the ID of the requested User can fetch this information.
  */
 export class GetUserHandler extends Handler {
   /**
@@ -35,6 +39,9 @@ export class GetUserHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+
+
     } catch (error) {
       Monitor.log(
         GetUserHandler,
