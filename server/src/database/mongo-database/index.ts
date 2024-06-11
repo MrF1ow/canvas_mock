@@ -1,5 +1,5 @@
 // Packages
-import mongoose, { connect, connection } from 'mongoose';
+import mongoose from 'mongoose';
 import { MongoClient } from 'mongodb';
 
 // Local Imports
@@ -55,11 +55,19 @@ export class MongoDatabase extends AbstractDatabase {
 
     this.mongoClient = await MongoClient.connect(authorizedUrl);
 
-    Monitor.log(
-      MongoDatabase,
-      MESSAGE_DATABASE_CONNECTION_SUCCESS,
-      Monitor.Layer.UPDATE,
-    );
+    if (this.isConnected) {
+      Monitor.log(
+        MongoDatabase,
+        MESSAGE_DATABASE_CONNECTION_SUCCESS,
+        Monitor.Layer.UPDATE,
+      );
+    } else {
+      Monitor.log(
+        MongoDatabase,
+        'Failure to connect.',
+        Monitor.Layer.UPDATE,
+      );
+    }
   }
 
   client(): MongoClient {
@@ -72,8 +80,8 @@ export class MongoDatabase extends AbstractDatabase {
    * @returns {boolean} Whether the class is connected to the database.
    */
   isConnected(): boolean {
-    return connection && 'readyState' in connection
-      ? connection.readyState === 1
+    return mongoose.connection && 'readyState' in mongoose.connection
+      ? mongoose.connection.readyState === 1
       : false;
   }
 }
