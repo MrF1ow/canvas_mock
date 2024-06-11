@@ -3,6 +3,7 @@
   "scripts": {
     "build": "tsc --build",
     "start": "nodemon --config nodemon.json src/index.ts",
+    "mock-data": "nodemon --config nodemon.json src/utils/mock-data.ts",
     "docker": "docker compose up -d",
     "clean": "rimraf ./dist && rimraf src/minecraft/libraries && rimraf src/minecraft/logs && rimraf src/minecraft/versions && rimraf src/minecraft/world && rimraf src/minecraft/banned-ips.json && rimraf src/minecraft/banned-players.json && rimraf src/minecraft/eula.txt && rimraf src/minecraft/ops.json && rimraf src/minecraft/server.properties && rimraf src/minecraft/usercache.json && rimraf src/minecraft/whitelist.json",
     "test": "jest --colors",
