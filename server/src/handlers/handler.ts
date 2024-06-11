@@ -1,7 +1,7 @@
 // Local Imports
-import { AbstractDatabase } from "../database/abstract-database";
-import { getDatabase } from "../database";
-import { Monitor } from "../helpers/monitor";
+import { AbstractDatabase } from '../database/abstract-database';
+import { getDatabase } from '../database';
+import { Monitor } from '../helpers/monitor';
 
 // Types
 import {
@@ -9,8 +9,8 @@ import {
   RequestType,
   ServerRequest,
   ServerResponse,
-} from "../types";
-import { AUTHORIZATION_TYPE } from "../config";
+} from '../types';
+import { AUTHORIZATION_TYPE } from '../config';
 
 /**
  * Abstract handler class.
@@ -52,7 +52,7 @@ export class Handler {
     method: RequestType,
     path: string,
     authorization: RequestAuthorization = AUTHORIZATION_TYPE.NONE,
-    upload = false
+    upload = false,
   ) {
     if (!Handler._database) {
       Handler._database = getDatabase();
@@ -86,7 +86,7 @@ export class Handler {
       Monitor.trace(
         Handler,
         `Failed to connect to database: ${error}`,
-        Monitor.Layer.WARNING
+        Monitor.Layer.WARNING,
       );
     }
   }

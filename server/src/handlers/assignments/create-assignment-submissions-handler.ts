@@ -51,9 +51,9 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       }
 
       // ADD CODE TO ACCEPT MULTIPART FORM DATA
-      if (!req.file){
+      if (!req.file) {
         res.status(400).send({
-          error: "No file uploaded",
+          error: 'No file uploaded',
         });
         return;
       }
@@ -61,7 +61,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       const encryptedFileName = encryptName(req.file.originalname);
       const extension = fileTypes[req.file.mimetype];
 
-      req.file.originalname = encryptedFileName + "." + extension;
+      req.file.originalname = encryptedFileName + '.' + extension;
 
       // upload the submission to the database
       const client = Handler._database.mongoClient as MongoClient;
@@ -71,7 +71,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       req.file.buffer = null;
 
       res.status(200).send({
-        message: "Submission uploaded successfully"
+        message: 'Submission uploaded successfully',
       });
 
     } catch (error) {
