@@ -11,6 +11,7 @@ import {
   requiresAuthorization,
   requiresInstructor,
 } from '../helpers/authorization';
+import { upload } from '../helpers/grid';
 import {
   AUTHORIZATION_TYPE,
   REQUEST_TYPE,
@@ -19,6 +20,7 @@ import { Handler } from './handler';
 
 // Types
 import { Middleware } from '../types';
+import multer from 'multer';
 
 /**
  * Wrapper around express router.
@@ -51,7 +53,7 @@ export class Router {
 
   /**
    * Initializes all routes.
-   * 
+   *
    * @returns {void}
    */
   _initialize(): void {
@@ -60,7 +62,7 @@ export class Router {
   /**
    * Apply various routes to application.
    *
-   * @param {Application} app Express application. 
+   * @param {Application} app Express application.
    * @returns {void}
    */
   apply(app: Application): void {
@@ -68,6 +70,10 @@ export class Router {
       const handler = this._routes[i];
 
       const middleware = [ handler.execute ] as Middleware[];
+
+      if (handler.getUpload() == true){
+        middleware.unshift(upload)
+      }
 
       if (handler.getAuthorization() === AUTHORIZATION_TYPE.REQUIRED) {
         middleware.unshift(requiresAuthorization);
