@@ -78,17 +78,6 @@ export class Handler {
    * Connects to the database.
    */
   async _connectDatabase(): Promise<void> {
-    try {
-      if (!Handler._database.isConnected()) {
-        await Handler._database.connect();
-      }
-    } catch (error) {
-      Monitor.trace(
-        Handler,
-        `Failed to connect to database: ${error}`,
-        Monitor.Layer.WARNING,
-      );
-    }
   }
 
   /**

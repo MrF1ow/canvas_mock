@@ -25,6 +25,11 @@ mongoose.connection.setMaxListeners(20);
  */
 export class MongoDatabase extends AbstractDatabase {
   /**
+   * Reference to MongoClient.
+   */
+  protected _client: MongoClient | null;
+ 
+  /**
    * Instantiates MongoDatabase with correct queries.
    */
   constructor() {
@@ -35,7 +40,8 @@ export class MongoDatabase extends AbstractDatabase {
     this.enrolled = new EnrolledDataAccessObject();
     this.submissions = new SubmissionDataAccessObject();
     this.users = new UserDataAccessObject();
-    this.mongoClient = null;
+
+    this._client = null;
   }
 
   /**
@@ -52,8 +58,7 @@ export class MongoDatabase extends AbstractDatabase {
       .replace('<host>', Environment.getDatabaseHost())
       .replace('<port>', `${Environment.getDatabasePort()}`);
 
-
-    this.mongoClient = await MongoClient.connect(authorizedUrl);
+    this._client = await MongoClient.connect(authorizedUrl);
 
     if (this.isConnected) {
       Monitor.log(
@@ -70,8 +75,13 @@ export class MongoDatabase extends AbstractDatabase {
     }
   }
 
-  client(): MongoClient {
-    return mongoose.connection.getClient() as unknown as MongoClient;
+  /**
+   * Retrieves MongoClient object.
+   *
+   * @returns {MongoClient | null} MongoClient object.
+   */
+  client(): MongoClient | null {
+    return this._client;
   }
 
   /**
