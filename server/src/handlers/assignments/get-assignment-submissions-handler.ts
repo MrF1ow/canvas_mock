@@ -83,8 +83,8 @@ export class GetAssignmentSubmissionsHandler extends Handler {
         Handler._database.submissions,
         page,
         {
-        assignmentId: id,
-        }
+          assignmentId: id,
+        },
       );
 
       const { totalPages } = submissions;
@@ -92,7 +92,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
       const links = {
         firstPage: '/assignments/:id/submissions?page=1',
         lastPage: '/assignments/:id/submissions?page=' + totalPages,
-      }
+      };
 
       res.status(200).send({
         links,
