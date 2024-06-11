@@ -55,14 +55,37 @@ export class MongoDatabase extends AbstractDatabase {
         Environment.getDatabasePassword(),
       );
 
-    // utilizing mongoose to connect to the database, no need for Express.js or external server
-    await connect(authorizedUrl);
-
     Monitor.log(
       MongoDatabase,
-      MESSAGE_DATABASE_CONNECTION_SUCCESS,
+      `Connecting to ${authorizedUrl}`,
       Monitor.Layer.UPDATE,
     );
+
+    // utilizing mongoose to connect to the database, no need for Express.js or external server
+    await connect(
+      authorizedUrl,
+      {
+        auth: {
+          username: Environment.getDatabaseUser(),
+          password: Environment.getDatabasePassword(),
+        },
+        dbName: 'business_db',
+      }
+    );
+
+    if (this.isConnected()) {
+      Monitor.log(
+        MongoDatabase,
+        MESSAGE_DATABASE_CONNECTION_SUCCESS,
+        Monitor.Layer.UPDATE,
+      );
+    } else {
+      Monitor.log(
+        MongoDatabase,
+        'Couldn\'t Connect',
+        Monitor.Layer.WARNING,
+      );
+    }
   }
 
   /**
