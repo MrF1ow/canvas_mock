@@ -6,7 +6,8 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "import"
+    "import",
+    "modules-newline"
   ],
   "extends": [
     "eslint:recommended",
@@ -17,6 +18,8 @@
     "@typescript-eslint/no-unused-vars": "off",
     "no-empty": "off",
     "@typescript-eslint/no-redeclare": "off",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "modules-newline/import-declaration-newline": "warn",
+    "modules-newline/export-declaration-newline": "warn"
   }
 }
