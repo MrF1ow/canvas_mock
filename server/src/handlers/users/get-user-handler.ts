@@ -35,6 +35,9 @@ export class GetUserHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+        
+
     } catch (error) {
       Monitor.log(
         GetUserHandler,
