@@ -21,7 +21,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/:id/submissions',
-      AUTHORIZATION_TYPE.STUDENT,
+      AUTHORIZATION_TYPE.NONE,
       true,
     );
   }
