@@ -12,6 +12,7 @@ import {
   QueryConditions,
 } from '../types/database';
 import {
+  Assignment,
   Course,
   User,
 } from '../types/tables';
@@ -19,11 +20,12 @@ import { Dictionary } from '../types';
 
 const STUDENTS_PER_COURSE = 10;
 const COURSES_PER_STUDENT = 4;
+const ASSIGNMENTS_PER_COURSE = 10;
 
 /**
  * Runs the stuff
  */
-const main = async () => {
+export const main = async () => {
   const database = getDatabase();
 
   await database.connect();
@@ -37,16 +39,50 @@ const main = async () => {
  * Populates the database with mock data.
  */
 export const populateDatabase = async (database: AbstractDatabase): Promise<void> => {
+  console.log('- Deleting old entries');
+
+  await deleteAll(database);
+
   console.log('- Populating Database');
+
   const courses = await populateCourses(database);
   const users = await populateUsers(database);
 
-  const enrollments = await populateEnrolled(
+  await populateEnrolled(
     database,
     courses,
     users,
   );
+
+  await populateAssignments(
+    database,
+    courses,
+  );
 };
+
+/**
+ * Delete everything.
+ */
+export const deleteAll = async (database: AbstractDatabase): Promise<void> => {
+  const promises = [];
+
+  promises.push(database.assignments.delete({}));
+  promises.push(database.courses.delete({}));
+  promises.push(database.submissions.delete({}));
+  promises.push(database.users.delete({}));
+  promises.push(database.enrolled.delete({}));
+
+  await Promise.all(promises);
+
+  const total = await promises.reduce(async (
+    prev: number,
+    curr: Promise<number>,
+  ) => {
+    return prev + await curr;
+  }, 0);
+
+  console.log(` - All ${total} items deleted`);
+}
 
 /**
  * Populates database courses.
@@ -229,12 +265,31 @@ export const populateEnrolled = async (
  */
 export const populateAssignments = async (
   database: AbstractDatabase,
-  enrolled: Dictionary<string[]> = {}, 
-): Promise<string[]> => {
-  const assignments = [];
+  courses: string[],
+): Promise<Dictionary<string[]>> => {
+  const assignments = {};
   
   try {
+    const promises = [];
 
+    console.log(` - Creating ${ASSIGNMENTS_PER_COURSE} for ${courses.length} courses each`);
+
+    for (let i = 0; i < courses.length; i += 1) {
+      const course = courses[i];
+
+      for (let j = 0; j < ASSIGNMENTS_PER_COURSE; j += 1) {
+        const assignment = {
+          courseId: course,
+          title: `Assignment ${j + 1}`,
+          points: 100,
+          due: new Date(),
+        } as Assignment;
+
+        promises.push(database.assignments.insert(assignment));
+      }
+    }
+
+    await Promise.all(promises);
   } catch (error) {
     console.log(error);
   }
@@ -249,7 +304,7 @@ export const populateSubmissions = async (database: AbstractDatabase): Promise<s
   const submissions = [];
   
   try {
-
+    console.log(` - I'm just not going to populate submissions. :)`);
   } catch (error) {
     console.log(error);
   }
@@ -323,5 +378,3 @@ export const createAdmin = (): User => {
     role: 'admin',
   };
 }
-
-main();

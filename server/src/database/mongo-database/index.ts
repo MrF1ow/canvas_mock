@@ -52,12 +52,9 @@ export class MongoDatabase extends AbstractDatabase {
       .replace('<host>', Environment.getDatabaseHost())
       .replace('<port>', `${Environment.getDatabasePort()}`);
 
-<<<<<<< HEAD
-=======
 
     this.mongoClient = await MongoClient.connect(authorizedUrl);
 
->>>>>>> main
     Monitor.log(
       MongoDatabase,
       `Connecting to ${authorizedUrl}`,
@@ -65,16 +62,16 @@ export class MongoDatabase extends AbstractDatabase {
     );
 
     // utilizing mongoose to connect to the database, no need for Express.js or external server
-    await connect(
-      authorizedUrl,
-      {
-        auth: {
-          username: Environment.getDatabaseUser(),
-          password: Environment.getDatabasePassword(),
-        },
-        dbName: 'business_db',
-      }
-    );
+    // await connect(
+    //   authorizedUrl,
+    //   {
+    //     auth: {
+    //       username: Environment.getDatabaseUser(),
+    //       password: Environment.getDatabasePassword(),
+    //     },
+    //     dbName: 'business_db',
+    //   }
+    // );
 
     if (this.isConnected()) {
       Monitor.log(

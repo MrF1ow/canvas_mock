@@ -8,9 +8,10 @@ import {
   SubmissionRoutes,
   UserRoutes,
 } from './handlers';
-import { getDatabase } from './database';
 import { AbstractDatabase } from './database/abstract-database';
+import { populateDatabase } from './utils/mock-data';
 import { Environment } from './helpers/environment';
+import { getDatabase } from './database';
 import { Monitor } from './helpers/monitor';
 
 /**
@@ -50,6 +51,10 @@ export class Server {
     CourseRoutes.apply(Server._app);
     SubmissionRoutes.apply(Server._app);
     UserRoutes.apply(Server._app);
+
+    if (Environment.useMockData()) {
+      await populateDatabase(Server._database);
+    }
 
     Server._app.listen(
       Environment.getServerPort(),
