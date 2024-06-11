@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 // Local Imports
-import { AbstractDataAccessObject } from "./abstract-dao";
+import { AbstractDataAccessObject } from './abstract-dao';
 
 // Types
 import {
@@ -9,10 +9,10 @@ import {
   Enrolled,
   Submission,
   User,
-} from "../types/tables";
-import { DataAccessObjectInterface } from "../types/database";
-import UsedAbstractDatabaseError from "../errors/used-abstract-database-error";
-import { AnyBulkWriteOperation } from "mongoose";
+} from '../types/tables';
+import { DataAccessObjectInterface } from '../types/database';
+import UsedAbstractDatabaseError from '../errors/used-abstract-database-error';
+import { AnyBulkWriteOperation } from 'mongoose';
 
 /**
  * Abstract Database interface, only implement inherited classes.

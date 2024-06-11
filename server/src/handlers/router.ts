@@ -70,8 +70,8 @@ export class Router {
 
       const middleware = [ handler.execute ] as Middleware[];
 
-      if (handler.getUpload() == true){
-        middleware.unshift(upload.single('file'))
+      if (handler.getUpload() == true) {
+        middleware.unshift(upload.single('file'));
       }
 
       if (handler.getAuthorization() === AUTHORIZATION_TYPE.REQUIRED) {

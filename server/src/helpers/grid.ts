@@ -1,17 +1,17 @@
-require("dotenv").config();
+require('dotenv').config();
 
 // Packages
-import multer from "multer";
-import crypto from "node:crypto";
+import multer from 'multer';
+import crypto from 'node:crypto';
 import { Readable } from 'stream';
-import { MongoClient, GridFSBucket } from "mongodb";
+import { MongoClient, GridFSBucket } from 'mongodb';
 
 export const fileTypes = {
   'image/png': 'png',
   'image/jpeg': 'jpeg',
   'image/jpg': 'jpg',
   'application/pdf': 'pdf',
-}
+};
 
 /**
  * Set up GridFs for the specified database.
@@ -22,11 +22,11 @@ export const fileTypes = {
 export const setupGridFs = async (client: MongoClient): Promise<void> => {
   try {
     const db = client.db(process.env.DATABASE_NAME);
-    db.createCollection("uploads");
+    db.createCollection('uploads');
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 /**
  * Encrypt the name of the file.
@@ -47,7 +47,7 @@ export const upload = multer({
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
     cb(null, !!fileTypes[file.mimetype]);
-  }
+  },
 });
 
 /**
@@ -60,7 +60,7 @@ export const upload = multer({
 export const uploadSubmission = (client: MongoClient, file: Express.Multer.File): Promise<void> => {
   return new Promise((resolve, reject) => {
     const db = client.db(process.env.DATABASE_NAME);
-    const bucket = new GridFSBucket(db, { bucketName: "uploads" });
+    const bucket = new GridFSBucket(db, { bucketName: 'uploads' });
 
     // create a readable stream from the file buffer
     const readableStream = new Readable();
@@ -70,7 +70,7 @@ export const uploadSubmission = (client: MongoClient, file: Express.Multer.File)
     // create an upload stream to GridFS
     const uploadStream = bucket.openUploadStream(file.originalname, {
       contentType: file.mimetype,
-      metadata: { uploadedAt: new Date() }
+      metadata: { uploadedAt: new Date() },
     });
 
     // pipe the file buffer to the GridFS upload stream
