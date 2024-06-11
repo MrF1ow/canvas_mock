@@ -1,8 +1,9 @@
 // Local Imports
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
+import { hashPassword, generateToken } from '../../helpers/authorization';
 
 // Types
 import {
@@ -11,7 +12,8 @@ import {
 } from '../../types';
 
 /**
- * Create and store a new application User with specified data and adds it to the application's database.  Only an authenticated User with 'admin' role can create users with the 'admin' or 'instructor' roles.
+ * Create and store a new application User with specified data and adds it to the application's database.  
+ * Only an authenticated User with 'admin' role can create users with the 'admin' or 'instructor' roles.
  */
 export class RegisterHandler extends Handler {
   /**
@@ -21,6 +23,7 @@ export class RegisterHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/',
+      AUTHORIZATION_TYPE.OPTIONAL,
     );
   }
 
@@ -35,6 +38,55 @@ export class RegisterHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+      const { name, email, password, role } = req.body;
+
+      if (!name || !email || !password || !role) {
+        res.status(400).send({
+          error: 'Missing required fields: name, email, password, and role are required.',
+        });
+      }
+
+      const validRoles = ['admin', 'instructor', 'student']; 
+      if (role && !validRoles.includes(role)) {
+        res.status(400).send({
+          error: `Invalid role. Valid roles are: ${validRoles.join(', ')}.`,
+        });
+      }
+
+      const creatorId = req.user ?? null;
+      let creatorRole : string | null = null;
+      if (creatorId) {
+        const creator = await Handler.getDatabase().users.findById(creatorId);
+        creatorRole = creator.role;
+      }
+      
+      if (role && ['admin', 'instructor'].includes(role) && creatorRole !== 'admin') {
+        res.status(403).send({
+          error: 'Only admins can create admin or instructor roles.',
+        });
+      }
+
+      const hashedPassword = await hashPassword(password);
+
+      await Handler._database.users.insert({
+        name,
+        email,
+        password: hashedPassword,
+        role,
+      });
+
+      const user = await Handler._database.users.findOne({ 
+        email,
+        name, 
+      });
+
+      res.status(200).send({
+        id: user._id,
+      });
+
+
+
     } catch (error) {
       Monitor.log(
         RegisterHandler,
