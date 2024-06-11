@@ -35,6 +35,22 @@ export class GetSubmissionMediaHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+      const { id } = req.params;
+
+      const submission = await Handler._database.submissions.findOne({ _id: id });
+      if (!submission) {
+        res.status(404).send({
+          error: 'Specified Submission `id` not found',
+        });
+        return;
+      }
+
+      // const fileBuffer = Buffer.from(submission.file, 'binary');
+      // res.write(fileBuffer);
+      // res.end();
+
+
     } catch (error) {
       Monitor.log(
         GetSubmissionMediaHandler,
