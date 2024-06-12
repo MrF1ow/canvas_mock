@@ -1,5 +1,5 @@
 // Types
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '@/config/messages';
+import { MESSAGE_INTERNAL_SERVER_ERROR } from '../config/messages';
 import { Monitor } from './monitor';
 
 // Types
