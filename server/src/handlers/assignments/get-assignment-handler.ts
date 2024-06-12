@@ -49,7 +49,7 @@ export class GetAssignmentHandler extends Handler {
         return;
       }
 
-      const assignment = await Handler._database.assignments.findOne({ id });
+      const assignment = await Handler._database.assignments.findById(id);
 
       if (!assignment) {
         res.status(404).send({
@@ -63,7 +63,7 @@ export class GetAssignmentHandler extends Handler {
       }
 
       res.status(200).send({
-        "id": assignment._id,
+        ...assignment,
       });
     } catch (error) {
       Monitor.log(

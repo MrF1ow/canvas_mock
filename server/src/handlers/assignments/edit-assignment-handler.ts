@@ -32,7 +32,7 @@ export class EditAssignmentHandler extends Handler {
     super(
       REQUEST_TYPE.PATCH,
       '/:id',
-      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
+      AUTHORIZATION_TYPE.INSTRUCTOR,
     );
   }
 
@@ -90,10 +90,10 @@ export class EditAssignmentHandler extends Handler {
         update.title = `${title}`;
       }
       if (points !== undefined) {
-        update.points = `${points}`;
+        update.points = points;
       }
       if (due !== undefined) {
-        update.due = `${due}`;
+        update.due = due;
       }
 
       const user = await Handler._database.users.findById(req.user);
@@ -114,7 +114,7 @@ export class EditAssignmentHandler extends Handler {
       }
 
       const status = await Handler._database.assignments.update(
-        { id },
+        { _id: id },
         update,
         false,
       );

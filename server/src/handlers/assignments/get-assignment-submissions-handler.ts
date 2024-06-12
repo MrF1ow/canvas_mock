@@ -24,7 +24,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
     super(
       REQUEST_TYPE.GET,
       '/:id/submissions',
-      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
+      AUTHORIZATION_TYPE.INSTRUCTOR,
     );
   }
 
