@@ -41,6 +41,7 @@ export const AUTHORIZATION_TYPE = {
   REQUIRED: 'required',
   OPTIONAL: 'optional',
   ADMIN: 'admin',
+  INSTRUCTOR: 'instructor',
 } as Dictionary<RequestAuthorization>;
 
 /**
