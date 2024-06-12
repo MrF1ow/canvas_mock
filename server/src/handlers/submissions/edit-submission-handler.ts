@@ -59,10 +59,9 @@ export class EditSubmissionHandler extends Handler {
           });
           return;
         }
-        
       }
 
-
+      // ensure only the grade field is present in the request body
       if (!body || Object.keys(body).length === 0 || !('grade' in body) || Object.keys(body).length > 1) {
         res.status(400).send({
           error: 'The request body was either not present, did not contain a grade field, or contained additional fields.',
@@ -71,8 +70,9 @@ export class EditSubmissionHandler extends Handler {
       }
     
       const updatedSubmission = await Handler._database.submissions.update(
-        { id },
+        { id: id },
         { grade: body.grade },
+        false,
       );
 
       res.status(200).send(updatedSubmission);

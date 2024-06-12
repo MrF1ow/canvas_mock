@@ -100,7 +100,7 @@ export class CreateAssignmentHandler extends Handler {
       }
 
       // If user is an instructor, check if the course is taught by the instructor
-      if (user.role === USER_ROLE.INSTRUCTOR) {
+      if (user.role !== USER_ROLE.ADMIN) {
         const course = await Handler._database.courses.findById(courseId);
 
         // If the instructor is not the instructor of the course they are trying to create an assignment for

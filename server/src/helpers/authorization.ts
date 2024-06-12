@@ -136,6 +136,8 @@ export const requiresAdmin = async (
 
     const user = await Handler.getDatabase().users.findById(sub);
 
+    console.log(`== user: ${JSON.stringify(user)}`);
+
     if (user.role !== USER_ROLE.ADMIN) {
       res.status(403).send({
         error: MESSAGE_UNAUTHORIZED_ERROR,

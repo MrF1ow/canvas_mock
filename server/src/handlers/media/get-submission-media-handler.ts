@@ -1,6 +1,6 @@
 // Local Imports
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -44,7 +44,7 @@ export class GetSubmissionMediaHandler extends Handler {
       const requestUser = await Handler._database.users.findById(req.user);
       const { filename } = req.params;
 
-      if (requestUser.role !== 'admin') {
+      if (requestUser.role !== USER_ROLE.ADMIN) {
 
         const filePath = `/media/submissions/${filename}`;
         const submission = await Handler._database.submissions.findOne({ file: filePath });
@@ -79,7 +79,6 @@ export class GetSubmissionMediaHandler extends Handler {
       downloadStream.on('end', () => {
         res.end();
       });
-      
 
 
     } catch (error) {
