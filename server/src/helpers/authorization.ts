@@ -231,8 +231,6 @@ export const getUser = async (
   next();
 };
 
-export const 
-
 /**
  * Cleans user data of private data.
  *
