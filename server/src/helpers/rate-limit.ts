@@ -33,7 +33,7 @@ export class RateLimiter {
     let removeIps = [];
 
     for (let ip in RateLimiter.ips) {
-      RateLimiter.ips[ip] = RateLimiter.users[ip].filter((time: number) => {
+      RateLimiter.ips[ip] = RateLimiter.ips[ip].filter((time: number) => {
         return time > minuteAgo;
       });
 

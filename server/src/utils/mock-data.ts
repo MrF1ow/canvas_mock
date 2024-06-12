@@ -251,6 +251,26 @@ export const populateUs = async (database: AbstractDatabase): Promise<string | n
     }
 
     await Promise.all(promises);
+
+    const [
+      andrew,
+      ethan,
+      artin,
+    ] = promises;
+
+    const artinDone = await artin;
+
+    if (artinDone) {
+      const courses = await database.courses.find({}, {}, {}, 0, 1);
+
+      if (courses.length) {
+        await database.courses.update({
+          id: courses[0].id,
+        }, {
+          instructorId: artinDone,
+        });
+      }
+    }
   } catch (error) {
     console.log(error);
   }
