@@ -109,14 +109,16 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return '';
     }
 
+    const id = uuidv4();
+
     const withId = {
       ...item,
-      id: uuidv4(),
+      id,
     } as T;
 
     const response = await this._collection.insertOne(withId as OptionalId<Document>);
 
-    return `${response.insertedId}`;
+    return id;
   }
 
   /**
