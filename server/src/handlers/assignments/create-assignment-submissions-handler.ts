@@ -106,7 +106,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       const result = await collection.insertOne(submission);
 
       res.status(200).send({
-        _id: result.insertedId,
+        id: result.insertedId,
         message: 'Submission Uploaded Successfully',
       });
 

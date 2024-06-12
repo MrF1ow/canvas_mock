@@ -10,7 +10,6 @@ import { QueryConditions } from '../types/database';
  *
  * @param {Model<T & Document>} model - The Mongoose model to query.
  * @param {number} page - The page number to retrieve.
- * @param {number} limit - The number of documents per page.
  * @param {Object} query - The query object to filter the documents.
  * @returns {Promise<Array<T>>} The paginated documents.
  */
@@ -26,6 +25,8 @@ export async function paginate<T>(
     (page - 1) * PAGE_SIZE,
     PAGE_SIZE,
   );
+
+  console.log(items);
 
   const count = await model.count(query);
 
