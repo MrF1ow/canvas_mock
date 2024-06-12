@@ -3,6 +3,7 @@ import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
 import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
+import { comparePassword, generateToken } from '../../helpers/authorization';
 
 // Types
 import {
@@ -35,6 +36,32 @@ export class LoginHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
+
+      const { email, password } = req.body;
+
+      const user = await Handler._database.users.findOne({ email });
+
+      if (!user) {
+        res.status(404).send({
+          error: 'User not found.',
+        });
+        return;
+      }
+
+      if (!await comparePassword(user.password, password)) {
+        res.status(401).send({
+          error: 'Invalid password.',
+        });
+        return;
+      }
+
+      const token = generateToken(user._id);
+
+      res.status(200).send({
+        token,
+      });
+
+
     } catch (error) {
       Monitor.log(
         LoginHandler,

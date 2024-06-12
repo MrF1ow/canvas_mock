@@ -21,6 +21,7 @@
       "dom",
     ],
     "outDir": "dist",
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.ts",

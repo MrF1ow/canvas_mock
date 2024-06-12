@@ -122,7 +122,7 @@ export class AbstractDataAccessObject<T> {
    * @param {T} options The item to create.
    * @returns {T} The created item.
    */
-  insert(item: T): Promise<number> {
+  insert(item: T): Promise<string> {
     throw new UsedAbstractDAOError();
   }
 

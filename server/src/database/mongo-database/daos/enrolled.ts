@@ -23,6 +23,13 @@ export class EnrolledDataAccessObject
   }
 
   /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
+    return 'enrolled';
+  }
+
+  /**
    * Retrieves default sort value.
    *
    * @returns {Record<string, number>} Sort method.

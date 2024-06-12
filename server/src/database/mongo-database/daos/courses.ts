@@ -23,6 +23,13 @@ export class CourseDataAccessObject
   }
 
   /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
+    return 'courses';
+  }
+
+  /**
    * Retrieves default sort value.
    *
    * @returns {Record<string, number>} Sort method.

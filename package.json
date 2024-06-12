@@ -5,7 +5,7 @@
   "main": "/server/src/index.ts",
   "scripts": {
     "docker": "docker-compose --env-file .env up",
-    "docker:exec": "docker exec -it mongo-server /bin/bash",
+    "docker:exec": "docker exec -it mongo-c /bin/bash",
     "docker:down": "docker-compose down",
     "docker:clear": "docker-compose down -v",
     "docker:logs": "docker-compose logs -f",

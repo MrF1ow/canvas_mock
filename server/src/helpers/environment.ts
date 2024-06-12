@@ -37,6 +37,16 @@ export class Environment {
   }
 
   /**
+   * How many courses should be added?
+   *
+   * @default 30
+   * @returns {number} How many courses should be added?
+   */
+  static getTargetCourses(): number {
+    return (parseInt(process.env.TARGET_COURSES, 10) as number) || 1000;
+  }
+
+  /**
    * Retrieves the port the server should run on.
    *
    * @default 3000
