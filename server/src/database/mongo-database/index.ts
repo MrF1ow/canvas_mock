@@ -1,8 +1,5 @@
 // Packages
-import {
-  Db,
-  MongoClient,
-} from 'mongodb';
+import { Db, MongoClient } from "mongodb";
 
 // Local Imports
 import {
@@ -11,16 +8,22 @@ import {
   EnrolledDataAccessObject,
   SubmissionDataAccessObject,
   UserDataAccessObject,
-} from './daos';
-import { MESSAGE_DATABASE_CONNECTION_SUCCESS } from '../../config/messages';
-import { DataAccessObject } from './daos/dao';
-import { AbstractDatabase } from '../abstract-database';
-import { Environment } from '../../helpers/environment';
-import { Monitor } from '../../helpers/monitor';
-import DatabaseUrlMissingError from '../../errors/database-url-missing';
+} from "./daos";
+import { MESSAGE_DATABASE_CONNECTION_SUCCESS } from "../../config/messages";
+import { DataAccessObject } from "./daos/dao";
+import { AbstractDatabase } from "../abstract-database";
+import { Environment } from "../../helpers/environment";
+import { Monitor } from "../../helpers/monitor";
+import DatabaseUrlMissingError from "../../errors/database-url-missing";
 
 // Types
-import { Assignment, Course, Enrolled, Submission, User } from '../../types/tables';
+import {
+  Assignment,
+  Course,
+  Enrolled,
+  Submission,
+  User,
+} from "../../types/tables";
 
 MongoClient.setMaxListeners(200);
 
@@ -37,7 +40,7 @@ export class MongoDatabase extends AbstractDatabase {
    * Reference to database.
    */
   protected _db: Db | null;
- 
+
   /**
    * Instantiates MongoDatabase with correct queries.
    */
@@ -63,10 +66,10 @@ export class MongoDatabase extends AbstractDatabase {
     }
 
     const authorizedUrl = Environment.getDatabaseUrl()
-      .replace('<user>', Environment.getDatabaseUser())
-      .replace('<password>', Environment.getDatabasePassword())
-      .replace('<host>', Environment.getDatabaseHost())
-      .replace('<port>', `${Environment.getDatabasePort()}`);
+      .replace("<user>", Environment.getDatabaseUser())
+      .replace("<password>", Environment.getDatabasePassword())
+      .replace("<host>", Environment.getDatabaseHost())
+      .replace("<port>", `${Environment.getDatabasePort()}`);
 
     this._client = new MongoClient(authorizedUrl);
 
@@ -84,14 +87,10 @@ export class MongoDatabase extends AbstractDatabase {
       Monitor.log(
         MongoDatabase,
         MESSAGE_DATABASE_CONNECTION_SUCCESS,
-        Monitor.Layer.UPDATE,
+        Monitor.Layer.UPDATE
       );
     } else {
-      Monitor.log(
-        MongoDatabase,
-        'Failure to connect.',
-        Monitor.Layer.UPDATE,
-      );
+      Monitor.log(MongoDatabase, "Failure to connect.", Monitor.Layer.UPDATE);
     }
   }
 
@@ -105,11 +104,20 @@ export class MongoDatabase extends AbstractDatabase {
   }
 
   /**
+   * Retrieves MongoClient object.
+   *
+   * @returns {Db | null} MongoClient object.
+   */
+  db(): Db | null {
+    return this._db;
+  }
+
+  /**
    * Whether the class is connected to the database.
    *
    * @returns {boolean} Whether the class is connected to the database.
    */
   isConnected(): boolean {
-    return (!!this._client);
+    return !!this._client;
   }
 }

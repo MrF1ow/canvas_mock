@@ -63,7 +63,7 @@ export class GetAssignmentHandler extends Handler {
       }
 
       res.status(200).send({
-        assignment,
+        "id": assignment._id,
       });
     } catch (error) {
       Monitor.log(

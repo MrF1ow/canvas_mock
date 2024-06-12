@@ -6,6 +6,7 @@ import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { fileTypes, encryptName, uploadSubmission } from '../../helpers/grid';
 import { Handler } from '../handler';
+import { MongoDatabase } from '../../database/mongo-database';
 
 // Types
 import {
@@ -66,7 +67,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       req.file.originalname = encryptedFileName + '.' + extension;
 
       // upload the submission to the database
-      const client = Handler._database.mongoClient as MongoClient;
+      const client = (Handler._database as MongoDatabase).client();
       await uploadSubmission(client, req.file);
 
       // clear the buffer after uploading

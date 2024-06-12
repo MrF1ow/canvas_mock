@@ -14,21 +14,6 @@ export const fileTypes = {
 };
 
 /**
- * Set up GridFs for the specified database.
- *
- * @param client mongo client of the database
- *
- */
-export const setupGridFs = async (client: MongoClient): Promise<void> => {
-  try {
-    const db = client.db(process.env.DATABASE_NAME);
-    db.createCollection('uploads');
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-/**
  * Encrypt the name of the file.
  *
  * @param name Name of the file.
