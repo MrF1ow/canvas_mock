@@ -4,7 +4,6 @@ import {
   Db,
   Filter,
   FindOptions,
-  ObjectId,
   OptionalId,
   UpdateFilter
 } from 'mongodb';
@@ -24,7 +23,7 @@ import {
   QuerySort,
   DatabaseRow,
 } from '../../../types/database';
-import { Dictionary } from '@/types';
+import { Dictionary } from '../../../types';
 
 /**
  * Abstract class for Data Access Objects.
@@ -147,18 +146,27 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   cleanedFilter._id = new ObjectId(`${filter._id}`);
     // }
 
-    const result = this._collection.findOne(
+    const item = (await this._collection.findOne(
       filter,
       {
         projection,
       }
-    ) as Promise<T | null>;
+    )) as T | null;
 
-    if ('_id' in result) {
-      delete result._id;
+    if (!item) {
+      return null;
     }
 
-    return result;
+    const response = {} as Dictionary<DatabaseRow>;
+    const keys = Object.keys(item);
+
+    for (let i = 0; i < keys.length; i += 1) {
+      if (keys[i] !== '_id') {
+        response[keys[i]] = item[keys[i]];
+      }
+    }
+
+    return response as T;
   }
 
   /**
@@ -205,20 +213,27 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   options,
     // );
 
-    const result = (await (await this._collection.find(
+    let items = (await (await this._collection.find(
       filter,
       options as unknown as FindOptions<Document>,
     )).toArray()) as T[];
 
-    return result.map((item: T) => {
-      const removed = { ...item } as Dictionary<DatabaseRow>;
+    const response = [];
 
-      if ('_id' in removed) {
-        delete removed._id;
+    for (let i = 0; i < items.length; i += 1) {
+      const item = {};
+      const keys = Object.keys(items[i]);
+
+      for (let j = 0; j < keys.length; j += 1) {
+        if (keys[j] !== '_id') {
+          item[keys[j]] = items[i][keys[j]];
+        }
       }
 
-      return result as T;
-    });
+      response.push(item);
+    }
+
+    return response;
   }
 
   /**

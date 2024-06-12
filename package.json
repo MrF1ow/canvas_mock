@@ -1,7 +1,7 @@
 {
   "name": "final-project-mongobongo",
   "version": "1.0.0",
-  "description": "Tarpaulin Server",
+  "description": "Tarpaulin Server tarpaulin",
   "main": "/server/src/index.ts",
   "scripts": {
     "docker": "docker-compose --env-file .env up",

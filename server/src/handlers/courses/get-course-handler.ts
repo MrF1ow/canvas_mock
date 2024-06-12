@@ -14,6 +14,8 @@ import {
   ServerResponse,
 } from '../../types';
 
+// Checked and works.
+
 /**
  * Returns summary data about the Course, excluding the list of students enrolled in the course and the list of Assignments for the course.
  */

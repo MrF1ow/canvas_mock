@@ -19,6 +19,8 @@ import {
 } from '../../types';
 import { DatabaseColumnTypes } from '../../types/database';
 
+// Checked and works.
+
 /**
  * Performs a partial update on the data for the Course.  Note that enrolled students and assignments cannot be modified via this endpoint.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course can update Course information.
  */

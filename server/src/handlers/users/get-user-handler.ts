@@ -100,7 +100,9 @@ export class GetUserHandler extends Handler {
         };
       }
 
-      res.status(200).send(returnUser);
+      res.status(200).send({
+        user: returnUser,
+      });
       
     } catch (error) {
       Monitor.log(

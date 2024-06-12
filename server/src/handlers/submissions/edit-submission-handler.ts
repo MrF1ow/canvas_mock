@@ -59,7 +59,6 @@ export class EditSubmissionHandler extends Handler {
           });
           return;
         }
-        
       }
 
 

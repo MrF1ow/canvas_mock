@@ -30,15 +30,23 @@ export class RateLimiter {
   static cleanUp() {
     const minuteAgo = Date.now() - 60000;
 
+    let removeIps = [];
+
     for (let ip in RateLimiter.ips) {
       RateLimiter.ips[ip] = RateLimiter.users[ip].filter((time: number) => {
         return time > minuteAgo;
       });
 
       if (!RateLimiter.ips[ip]) {
-        delete RateLimiter.ips[ip];
+        removeIps.push(ip);
       }
     }
+
+    for (let ip of removeIps) {
+      delete RateLimiter.ips[ip];
+    }
+
+    let removeUsers = [];
 
     for (let user in RateLimiter.users) {
       RateLimiter.users[user] = RateLimiter.users[user].filter((time: number) => {
@@ -46,8 +54,12 @@ export class RateLimiter {
       });
 
       if (!RateLimiter.users[user]) {
-        delete RateLimiter.users[user];
+        removeUsers.push(user);
       }
+    }
+
+    for (let user of removeUsers) {
+      delete RateLimiter.users[user];
     }
   }
 
