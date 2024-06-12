@@ -101,12 +101,10 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       };
 
       // save the submission to the database
-      const collection = client.db(Environment.getDatabaseName()).collection('submissions');
-
-      const result = await collection.insertOne(submission);
+      const result = await Handler._database.submissions.insert(submission);
 
       res.status(200).send({
-        id: result.insertedId,
+        id: result,
         message: 'Submission Uploaded Successfully',
       });
 
