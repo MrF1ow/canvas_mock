@@ -17,7 +17,7 @@ import {
   User,
 } from '../types/tables';
 import { Dictionary } from '../types';
-import { hashPassword } from '@/helpers/authorization';
+import { hashPassword } from '../helpers/authorization';
 
 const STUDENTS_PER_COURSE = 10;
 const COURSES_PER_STUDENT = 4;
