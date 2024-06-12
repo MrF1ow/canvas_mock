@@ -6,6 +6,7 @@ import {
 
 // Local Imports
 import {
+  getUser,
   optionalAuthorization,
   requiresAdmin,
   requiresAuthorization,
@@ -76,6 +77,10 @@ export class Router {
       }
 
       middleware.unshift(RateLimiter.rateLimit);
+
+      if (handler.getUser()) {
+        middleware.unshift(getUser);
+      }
 
       if (handler.getAuthorization() === AUTHORIZATION_TYPE.REQUIRED) {
         middleware.unshift(requiresAuthorization);
