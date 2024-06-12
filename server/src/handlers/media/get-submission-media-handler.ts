@@ -38,7 +38,7 @@ export class GetSubmissionMediaHandler extends Handler {
 
       const { id } = req.params;
 
-      const submission = await Handler._database.submissions.findOne({ _id: id });
+      const submission = await Handler._database.submissions.findOne({ id });
       if (!submission) {
         res.status(404).send({
           error: 'Specified Submission `id` not found',

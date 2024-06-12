@@ -117,7 +117,7 @@ export class CreateCourseHandler extends Handler {
       });
 
       res.status(201).send({
-        id: course._id,
+        id: course.id,
       });
     } catch (error) {
       Monitor.log(

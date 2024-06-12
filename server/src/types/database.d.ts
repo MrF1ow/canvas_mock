@@ -12,6 +12,8 @@ export interface DatabaseRow {
    * Database Unique Identifier.
    */
   _id?: string;
+
+  id?: string;
 }
 
 /**

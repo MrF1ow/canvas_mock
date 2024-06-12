@@ -194,7 +194,7 @@ export class DataAccessObject<T> extends AbstractDataAccessObject<T> implements 
   async insert(item: T): Promise<string> {
     const entry = this._create(item);
 
-    return '_id' in entry ? `${entry._id}` : '';
+    return 'id' in entry ? `${entry.id}` : '';
   }
 
   /**
@@ -215,7 +215,7 @@ export class DataAccessObject<T> extends AbstractDataAccessObject<T> implements 
    */
   async _create(options: T): Promise<T> {
     const entry = {
-      _id: uuidv4(),
+      id: uuidv4(),
       ...options,
     };
 

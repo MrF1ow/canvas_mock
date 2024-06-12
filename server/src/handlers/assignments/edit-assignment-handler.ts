@@ -114,7 +114,7 @@ export class EditAssignmentHandler extends Handler {
       }
 
       const status = await Handler._database.assignments.update(
-        { _id: id },
+        { id },
         update,
         false,
       );

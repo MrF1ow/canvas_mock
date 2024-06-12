@@ -135,16 +135,16 @@ export const populateOneCourse = async (database: AbstractDatabase): Promise<str
   try {
     const instructor = await createInstructor();
 
-    const _id = await database.users.insert(instructor);
+    const id = await database.users.insert(instructor);
 
-    const course = createCourse(_id);
+    const course = createCourse(id);
 
     await database.courses.insert(course);
 
     const result = await database.courses.findOne(course as unknown as QueryConditions);
 
     if (result) {
-      return result._id;
+      return result.id;
     }
   } catch (error) {
     console.log(error);
@@ -206,7 +206,7 @@ export const populateOneUser = async (database: AbstractDatabase): Promise<strin
     const result = await database.users.findOne(user as unknown as QueryConditions);
 
     if (result) {
-      return result._id;
+      return result.id;
     }
   } catch (error) {
     console.log(error);

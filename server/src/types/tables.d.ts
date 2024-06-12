@@ -7,6 +7,8 @@ export interface Assignment {
    */
   _id?: string;
 
+  id?: string;
+
   /**
    * ID of the Course associated with the Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string.
    */
@@ -36,6 +38,8 @@ export interface Course {
    * Course's unique identifier.
    */
   _id?: string;
+
+  id?: string;
 
   /**
    * Short subject code.
@@ -71,6 +75,8 @@ export interface Submission {
    * Submission's unique identifier.
    */
   _id?: string;
+
+  id?: string;
 
   /**
    * ID of the Assignment to which the Submission corresponds.  Exact type/format will depend on your implementation but will likely be either an integer or a string.
@@ -138,6 +144,8 @@ export interface PublicUser {
    * User's unique identifier.
    */
   _id?: string;
+
+  id?: string;
 
   /**
    * Full name of the User.

@@ -73,18 +73,18 @@ export class GetUserHandler extends Handler {
 
         const courses = await Handler._database.courses.find({ instructorId: userId });
         returnUser = {
-          id: user._id,
+          id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
-          courses: courses.map(course => course._id),
+          courses: courses.map(course => course.id),
         };
 
       } else if (user.role === 'student') {
 
         const enrollments = await Handler._database.enrolled.find({ studentId: userId });
         returnUser = {
-          id: user._id,
+          id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
@@ -93,7 +93,7 @@ export class GetUserHandler extends Handler {
 
       } else {
         returnUser = {
-          id: user._id,
+          id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
