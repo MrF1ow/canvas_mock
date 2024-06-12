@@ -43,7 +43,7 @@ export class Environment {
    * @returns {number} How many courses should be added?
    */
   static getTargetCourses(): number {
-    return (parseInt(process.env.TARGET_COURSES, 10) as number) || 30;
+    return (parseInt(process.env.TARGET_COURSES, 10) as number) || 300;
   }
 
   /**
