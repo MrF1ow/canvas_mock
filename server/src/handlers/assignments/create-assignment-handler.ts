@@ -136,13 +136,6 @@ export class CreateAssignmentHandler extends Handler {
         }
       }
 
-      await Handler._database.assignments.insert({
-        courseId,
-        title,
-        points,
-        due,
-      });
-
       const assignment = await Handler._database.assignments.findOne({
         courseId,
         title,
