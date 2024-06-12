@@ -17,6 +17,7 @@ import {
   User,
 } from '../types/tables';
 import { Dictionary } from '../types';
+import { hashPassword } from '@/helpers/authorization';
 
 const STUDENTS_PER_COURSE = 10;
 const COURSES_PER_STUDENT = 4;
@@ -132,11 +133,9 @@ export const populateCourses = async (database: AbstractDatabase): Promise<strin
  */
 export const populateOneCourse = async (database: AbstractDatabase): Promise<string | null> => {
   try {
-    const instructor = createInstructor();
+    const instructor = await createInstructor();
 
-    await database.users.insert(instructor);
-
-    const { _id = '' } = await database.users.findOne(instructor as unknown as QueryConditions);
+    const _id = await database.users.insert(instructor);
 
     const course = createCourse(_id);
 
@@ -198,7 +197,7 @@ export const populateUsers = async (database: AbstractDatabase): Promise<string[
  */
 export const populateOneUser = async (database: AbstractDatabase): Promise<string | null> => {
   try {
-    const user = createUser();
+    const user = await createUser();
 
     await database.users.insert(user);
 
@@ -344,13 +343,13 @@ export const createCourse = (instructorId: string = ''): Course => {
 /**
  * Generates a random user.
  */
-export const createUser = (): User => {
+export const createUser = async (): Promise<User> => {
   const random = Math.random();
 
   return {
     name: `${names['names'][Math.floor(random * names['names'].length)]} ${names['names'][(Math.floor(random * names['names'].length) + Math.floor(names['names'].length / 2)) % names['names'].length]}`,
     email: `${names['names'][Math.floor(random * names['names'].length)].toLowerCase()}${Math.floor(random * 999)}@gmail.com`,
-    password: (random + 1).toString(36).substring(7),
+    password: await hashPassword((random + 1).toString(36).substring(7)),
     role: 'student',
   };
 }
@@ -358,8 +357,8 @@ export const createUser = (): User => {
 /**
  * Generates a random instructor.
  */
-export const createInstructor = (): User => {
-  const user = createUser();
+export const createInstructor = async (): Promise<User> => {
+  const user = await createUser();
 
   return {
     ...user,
@@ -370,8 +369,8 @@ export const createInstructor = (): User => {
 /**
  * Generates a random admin.
  */
-export const createAdmin = (): User => {
-  const user = createUser();
+export const createAdmin = async (): Promise<User> => {
+  const user = await createUser();
 
   return {
     ...user,

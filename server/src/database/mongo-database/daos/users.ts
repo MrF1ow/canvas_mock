@@ -25,32 +25,6 @@ export class UserDataAccessObject
   }
 
   /**
-   * Creates a new instance of the item in the Database.
-   *
-   * @param {T} options The item to create.
-   * @returns {Promise<string>} ID of item created.
-   */
-  async insert(item: UserInterface): Promise<string> {
-    // const row = new this._model(item);
-
-    // await row.save();
-
-    // return 1;
-    if (!this._collection) {
-      return '';
-    }
-
-    const user = {
-      ...item as unknown as OptionalId<Document>,
-      password: hashPassword(item.password),
-    };
-
-    const response = await this._collection.insertOne(user);
-
-    return `${response.insertedId}`;
-  }
-
-  /**
    * Retrieves collection name.
    */
   _getCollectionName(): string {
