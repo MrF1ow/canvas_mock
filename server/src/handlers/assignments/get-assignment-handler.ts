@@ -15,6 +15,8 @@ import {
 /**
  * Returns summary data about the Assignment, excluding the list of Submissions.
  */
+
+// WORKS
 export class GetAssignmentHandler extends Handler {
   /**
    * Instantiates a new handler.

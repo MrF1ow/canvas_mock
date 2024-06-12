@@ -24,6 +24,8 @@ import { DatabaseColumnTypes } from '../../types/database';
 /**
  * Performs a partial update on the data for the Assignment.  Note that submissions cannot be modified via this endpoint.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can update an Assignment.
  */
+
+// WORKS
 export class EditAssignmentHandler extends Handler {
   /**
    * Instantiates a new handler.

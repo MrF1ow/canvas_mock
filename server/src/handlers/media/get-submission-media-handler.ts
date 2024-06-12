@@ -17,6 +17,8 @@ import { GridFSBucket } from 'mongodb';
  * authenticated 'instructor' User whose ID matches the `instructorId` of the associated course 
  * can update a Submission.
  */
+
+// WORKS
 export class GetSubmissionMediaHandler extends Handler {
   /**
    * Instantiates a new handler.

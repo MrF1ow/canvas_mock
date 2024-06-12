@@ -16,6 +16,8 @@ import { ServerRequest, ServerResponse } from "../../types";
 /**
  * Returns the list of all Submissions for an Assignment.  This list should be paginated.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can fetch the Submissions for an Assignment.
  */
+
+// WORKS
 export class GetAssignmentSubmissionsHandler extends Handler {
   /**
    * Instantiates a new handler.

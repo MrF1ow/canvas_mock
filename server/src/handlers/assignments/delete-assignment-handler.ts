@@ -18,6 +18,8 @@ import {
 /**
  * Completely removes the data for the specified Assignment, including all submissions.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can delete an Assignment.
  */
+
+// WORKS
 export class DeleteAssignmentHandler extends Handler {
   /**
    * Instantiates a new handler.

@@ -68,9 +68,9 @@ export class EditSubmissionHandler extends Handler {
         });
         return;
       }
-    
+
       const updatedSubmission = await Handler._database.submissions.update(
-        { id: id },
+        { id },
         { grade: body.grade },
         false,
       );

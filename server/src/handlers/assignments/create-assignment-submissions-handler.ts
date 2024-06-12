@@ -20,6 +20,8 @@ import { Environment } from '../../helpers/environment';
 /**
  * Create and store a new Assignment with specified data and adds it to the application's database.  Only an authenticated User with 'student' role who is enrolled in the Course corresponding to the Assignment's `courseId` can create a Submission.
  */
+
+// WORKS
 export class CreateAssignmentSubmissionsHandler extends Handler {
   /**
    * Instantiates a new handler.
