@@ -13,6 +13,8 @@ import {
   ServerResponse,
 } from '../../types';
 import { MongoClient } from 'mongodb';
+import { time } from 'node:console';
+import { Environment } from '../../helpers/environment';
 
 /**
  * Create and store a new Assignment with specified data and adds it to the application's database.  Only an authenticated User with 'student' role who is enrolled in the Course corresponding to the Assignment's `courseId` can create a Submission.
@@ -70,8 +72,23 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       // clear the buffer after uploading
       req.file.buffer = null;
 
+      // create a submission object
+      const submission = {
+        assignmentId: id,
+        studentId: req.user,
+        timestamp: new Date(),
+        grade: -1,
+        file: `/media/submissions/${req.file.originalname}`,
+      };
+
+      // save the submission to the database
+      const collection = client.db(Environment.getDatabaseName()).collection('submissions');
+
+      const result = await collection.insertOne(submission);
+
       res.status(200).send({
-        message: 'Submission uploaded successfully',
+        _id: result.insertedId,
+        message: 'Submission Uploaded Successfully',
       });
 
     } catch (error) {
