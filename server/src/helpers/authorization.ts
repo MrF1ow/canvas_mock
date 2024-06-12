@@ -209,6 +209,31 @@ export const optionalAuthorization = async (
 };
 
 /**
+ * Grabs user object.
+ *
+ * @param {ServerRequest} req Incoming request.
+ */
+export const getUser = async (
+  req: ServerRequest,
+  res: ServerResponse,
+  next: Middleware,
+): Promise<void> => {
+  req.userData = null;
+
+  try {
+    if (req.user) {
+      req.userData = await Handler.getDatabase().users.findById(req.user);
+    }
+  } catch (error) {
+    req.userData = null;
+  }
+
+  next();
+};
+
+export const 
+
+/**
  * Cleans user data of private data.
  *
  * @param {User} user User to be cleaned. 

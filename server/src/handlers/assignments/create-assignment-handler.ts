@@ -4,18 +4,20 @@ import {
   MESSAGE_HANDLER_ITEM_NOT_FOUND,
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_UNAUTHORIZED_ERROR,
-} from "../../config/messages";
-
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from "../../config";
-
-import { Monitor } from "../../helpers/monitor";
-import { Handler } from "../handler";
-
-// Packages
-import { ObjectId } from "mongodb";
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
+import { Monitor } from '../../helpers/monitor';
+import { Handler } from '../handler';
 
 // Types
-import { ServerRequest, ServerResponse } from "../../types";
+import {
+  ServerRequest,
+  ServerResponse,
+} from '../../types';
 
 /**
  * Create and store a new Assignment with specified data and adds it to the application's database.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can create an Assignment.
@@ -27,7 +29,7 @@ export class CreateAssignmentHandler extends Handler {
   constructor() {
     super(
       REQUEST_TYPE.POST,
-      "/",
+      '/',
       AUTHORIZATION_TYPE.INSTRUCTOR
     );
   }
@@ -47,7 +49,7 @@ export class CreateAssignmentHandler extends Handler {
       // If request is missing courseId
       if (!courseId) {
         res.status(400).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "Course ID"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'Course ID'),
         });
 
         return;
@@ -57,7 +59,7 @@ export class CreateAssignmentHandler extends Handler {
       // If course is not found in the database
       if (!course) {
         res.status(404).send({
-          error: MESSAGE_HANDLER_ITEM_NOT_FOUND("Course", "ID", courseId),
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND('Course', 'ID', courseId),
         });
 
         return;
@@ -65,7 +67,7 @@ export class CreateAssignmentHandler extends Handler {
 
       if (!title) {
         res.status(400).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "Title"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'Title'),
         });
 
         return;
@@ -73,7 +75,7 @@ export class CreateAssignmentHandler extends Handler {
 
       if (!points) {
         res.status(400).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "Points"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'Points'),
         });
 
         return;
@@ -81,7 +83,7 @@ export class CreateAssignmentHandler extends Handler {
 
       if (!due) {
         res.status(400).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "Due date"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'Due date'),
         });
 
         return;
@@ -91,7 +93,7 @@ export class CreateAssignmentHandler extends Handler {
 
       if (!user){
         res.status(404).send({
-          error: MESSAGE_HANDLER_ITEM_NOT_FOUND("User", "ID", req.user),
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND('User', 'ID', req.user),
         });
 
         return;

@@ -20,7 +20,7 @@ export class GetSubmissionMediaHandler extends Handler {
   constructor() {
     super(
       REQUEST_TYPE.GET,
-      '/media/submissions/:filename',
+      '/submissions/:filename',
     );
   }
 

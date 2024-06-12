@@ -12,6 +12,8 @@ export interface ServerRequest extends Request {
    * User ID.
    */
   user?: string;
+
+  userData?: User | null;
 }
 
 /**

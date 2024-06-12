@@ -37,6 +37,11 @@ export class Handler {
   protected _authorization: RequestAuthorization;
 
   /**
+   * Whether to provide user object.
+   */
+  protected _getUser: boolean;
+
+  /**
    * Whether this handler requires a file upload.
    */
   protected _upload: boolean;
@@ -52,6 +57,7 @@ export class Handler {
     method: RequestType,
     path: string,
     authorization: RequestAuthorization = AUTHORIZATION_TYPE.NONE,
+    getUser = false,
     upload = false,
   ) {
     if (!Handler._database) {
@@ -63,6 +69,7 @@ export class Handler {
     this._method = method;
     this._path = path;
     this._authorization = authorization;
+    this._getUser = getUser;
     this._upload = upload;
   }
 
@@ -103,6 +110,13 @@ export class Handler {
    */
   getAuthorization(): RequestAuthorization {
     return this._authorization;
+  }
+
+  /**
+   * Whether to provide user data.
+   */
+  getUser(): boolean {
+    return this._getUser;
   }
 
   /**
