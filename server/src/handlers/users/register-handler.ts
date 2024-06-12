@@ -52,6 +52,14 @@ export class RegisterHandler extends Handler {
         return;
       }
 
+      
+      if (await Handler._database.users.findOne({ email })) {
+        res.status(400).send({
+          error: 'Email already in use.',
+        });
+        return;
+      }
+
       const validRoles = [
         'admin',
         'instructor',
