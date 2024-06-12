@@ -53,7 +53,7 @@ export class EditSubmissionHandler extends Handler {
         const assignment = await Handler._database.assignments.findById(submission.assignmentId);
         const course = await Handler._database.courses.findById(assignment.courseId);
 
-        if (course.instructorId !== requestUser._id) {
+        if (course.instructorId !== requestUser.id) {
           res.status(403).send({
             error: 'Unauthorized.',
           });

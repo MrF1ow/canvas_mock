@@ -91,7 +91,7 @@ export class GetCourseStudentsHandler extends Handler {
         students: enrollment.map((enrolled: Enrolled) => enrolled.studentId),
       });
       // const users = await Handler._database.users.find({
-      //   _id: {
+      //   id: {
       //     $in: enrolled.map((enrolled: Enrolled) => enrolled.studentId),
       //   },
       // });

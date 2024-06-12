@@ -85,7 +85,7 @@ export class RegisterHandler extends Handler {
       });
 
       res.status(200).send({
-        id: user._id,
+        id: user.id,
       });
 
 

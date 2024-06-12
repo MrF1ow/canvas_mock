@@ -21,7 +21,12 @@ import { Handler } from './handler';
 import { upload } from '../helpers/grid';
 
 // Types
-import { Middleware } from '../types';
+import {
+  Middleware,
+  ServerRequest,
+  ServerResponse,
+} from '../types';
+import { Monitor } from '../helpers/monitor';
 
 /**
  * Wrapper around express router.
@@ -61,6 +66,24 @@ export class Router {
   }
 
   /**
+   * Prints stuff.
+   *
+   * @param {ServerRequest} req Incoming request.
+   * @param {ServerResponse} res Outgoing response.
+   */
+  async print(
+    req: ServerRequest,
+    res: ServerResponse,
+    next: Middleware,
+  ): Promise<void> {
+    Monitor.log(
+      Router,
+      `${req.method.toUpperCase()} ${req.path}`,
+      Monitor.Layer.UPDATE,
+    );
+  }
+
+  /**
    * Apply various routes to application.
    *
    * @param {Application} app Express application.
@@ -91,6 +114,8 @@ export class Router {
       } else if (handler.getAuthorization() === AUTHORIZATION_TYPE.INSTRUCTOR) {
         middleware.unshift(requiresInstructor);
       }
+
+      // middleware.unshift(this.print);
 
       switch (handler.getMethod()) {
         case REQUEST_TYPE.POST:

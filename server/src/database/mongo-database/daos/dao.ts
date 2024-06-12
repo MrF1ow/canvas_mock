@@ -22,7 +22,9 @@ import {
   DataAccessObjectInterface,
   MariaDbQuery,
   QuerySort,
+  DatabaseRow,
 } from '../../../types/database';
+import { Dictionary } from '@/types';
 
 /**
  * Abstract class for Data Access Objects.
@@ -109,14 +111,16 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return '';
     }
 
+    const id = uuidv4();
+
     const withId = {
       ...item,
-      _id: uuidv4(),
-    };
+      id,
+    } as T;
 
-    const response = await this._collection.insertOne(withId as OptionalId<Document>);
+    await this._collection.insertOne(withId as OptionalId<Document>);
 
-    return `${response.insertedId}`;
+    return id;
   }
 
   /**
@@ -143,12 +147,18 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   cleanedFilter._id = new ObjectId(`${filter._id}`);
     // }
 
-    return this._collection.findOne(
-      cleanedFilter,
+    const result = this._collection.findOne(
+      filter,
       {
         projection,
       }
     ) as Promise<T | null>;
+
+    if ('_id' in result) {
+      delete result._id;
+    }
+
+    return result;
   }
 
   /**
@@ -195,10 +205,20 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   options,
     // );
 
-    return (await (await this._collection.find(
-      cleanedFilter,
+    const result = (await (await this._collection.find(
+      filter,
       options as unknown as FindOptions<Document>,
     )).toArray()) as T[];
+
+    return result.map((item: T) => {
+      const removed = { ...item } as Dictionary<DatabaseRow>;
+
+      if ('_id' in removed) {
+        delete removed._id;
+      }
+
+      return result as T;
+    });
   }
 
   /**
@@ -212,7 +232,11 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return null;
     }
 
+<<<<<<< HEAD
     return this.findOne({ _id: id });
+=======
+    return this.findOne({ id });
+>>>>>>> main
   }
 
   /**
@@ -233,7 +257,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   cleanedFilter._id = new ObjectId(`${filter._id}`);
     // }
 
-    return this._collection.countDocuments(cleanedFilter);
+    return this._collection.countDocuments(filter);
   }
 
   /**
@@ -257,7 +281,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   cleanedFilter._id = new ObjectId(`${filter._id}`);
     // }
 
-    const response = await this._collection.deleteMany(cleanedFilter);
+    const response = await this._collection.deleteMany(filter);
 
     return response.deletedCount;
   }
@@ -278,7 +302,11 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return false;
     }
 
+<<<<<<< HEAD
     const response = await this._collection.deleteOne({ _id: id });
+=======
+    const response = await this._collection.deleteOne({ id });
+>>>>>>> main
 
     return response.deletedCount > 0;
   }
@@ -316,16 +344,16 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       alteredUpdate.$set[key] = update[key];
     }
 
-    const cleanedFilter = { ...conditions };
-    if ('_id' in conditions && !(conditions._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${conditions._id}`);
-    }
+    // const cleanedFilter = { ...conditions };
+    // if ('_id' in conditions && !(conditions._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${conditions._id}`);
+    // }
 
     console.log(cleanedFilter);
     console.log(alteredUpdate);
 
     const response = await this._collection.updateOne(
-      cleanedFilter as Filter<Document>,
+      conditions as Filter<Document>,
       alteredUpdate,
     );
 
@@ -366,13 +394,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       alteredUpdate.$set[key] = update[key];
     }
 
-    const cleanedFilter = { ...filter };
-    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${filter._id}`);
-    }
+    // const cleanedFilter = { ...filter };
+    // if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${filter._id}`);
+    // }
 
     const response = await this._collection.updateMany(
-      cleanedFilter as Filter<Document>,
+      filter as Filter<Document>,
       alteredUpdate,
       {
         upsert: insertNew,

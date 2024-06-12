@@ -55,10 +55,10 @@ export class LoginHandler extends Handler {
         return;
       }
 
-      const token = generateToken(user._id);
+      const token = generateToken(user.id);
 
       res.status(200).send({
-        id: user._id,
+        id: user.id,
         token,
       });
 

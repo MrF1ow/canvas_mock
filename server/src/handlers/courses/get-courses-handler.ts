@@ -71,7 +71,7 @@ export class GetCoursesHandler extends Handler {
       }
 
       // Get all courses.
-      const courses = await Handler._database.courses.find(
+      let courses = await Handler._database.courses.find(
         filter,
         {},
         {},
