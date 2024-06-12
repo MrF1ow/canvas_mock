@@ -70,10 +70,12 @@ export class RegisterHandler extends Handler {
         return;
       }
 
+      const hashedPass = await hashPassword(password);
+
       await Handler._database.users.insert({
         name,
         email,
-        password,
+        password: hashedPass,
         role: role ?? 'student',
       });
 

@@ -17,7 +17,7 @@ import {
   User,
 } from '../types/tables';
 import { Dictionary } from '../types';
-import { hashPassword } from '@/helpers/authorization';
+import { hashPassword } from '../helpers/authorization';
 
 const STUDENTS_PER_COURSE = 10;
 const COURSES_PER_STUDENT = 4;
@@ -34,7 +34,7 @@ export const main = async () => {
   if (database.isConnected()) {
     populateDatabase(database);
   }
-}
+};
 
 /**
  * Populates the database with mock data.
@@ -83,7 +83,7 @@ export const deleteAll = async (database: AbstractDatabase): Promise<void> => {
   }, 0);
 
   console.log(` - All ${total} items deleted`);
-}
+};
 
 /**
  * Populates database courses.
@@ -108,7 +108,7 @@ export const populateCourses = async (database: AbstractDatabase): Promise<strin
       promises.push(populateOneCourse(database));
     }
 
-    console.log(`   - Awaiting promises to resolve`);
+    console.log('   - Awaiting promises to resolve');
 
     await Promise.all(promises);
 
@@ -120,7 +120,7 @@ export const populateCourses = async (database: AbstractDatabase): Promise<strin
       }
     }
 
-    console.log(`   - All courses added`);
+    console.log('   - All courses added');
   } catch (error) {
     console.log(error);
   }
@@ -303,7 +303,7 @@ export const populateSubmissions = async (database: AbstractDatabase): Promise<s
   const submissions = [];
   
   try {
-    console.log(` - I'm just not going to populate submissions. :)`);
+    console.log(' - I\'m just not going to populate submissions. :)');
   } catch (error) {
     console.log(error);
   }
@@ -323,7 +323,7 @@ export const shouldPopulate = async (dao: DataAccessObjectInterface<any>): Promi
     console.log(error);
   }
   return false;
-}
+};
 
 /**
  * Creates a random course.
@@ -334,11 +334,11 @@ export const createCourse = (instructorId: string = ''): Course => {
   return {
     subject: courses['subject-codes'][Math.floor(random * courses['subject-codes'].length)],
     number: `${Math.floor(random * 399) + 100}`,
-    title: courses['titles'][Math.floor(random * courses['titles'].length)],
-    term: `${courses['terms'][Math.floor(random * courses['terms'].length)]}${courses['years'][Math.floor(random * courses['years'].length)]}`,
+    title: courses.titles[Math.floor(random * courses.titles.length)],
+    term: `${courses.terms[Math.floor(random * courses.terms.length)]}${courses.years[Math.floor(random * courses.years.length)]}`,
     instructorId,
   };
-}
+};
 
 /**
  * Generates a random user.
@@ -347,12 +347,12 @@ export const createUser = async (): Promise<User> => {
   const random = Math.random();
 
   return {
-    name: `${names['names'][Math.floor(random * names['names'].length)]} ${names['names'][(Math.floor(random * names['names'].length) + Math.floor(names['names'].length / 2)) % names['names'].length]}`,
-    email: `${names['names'][Math.floor(random * names['names'].length)].toLowerCase()}${Math.floor(random * 999)}@gmail.com`,
+    name: `${names.names[Math.floor(random * names.names.length)]} ${names.names[(Math.floor(random * names.names.length) + Math.floor(names.names.length / 2)) % names.names.length]}`,
+    email: `${names.names[Math.floor(random * names.names.length)].toLowerCase()}${Math.floor(random * 999)}@gmail.com`,
     password: await hashPassword((random + 1).toString(36).substring(7)),
     role: 'student',
   };
-}
+};
 
 /**
  * Generates a random instructor.
@@ -364,7 +364,7 @@ export const createInstructor = async (): Promise<User> => {
     ...user,
     role: 'instructor',
   };
-}
+};
 
 /**
  * Generates a random admin.
@@ -376,4 +376,4 @@ export const createAdmin = async (): Promise<User> => {
     ...user,
     role: 'admin',
   };
-}
+};
