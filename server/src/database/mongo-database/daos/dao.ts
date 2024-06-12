@@ -232,11 +232,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return null;
     }
 
-<<<<<<< HEAD
-    return this.findOne({ _id: id });
-=======
     return this.findOne({ id });
->>>>>>> main
   }
 
   /**
@@ -302,11 +298,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return false;
     }
 
-<<<<<<< HEAD
-    const response = await this._collection.deleteOne({ _id: id });
-=======
     const response = await this._collection.deleteOne({ id });
->>>>>>> main
 
     return response.deletedCount > 0;
   }
@@ -348,9 +340,6 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     // if ('_id' in conditions && !(conditions._id instanceof ObjectId)) {
     //   cleanedFilter._id = new ObjectId(`${conditions._id}`);
     // }
-
-    console.log(cleanedFilter);
-    console.log(alteredUpdate);
 
     const response = await this._collection.updateOne(
       conditions as Filter<Document>,
