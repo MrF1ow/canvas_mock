@@ -26,8 +26,6 @@ export async function paginate<T>(
     PAGE_SIZE,
   );
 
-  console.log(items);
-
   const count = await model.count(query);
 
   return {
