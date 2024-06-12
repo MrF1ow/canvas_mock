@@ -13,6 +13,7 @@ import { populateDatabase } from './utils/mock-data';
 import { Environment } from './helpers/environment';
 import { getDatabase } from './database';
 import { Monitor } from './helpers/monitor';
+import { RateLimiter } from './helpers/rate-limit';
 
 /**
  * Wrapper around all the server layers.
@@ -55,6 +56,11 @@ export class Server {
     if (Environment.useMockData()) {
       await populateDatabase(Server._database);
     }
+
+    setInterval(
+      RateLimiter.cleanUp,
+      1000 * 60 * 10,
+    );
 
     Server._app.listen(
       Environment.getServerPort(),

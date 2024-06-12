@@ -185,6 +185,8 @@ export const populateUsers = async (database: AbstractDatabase): Promise<string[
         users.push(id);
       }
     }
+
+    await populateUs(database);
   } catch (error) {
     console.log(error);
   }
@@ -206,6 +208,44 @@ export const populateOneUser = async (database: AbstractDatabase): Promise<strin
     if (result) {
       return result._id;
     }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return null;
+};
+
+/**
+ * Populates database courses.
+ */
+export const populateUs = async (database: AbstractDatabase): Promise<string | null> => {
+  try {
+    const names = [
+      'Andrew Young',
+      'Ethan Flow',
+      'Artin Lahni',
+    ];
+    const emails = [
+      'andrew@youngshome.com',
+      'eflow1280@gmail.com',
+      'artinlahni@gmail.com',
+    ];
+    const password = await hashPassword('12345');
+
+    const promises = [];
+
+    for (let i = 0; i < names.length; i += 1) {
+      const me = {
+        name: names[i],
+        email: emails[i],
+        password,
+        role: 'admin',
+      } as User;
+
+      promises.push(database.users.insert(me));
+    }
+
+    await Promise.all(promises);
   } catch (error) {
     console.log(error);
   }
