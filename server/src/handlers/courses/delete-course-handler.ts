@@ -17,6 +17,8 @@ import {
   ServerResponse,
 } from '../../types';
 
+// Checked and works.
+
 /**
  * Completely removes the data for the specified Course, including all enrolled students, all Assignments, etc.  Only an authenticated User with 'admin' role can remove a Course.
  */

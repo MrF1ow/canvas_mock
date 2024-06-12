@@ -38,8 +38,12 @@ export class RegisterHandler extends Handler {
     res: ServerResponse,
   ): Promise<void> {
     try {
-
-      const { name, email, password, role } = req.body;
+      const {
+        name,
+        email,
+        password,
+        role,
+      } = req.body;
 
       if (!name || !email || !password) {
         res.status(400).send({
@@ -48,7 +52,12 @@ export class RegisterHandler extends Handler {
         return;
       }
 
-      const validRoles = ['admin', 'instructor', 'student']; 
+      const validRoles = [
+        'admin',
+        'instructor',
+        'student',
+      ];
+
       if (role && !validRoles.includes(role)) {
         res.status(400).send({
           error: `Invalid role. Valid roles are: ${validRoles.join(', ')}.`,
@@ -58,8 +67,10 @@ export class RegisterHandler extends Handler {
 
       const creatorId = req.user ?? null;
       let creatorRole : string | null = null;
+
       if (creatorId) {
         const creator = await Handler.getDatabase().users.findById(creatorId);
+
         creatorRole = creator.role;
       }
       
@@ -87,9 +98,6 @@ export class RegisterHandler extends Handler {
       res.status(200).send({
         id: user.id,
       });
-
-
-
     } catch (error) {
       Monitor.log(
         RegisterHandler,

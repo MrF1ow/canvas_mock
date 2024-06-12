@@ -63,8 +63,6 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
         return;
       }
 
-      console.log(`== req.user: ${req.user}`);
-
       const user = await Handler._database.users.findById(req.user);
 
       if (!user) {

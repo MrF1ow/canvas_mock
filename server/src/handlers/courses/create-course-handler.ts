@@ -16,6 +16,8 @@ import {
   ServerResponse,
 } from '../../types';
 
+// Checked and works.
+
 /**
  * Creates a new Course with specified data and adds it to the application's database.  Only an authenticated User with 'admin' role can create a new Course.
  */

@@ -277,11 +277,7 @@ export const populateEnrolled = async (
       const student = users[i];
 
       for (let j = 0; j < COURSES_PER_STUDENT; j += 1) {
-        let course = null;
-
-        while (course == null || (course in enrolled && enrolled[course].includes(student))) {
-          course = courses[Math.floor(Math.random() * courses.length)];
-        }
+        let course = courses[Math.floor(Math.random() * courses.length)];
 
         if (course in enrolled) {
           enrolled[course].push(student);

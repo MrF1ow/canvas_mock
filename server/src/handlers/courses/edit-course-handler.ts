@@ -19,6 +19,8 @@ import {
 } from '../../types';
 import { DatabaseColumnTypes } from '../../types/database';
 
+// Checked and works.
+
 /**
  * Performs a partial update on the data for the Course.  Note that enrolled students and assignments cannot be modified via this endpoint.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course can update Course information.
  */
@@ -59,7 +61,7 @@ export class EditCourseHandler extends Handler {
 
       // Check for all required parameters.
       if (!id) {
-        res.status(404).send({
+        res.status(400).send({
           error: MESSAGE_HANDLER_PARAMETER_MISSING(
             'course',
             'ID',

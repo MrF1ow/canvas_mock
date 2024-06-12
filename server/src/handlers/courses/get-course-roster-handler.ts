@@ -81,7 +81,30 @@ export class GetCourseRosterHandler extends Handler {
         }
       }
 
-      res.status(200).send({});
+      const enrollments = await Handler._database.enrolled.find({ courseId: id });
+
+      const promises = [];
+
+      for (let i = 0; i < enrollments.length; i += 1) {
+        if (enrollments[i]) {
+          promises.push(Handler._database.users.findById(enrollments[i].studentId));
+        }
+      }
+
+      await Promise.all(promises);
+
+      let data = 'id,name,email';
+
+      for (let i = 0; i < promises.length; i += 1) {
+        const user = await promises[i];
+
+        data = `${data}\n"${user.id}","${user.name}","${user.email}"`;
+      }
+
+      res.type('text/csv')
+        .status(200)
+        .attachment(`course-roster-${id}.csv`)
+        .send(data);
     } catch (error) {
       Monitor.log(
         GetCourseRosterHandler,

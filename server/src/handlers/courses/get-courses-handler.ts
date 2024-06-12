@@ -16,6 +16,8 @@ import {
 } from '../../types';
 import { DatabaseColumnTypes } from '../../types/database';
 
+// Checked and works.
+
 /**
  * Returns the list of all Courses.  This list should be paginated.  The Courses returned should not contain the list of students in the Course or the list of Assignments for the Course.
  */

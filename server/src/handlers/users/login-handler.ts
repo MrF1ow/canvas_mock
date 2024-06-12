@@ -1,5 +1,5 @@
 // Local Imports
-import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
 import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
@@ -37,7 +37,30 @@ export class LoginHandler extends Handler {
   ): Promise<void> {
     try {
 
-      const { email, password } = req.body;
+      const {
+        email,
+        password,
+      } = req.body;
+
+      // Check for all required parameters.
+      if (!email) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'user',
+            'Email',
+          ),
+        });
+        return;
+      }
+      if (!password) {
+        res.status(400).send({
+          error: MESSAGE_HANDLER_PARAMETER_MISSING(
+            'user',
+            'Password',
+          ),
+        });
+        return;
+      }
 
       const user = await Handler._database.users.findOne({ email });
 
