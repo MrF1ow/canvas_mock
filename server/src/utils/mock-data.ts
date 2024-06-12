@@ -230,7 +230,7 @@ export const populateUs = async (database: AbstractDatabase): Promise<string | n
       'eflow1280@gmail.com',
       'artinlahni@gmail.com',
     ];
-    const password = '12345';
+    const password = await hashPassword('12345');
 
     const promises = [];
 
@@ -238,7 +238,7 @@ export const populateUs = async (database: AbstractDatabase): Promise<string | n
       const me = {
         name: names[i],
         email: emails[i],
-        password: password,
+        password,
         role: 'admin',
       } as User;
 
