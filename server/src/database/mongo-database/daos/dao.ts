@@ -12,6 +12,7 @@ import {
   Model,
   QueryOptions,
 } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 // Types
 import {
@@ -107,7 +108,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     if (!this._collection) {
       return '';
     }
-    const response = await this._collection.insertOne(item as OptionalId<Document>);
+
+    const withId = {
+      ...item,
+      _id: uuidv4(),
+    };
+
+    const response = await this._collection.insertOne(withId as OptionalId<Document>);
 
     return `${response.insertedId}`;
   }
@@ -131,10 +138,10 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return null;
     }
 
-    const cleanedFilter = { ...filter };
-    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${filter._id}`);
-    }
+    // const cleanedFilter = { ...filter };
+    // if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${filter._id}`);
+    // }
 
     return this._collection.findOne(
       cleanedFilter,
@@ -177,10 +184,10 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       options.sort = this._getSort();
     }
 
-    const cleanedFilter = { ...filter };
-    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${filter._id}`);
-    }
+    // const cleanedFilter = { ...filter };
+    // if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${filter._id}`);
+    // }
 
     // return this._model.find(
     //   filter,
@@ -221,10 +228,10 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return -1;
     }
 
-    const cleanedFilter = { ...filter };
-    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${filter._id}`);
-    }
+    // const cleanedFilter = { ...filter };
+    // if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${filter._id}`);
+    // }
 
     return this._collection.countDocuments(cleanedFilter);
   }
@@ -245,10 +252,10 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return -0;
     }
 
-    const cleanedFilter = { ...filter };
-    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
-      cleanedFilter._id = new ObjectId(`${filter._id}`);
-    }
+    // const cleanedFilter = { ...filter };
+    // if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+    //   cleanedFilter._id = new ObjectId(`${filter._id}`);
+    // }
 
     const response = await this._collection.deleteMany(cleanedFilter);
 
@@ -271,7 +278,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return false;
     }
 
-    const response = await this._collection.deleteOne({ _id: new ObjectId(id) });
+    const response = await this._collection.deleteOne({ _id: id });
 
     return response.deletedCount > 0;
   }
