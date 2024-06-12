@@ -23,6 +23,13 @@ export class SubmissionDataAccessObject
   }
 
   /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
+    return 'submissions';
+  }
+
+  /**
    * Retrieves default sort value.
    *
    * @returns {Record<string, number>} Sort method.

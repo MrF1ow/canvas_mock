@@ -23,6 +23,13 @@ export class UserDataAccessObject
   }
 
   /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
+    return 'users';
+  }
+
+  /**
    * Retrieves default sort value.
    *
    * @returns {Record<string, number>} Sort method.
