@@ -44,6 +44,13 @@ export class GetUserHandler extends Handler {
       const userId = req.params.id;
       const requestUser = await Handler._database.users.findById(req.user);
 
+      if (!userId) {
+        res.status(400).send({
+          error: 'User ID is required.',
+        });
+        return;
+      }
+
       if (!requestUser && userId !== req.user && requestUser.role !== 'admin') {
         res.status(403).send({
           error: 'Unauthorized.',
@@ -53,13 +60,6 @@ export class GetUserHandler extends Handler {
 
       const user = await Handler._database.users.findById(userId);
 
-      const returnUser = {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      };
-
       if (!user) {
         res.status(404).send({
           error: 'User not found.',
@@ -67,23 +67,40 @@ export class GetUserHandler extends Handler {
         return;
       }
 
+      let returnUser : any = {};
+
       if (user.role === 'instructor') {
+
         const courses = await Handler._database.courses.find({ instructorId: userId });
-        res.status(200).send({
-          returnUser,
+        returnUser = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
           courses: courses.map(course => course._id),
-        });
+        };
 
       } else if (user.role === 'student') {
+
         const enrollments = await Handler._database.enrolled.find({ studentId: userId });
-        res.status(200).send({
-          returnUser,
+        returnUser = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
           courses: enrollments.map(enrollment => enrollment.courseId),
-        });
+        };
 
       } else {
-        res.status(200).send({ returnUser });
+        returnUser = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       }
+
+      res.status(200).send(returnUser);
       
     } catch (error) {
       Monitor.log(
