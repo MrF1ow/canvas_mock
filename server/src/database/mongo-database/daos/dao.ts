@@ -131,8 +131,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return null;
     }
 
+    const cleanedFilter = { ...filter };
+    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${filter._id}`);
+    }
+
     return this._collection.findOne(
-      filter,
+      cleanedFilter,
       {
         projection,
       }
@@ -172,6 +177,11 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       options.sort = this._getSort();
     }
 
+    const cleanedFilter = { ...filter };
+    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${filter._id}`);
+    }
+
     // return this._model.find(
     //   filter,
     //   projection,
@@ -179,7 +189,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     // );
 
     return (await (await this._collection.find(
-      filter,
+      cleanedFilter,
       options as unknown as FindOptions<Document>,
     )).toArray()) as T[];
   }
@@ -211,7 +221,12 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return -1;
     }
 
-    return this._collection.countDocuments();
+    const cleanedFilter = { ...filter };
+    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${filter._id}`);
+    }
+
+    return this._collection.countDocuments(cleanedFilter);
   }
 
   /**
@@ -230,7 +245,12 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return -0;
     }
 
-    const response = await this._collection.deleteMany(filter);
+    const cleanedFilter = { ...filter };
+    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${filter._id}`);
+    }
+
+    const response = await this._collection.deleteMany(cleanedFilter);
 
     return response.deletedCount;
   }
@@ -289,8 +309,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       alteredUpdate.$set[key] = update[key];
     }
 
+    const cleanedFilter = { ...conditions };
+    if ('_id' in conditions && !(conditions._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${conditions._id}`);
+    }
+
     const response = await this._collection.updateOne(
-      conditions as Filter<Document>,
+      cleanedFilter as Filter<Document>,
       alteredUpdate,
     );
 
@@ -331,8 +356,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       alteredUpdate.$set[key] = update[key];
     }
 
+    const cleanedFilter = { ...filter };
+    if ('_id' in filter && !(filter._id instanceof ObjectId)) {
+      cleanedFilter._id = new ObjectId(`${filter._id}`);
+    }
+
     const response = await this._collection.updateMany(
-      filter as Filter<Document>,
+      cleanedFilter as Filter<Document>,
       alteredUpdate,
       {
         upsert: insertNew,
