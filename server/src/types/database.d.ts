@@ -1,7 +1,7 @@
 /**
  * Types intended for using MongoDB, a NoSQL database.
  */
-
+import { ObjectId } from 'mongodb';
 import { ServerRequest } from '.';
 
 /**
@@ -22,7 +22,8 @@ export type DatabaseColumnTypes = string
 | boolean
 | unknown[]
 | null
-| undefined;
+| undefined
+| ObjectId;
 
 /**
  * Object defining a query filter.
@@ -485,10 +486,10 @@ export interface DataAccessObjectInterface<T> {
   /**
    * Creates a new instance of the item in the Database.
    *
-   * @param {T} options The item to create.
-   * @returns {T} The created item.
+   * @param {T} item The item to create.
+   * @returns {Promise<string>} ID of item created.
    */
-  insert: (item: T) => Promise<number>;
+  insert: (item: T) => Promise<string>;
 
   /**
    * Pain.

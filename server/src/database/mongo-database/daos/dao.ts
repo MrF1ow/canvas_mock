@@ -1,5 +1,14 @@
 // Packages
 import {
+  Collection,
+  Db,
+  Filter,
+  FindOptions,
+  ObjectId,
+  OptionalId,
+  UpdateFilter
+} from 'mongodb';
+import {
   Model,
   QueryOptions,
 } from 'mongoose';
@@ -19,6 +28,11 @@ import {
  */
 export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
   /**
+   * Reference to MongoDb collection.
+   */
+  _collection: Collection<Document> | null;
+
+  /**
    * Mongoose Model for DataAccessObject.
    */
   _model: Model<unknown, Record<string, unknown>, Record<string, unknown>, Record<string, unknown>>;
@@ -28,6 +42,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    */
   constructor() {
     this._model = this._getModel();
+  }
+
+  /**
+   * Sets collection.
+   */
+  setDb(db: Db) {
+    this._collection = db.collection(this._getCollectionName());
   }
 
   /**
@@ -64,21 +85,31 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * Deletes all items from the Database.
    */
   async deleteAll(): Promise<void> {
-    await this._model.deleteMany({});
+    // await this._model.deleteMany({});
+    if (!this._collection) {
+      return;
+    }
+    await this._collection.deleteMany({});
   }
 
   /**
    * Creates a new instance of the item in the Database.
    *
    * @param {T} options The item to create.
-   * @returns {T} The created item.
+   * @returns {Promise<string>} ID of item created.
    */
-  async insert(item: T): Promise<number> {
-    const row = new this._model(item);
+  async insert(item: T): Promise<string> {
+    // const row = new this._model(item);
 
-    await row.save();
+    // await row.save();
 
-    return 1;
+    // return 1;
+    if (!this._collection) {
+      return '';
+    }
+    const response = await this._collection.insertOne(item as OptionalId<Document>);
+
+    return `${response.insertedId}`;
   }
 
   /**
@@ -92,10 +123,20 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     filter: QueryConditions = {},
     projection: QueryProjection = {},
   ): Promise<T | null> {
-    return this._model.findOne(
+    // return this._model.findOne(
+    //   filter,
+    //   projection,
+    // );
+    if (!this._collection) {
+      return null;
+    }
+
+    return this._collection.findOne(
       filter,
-      projection,
-    );
+      {
+        projection,
+      }
+    ) as Promise<T | null>;
   }
 
   /**
@@ -113,6 +154,10 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     offset: number = 0,
     limit: number = -1,
   ): Promise<T[]> {
+    if (!this._collection) {
+      return [];
+    }
+
     const options = {} as QueryOptions<T>;
 
     if (limit > 0) {
@@ -127,11 +172,16 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       options.sort = this._getSort();
     }
 
-    return this._model.find(
+    // return this._model.find(
+    //   filter,
+    //   projection,
+    //   options,
+    // );
+
+    return (await (await this._collection.find(
       filter,
-      projection,
-      options,
-    );
+      options as unknown as FindOptions<Document>,
+    )).toArray()) as T[];
   }
 
   /**
@@ -141,7 +191,11 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<T | null>} The item or null if not found.
    */
   async findById(id: string): Promise<T | null> {
-    return this._model.findById(id);
+    if (!this._collection) {
+      return null;
+    }
+
+    return this.findOne({ _id: new ObjectId(id) });
   }
 
   /**
@@ -151,9 +205,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<number>} The number of items.
    */
   async count(filter: QueryConditions = {}): Promise<number> {
-    const results = this._model.countDocuments(filter);
-    console.log(results);
-    return results;
+    // const results = this._model.countDocuments(filter);
+    // return results;
+    if (!this._collection) {
+      return -1;
+    }
+
+    return this._collection.countDocuments();
   }
 
   /**
@@ -163,11 +221,18 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<number>} The number of items deleted.
    */
   async delete(filter: QueryConditions = {}): Promise<number> {
-    const {
-      deletedCount,
-    } = await this._model.deleteMany(filter);
+    // const {
+    //   deletedCount,
+    // } = await this._model.deleteMany(filter);
 
-    return deletedCount;
+    // return deletedCount;
+    if (!this._collection) {
+      return -0;
+    }
+
+    const response = await this._collection.deleteMany(filter);
+
+    return response.deletedCount;
   }
 
   /**
@@ -177,11 +242,18 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<boolean>} Whether the item was deleted.
    */
   async deleteById(id: string): Promise<boolean> {
-    const {
-      deletedCount,
-    } = await this._model.deleteOne({ _id: id });
+    // const {
+    //   deletedCount,
+    // } = await this._model.deleteOne({ _id: id });
 
-    return deletedCount === 1;
+    // return deletedCount === 1;
+    if (!this._collection) {
+      return false;
+    }
+
+    const response = await this._collection.deleteOne({ _id: new ObjectId(id) });
+
+    return response.deletedCount > 0;
   }
 
   /**
@@ -196,15 +268,33 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     conditions: QueryConditions = {},
     update: QueryUpdate = {},
   ): Promise<number> {
-    const { modifiedCount } = await this._model.updateOne(
-      conditions,
-      update,
-      {
-        upsert: true,
-      },
+    // const { modifiedCount } = await this._model.updateOne(
+    //   conditions,
+    //   update,
+    //   {
+    //     upsert: true,
+    //   },
+    // );
+
+    // return modifiedCount;
+    if (!this._collection) {
+      return 0;
+    }
+
+    const alteredUpdate = {
+      $set: {},
+    } as UpdateFilter<Document>;
+
+    for (let key in update) {
+      alteredUpdate.$set[key] = update[key];
+    }
+
+    const response = await this._collection.updateOne(
+      conditions as Filter<Document>,
+      alteredUpdate,
     );
 
-    return modifiedCount;
+    return response.modifiedCount;
   }
 
   /**
@@ -220,15 +310,36 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     update: QueryUpdate = {},
     insertNew = true,
   ): Promise<number> {
-    const { modifiedCount } = await this._model.updateMany(
-      filter,
-      update,
+    // const { modifiedCount } = await this._model.updateMany(
+    //   filter,
+    //   update,
+    //   {
+    //     upsert: insertNew,
+    //   },
+    // );
+
+    // return modifiedCount;
+    if (!this._collection) {
+      return 0;
+    }
+
+    const alteredUpdate = {
+      $set: {},
+    } as UpdateFilter<Document>;
+
+    for (let key in update) {
+      alteredUpdate.$set[key] = update[key];
+    }
+
+    const response = await this._collection.updateMany(
+      filter as Filter<Document>,
+      alteredUpdate,
       {
         upsert: insertNew,
       },
     );
 
-    return modifiedCount;
+    return response.modifiedCount;
   }
 
   /**
@@ -237,7 +348,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Promise<void>} Promise of the action.
    */
   async clear(): Promise<void> {
-    await this._model.deleteMany();
+    await this.deleteAll();
   }
 
   /**
@@ -246,6 +357,13 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
    * @returns {Model} The mongoose model.
    */
   _getModel(): Model<any, Record<string, any>, Record<string, any>, Record<string, any>> {
+    throw new Error('Used abstract DAO!');
+  }
+
+  /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
     throw new Error('Used abstract DAO!');
   }
 }

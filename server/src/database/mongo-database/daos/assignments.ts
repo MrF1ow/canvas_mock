@@ -23,6 +23,13 @@ export class AssignmentDataAccessObject
   }
 
   /**
+   * Retrieves collection name.
+   */
+  _getCollectionName(): string {
+    return 'assignments';
+  }
+
+  /**
    * Retrieves default sort value.
    *
    * @returns {Record<string, number>} Sort method.

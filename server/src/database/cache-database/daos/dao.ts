@@ -191,10 +191,10 @@ export class DataAccessObject<T> extends AbstractDataAccessObject<T> implements 
    * @param {T} item The item to create.
    * @returns {T} The created item.
    */
-  async insert(item: T): Promise<number> {
-    await this._create(item);
+  async insert(item: T): Promise<string> {
+    const entry = this._create(item);
 
-    return 1;
+    return '_id' in entry ? `${entry._id}` : '';
   }
 
   /**
