@@ -1,8 +1,10 @@
 // Local Imports
-import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_HANDLER_ITEM_NOT_FOUND, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
 import {
-  REQUEST_TYPE,
-} from '../../config';
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_HANDLER_ITEM_NOT_FOUND,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
+import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 

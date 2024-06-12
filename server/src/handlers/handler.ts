@@ -1,7 +1,6 @@
 // Local Imports
 import { AbstractDatabase } from '../database/abstract-database';
 import { getDatabase } from '../database';
-import { Monitor } from '../helpers/monitor';
 
 // Types
 import {

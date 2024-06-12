@@ -1,6 +1,14 @@
+// Packages
+import { GridFSBucket } from 'mongodb';
+
 // Local Imports
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
+import { MongoDatabase } from '../../database/mongo-database';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
@@ -9,8 +17,6 @@ import {
   ServerRequest,
   ServerResponse,
 } from '../../types';
-import { MongoDatabase } from '../../database/mongo-database';
-import { GridFSBucket } from 'mongodb';
 
 /**
  * Download a Submission's associated file.  Only an authenticated User with 'admin' role or an

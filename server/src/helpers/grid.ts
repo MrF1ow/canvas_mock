@@ -1,10 +1,14 @@
-require('dotenv').config();
-
 // Packages
+import {
+  MongoClient,
+  GridFSBucket,
+} from 'mongodb';
+import { Readable } from 'stream';
 import multer from 'multer';
 import crypto from 'node:crypto';
-import { Readable } from 'stream';
-import { MongoClient, GridFSBucket } from 'mongodb';
+
+// Local Imports
+import { Environment } from './environment';
 
 export const fileTypes = {
   'image/png': 'png',
@@ -30,8 +34,15 @@ export const encryptName = (name: string): string => {
  */
 export const upload = multer({
   storage: multer.memoryStorage(),
-  fileFilter: (req, file, cb) => {
-    cb(null, !!fileTypes[file.mimetype]);
+  fileFilter: (
+    req,
+    file,
+    cb,
+  ) => {
+    cb(
+      null,
+      !!fileTypes[file.mimetype],
+    );
   },
 });
 
@@ -44,7 +55,7 @@ export const upload = multer({
  */
 export const uploadSubmission = (client: MongoClient, file: Express.Multer.File): Promise<void> => {
   return new Promise((resolve, reject) => {
-    const db = client.db(process.env.DATABASE_NAME);
+    const db = client.db(Environment.getDatabaseName());
     const bucket = new GridFSBucket(db, { bucketName: 'uploads' });
 
     // create a readable stream from the file buffer

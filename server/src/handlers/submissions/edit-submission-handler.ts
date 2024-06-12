@@ -1,11 +1,17 @@
 // Local Imports
-import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 
 // Types
-import { ServerRequest, ServerResponse } from '../../types';
+import {
+  ServerRequest,
+  ServerResponse,
+} from '../../types';
 
 /**
  * Performs a partial update on the data for the Assignment.  Note that submissions 

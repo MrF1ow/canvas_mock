@@ -12,7 +12,6 @@ import {
 } from '../types/tables';
 import { DataAccessObjectInterface } from '../types/database';
 import UsedAbstractDatabaseError from '../errors/used-abstract-database-error';
-import { AnyBulkWriteOperation } from 'mongoose';
 
 /**
  * Abstract Database interface, only implement inherited classes.

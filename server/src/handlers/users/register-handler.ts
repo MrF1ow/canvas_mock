@@ -1,9 +1,12 @@
 // Local Imports
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+} from '../../config';
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
+import { hashPassword } from '../../helpers/authorization';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
-import { hashPassword, generateToken } from '../../helpers/authorization';
 
 // Types
 import {

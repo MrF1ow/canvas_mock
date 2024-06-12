@@ -1,9 +1,15 @@
 // Local Imports
-import { MESSAGE_HANDLER_PARAMETER_MISSING, MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
+import {
+  MESSAGE_HANDLER_PARAMETER_MISSING,
+  MESSAGE_INTERNAL_SERVER_ERROR,
+} from '../../config/messages';
+import {
+  comparePassword,
+  generateToken,
+} from '../../helpers/authorization';
 import { REQUEST_TYPE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
-import { comparePassword, generateToken } from '../../helpers/authorization';
 
 // Types
 import {

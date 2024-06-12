@@ -4,14 +4,21 @@ import {
   MESSAGE_HANDLER_PARAMETER_MISSING,
   MESSAGE_HANDLER_ITEM_NOT_FOUND,
   MESSAGE_UNAUTHORIZED_ERROR,
-} from "../../config/messages";
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from "../../config";
-import { paginate } from "../../helpers/pagination";
-import { Monitor } from "../../helpers/monitor";
-import { Handler } from "../handler";
+} from '../../config/messages';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
+import { paginate } from '../../helpers/pagination';
+import { Monitor } from '../../helpers/monitor';
+import { Handler } from '../handler';
 
 // Types
-import { ServerRequest, ServerResponse } from "../../types";
+import {
+  ServerRequest,
+  ServerResponse,
+} from '../../types';
 
 /**
  * Returns the list of all Submissions for an Assignment.  This list should be paginated.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can fetch the Submissions for an Assignment.
@@ -23,7 +30,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
    * Instantiates a new handler.
    */
   constructor() {
-    super(REQUEST_TYPE.GET, "/:id/submissions", AUTHORIZATION_TYPE.INSTRUCTOR);
+    super(REQUEST_TYPE.GET, '/:id/submissions', AUTHORIZATION_TYPE.INSTRUCTOR);
   }
 
   /**
@@ -39,7 +46,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
 
       if (!id) {
         res.status(404).send({
-          error: MESSAGE_HANDLER_PARAMETER_MISSING("assignment", "ID"),
+          error: MESSAGE_HANDLER_PARAMETER_MISSING('assignment', 'ID'),
         });
         return;
       }
@@ -67,7 +74,7 @@ export class GetAssignmentSubmissionsHandler extends Handler {
 
       if (!assignment) {
         res.status(404).send({
-          error: MESSAGE_HANDLER_ITEM_NOT_FOUND("assignment", "ID", id),
+          error: MESSAGE_HANDLER_ITEM_NOT_FOUND('assignment', 'ID', id),
         });
         return;
       }

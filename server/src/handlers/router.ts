@@ -18,6 +18,7 @@ import {
 } from '../config';
 import { RateLimiter } from '../helpers/rate-limit';
 import { Handler } from './handler';
+import { Monitor } from '../helpers/monitor';
 import { upload } from '../helpers/grid';
 
 // Types
@@ -26,7 +27,6 @@ import {
   ServerRequest,
   ServerResponse,
 } from '../types';
-import { Monitor } from '../helpers/monitor';
 
 /**
  * Wrapper around express router.

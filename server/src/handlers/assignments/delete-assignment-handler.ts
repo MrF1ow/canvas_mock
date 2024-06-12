@@ -5,7 +5,11 @@ import {
   MESSAGE_HANDLER_PARAMETER_MISSING,
   MESSAGE_UNAUTHORIZED_ERROR,
 } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { Handler } from '../handler';
 

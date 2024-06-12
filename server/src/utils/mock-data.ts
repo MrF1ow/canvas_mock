@@ -234,7 +234,7 @@ export const populateUs = async (database: AbstractDatabase): Promise<string | n
     const roles = [
       'admin',
       'student',
-      'admin',
+      'instructor',
     ];
 
     const promises = [];

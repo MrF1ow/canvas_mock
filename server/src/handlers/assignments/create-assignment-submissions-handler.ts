@@ -1,21 +1,24 @@
-import mongoose from 'mongoose';
-
 // Local Imports
+import {
+  fileTypes,
+  encryptName,
+  uploadSubmission,
+} from '../../helpers/grid';
+import {
+  AUTHORIZATION_TYPE,
+  REQUEST_TYPE,
+  USER_ROLE,
+} from '../../config';
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
-import { Monitor } from '../../helpers/monitor';
-import { fileTypes, encryptName, uploadSubmission } from '../../helpers/grid';
-import { Handler } from '../handler';
 import { MongoDatabase } from '../../database/mongo-database';
+import { Monitor } from '../../helpers/monitor';
+import { Handler } from '../handler';
 
 // Types
 import {
   ServerRequest,
   ServerResponse,
 } from '../../types';
-import { MongoClient } from 'mongodb';
-import { time } from 'node:console';
-import { Environment } from '../../helpers/environment';
 
 /**
  * Create and store a new Assignment with specified data and adds it to the application's database.  Only an authenticated User with 'student' role who is enrolled in the Course corresponding to the Assignment's `courseId` can create a Submission.

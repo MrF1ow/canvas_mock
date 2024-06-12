@@ -1,6 +1,5 @@
 // Local Imports
 import {
-  AUTHORIZATION_TYPE,
   PAGE_SIZE,
   REQUEST_TYPE,
 } from '../../config';
