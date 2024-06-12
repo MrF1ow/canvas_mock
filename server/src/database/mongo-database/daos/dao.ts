@@ -22,7 +22,9 @@ import {
   DataAccessObjectInterface,
   MariaDbQuery,
   QuerySort,
+  DatabaseRow,
 } from '../../../types/database';
+import { Dictionary } from '@/types';
 
 /**
  * Abstract class for Data Access Objects.
@@ -116,7 +118,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       id,
     } as T;
 
-    const response = await this._collection.insertOne(withId as OptionalId<Document>);
+    await this._collection.insertOne(withId as OptionalId<Document>);
 
     return id;
   }
@@ -145,12 +147,18 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   cleanedFilter._id = new ObjectId(`${filter._id}`);
     // }
 
-    return this._collection.findOne(
+    const result = this._collection.findOne(
       filter,
       {
         projection,
       }
     ) as Promise<T | null>;
+
+    if ('_id' in result) {
+      delete result._id;
+    }
+
+    return result;
   }
 
   /**
@@ -197,10 +205,20 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     //   options,
     // );
 
-    return (await (await this._collection.find(
+    const result = (await (await this._collection.find(
       filter,
       options as unknown as FindOptions<Document>,
     )).toArray()) as T[];
+
+    return result.map((item: T) => {
+      const removed = { ...item } as Dictionary<DatabaseRow>;
+
+      if ('_id' in removed) {
+        delete removed._id;
+      }
+
+      return result as T;
+    });
   }
 
   /**
