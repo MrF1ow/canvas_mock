@@ -41,10 +41,11 @@ export class RegisterHandler extends Handler {
 
       const { name, email, password, role } = req.body;
 
-      if (!name || !email || !password || !role) {
+      if (!name || !email || !password) {
         res.status(400).send({
-          error: 'Missing required fields: name, email, password, and role are required.',
+          error: 'Missing required fields: name, email, and password are required.',
         });
+        return;
       }
 
       const validRoles = ['admin', 'instructor', 'student']; 
@@ -52,6 +53,7 @@ export class RegisterHandler extends Handler {
         res.status(400).send({
           error: `Invalid role. Valid roles are: ${validRoles.join(', ')}.`,
         });
+        return;
       }
 
       const creatorId = req.user ?? null;
@@ -65,15 +67,14 @@ export class RegisterHandler extends Handler {
         res.status(403).send({
           error: 'Only admins can create admin or instructor roles.',
         });
+        return;
       }
-
-      const hashedPassword = await hashPassword(password);
 
       await Handler._database.users.insert({
         name,
         email,
-        password: hashedPassword,
-        role,
+        password,
+        role: role ?? 'student',
       });
 
       const user = await Handler._database.users.findOne({ 
