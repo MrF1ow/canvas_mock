@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "9606104d-0c78-4902-a72c-479c7ad7d7a9",
+		"_postman_id": "f259bd10-a9e5-42bb-9ce0-24afda6424a6",
 		"name": "The Tarpaulin API",
 		"description": "StartFragmentThe Tarpaulin API you implement must support all of the endpoints described in the Tarpaulin OpenAPI specification. You can load this specification into the editor at swagger.io to see automatically-generated documentation for all the API endpoints you’ll need to implement for the final project. Importantly, you are free to implement these endpoints however you see fit. For example, you may use whatever database you want, and you may design your API architecture to meet your own needs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "34407826"
+		"_exporter_id": "36260661",
+		"_collection_link": "https://mongo-bongo.postman.co/workspace/Tarpaulin~0181d15e-ebc9-4d2a-aafc-f9f781ceb60b/collection/27843472-f259bd10-a9e5-42bb-9ce0-24afda6424a6?action=share&source=collection_link&creator=36260661"
 	},
 	"item": [
 		{
@@ -15,12 +16,27 @@
 					"item": [
 						{
 							"name": "Authenticate User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"jwt\", (jsonData.token || -1));\r",
+											"pm.environment.set(\"currId\", (jsonData.id || -1));\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"younga8@oregonstate.edu\",\r\n    \"password\": \"weak_password123\"\r\n}",
+									"raw": "{\r\n    \"email\": \"andrew@youngshome.com\",\r\n    \"password\": \"12345\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -28,9 +44,12 @@
 									}
 								},
 								"url": {
-									"raw": "/user/login",
+									"raw": "{{baseURL}}/users/login",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
-										"user",
+										"users",
 										"login"
 									]
 								}
@@ -45,10 +64,23 @@
 						{
 							"name": "Get User By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "/users/:id",
+									"raw": "{{baseURL}}/users/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"users",
 										":id"
@@ -56,7 +88,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
+											"value": "9e4f0f87-3a44-404b-b0de-914bab03c8fb",
 											"description": "Unique ID of a User.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 										}
 									]
@@ -68,7 +100,30 @@
 				},
 				{
 					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"currId\", (jsonData.id || -1));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -81,7 +136,10 @@
 							}
 						},
 						"url": {
-							"raw": "/users",
+							"raw": "{{baseURL}}/users",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"users"
 							]
@@ -103,10 +161,23 @@
 								{
 									"name": "Get Students By Course ID",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "/courses/:id/students",
+											"raw": "{{baseURL}}/courses/:id/students",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
 												"courses",
 												":id",
@@ -115,7 +186,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "096d6b29-c73b-41cb-a790-7b3d8ea81714",
 													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -126,6 +197,16 @@
 								{
 									"name": "Update Enrollment By Course ID",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -138,7 +219,10 @@
 											}
 										},
 										"url": {
-											"raw": "/courses/:id/students",
+											"raw": "{{baseURL}}/courses/:id/students",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
 												"courses",
 												":id",
@@ -147,7 +231,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "8599ef83-2c95-44e3-993e-eca3df54ba88",
 													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -163,10 +247,23 @@
 								{
 									"name": "Get Roster By Course ID",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "/courses/:id/roster",
+											"raw": "{{baseURL}}/courses/:id/roster",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
 												"courses",
 												":id",
@@ -175,7 +272,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "49d2d5f6-c76d-46cc-8db1-8faad80142f0",
 													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -191,10 +288,23 @@
 								{
 									"name": "Get Assignments By Course ID",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "/courses/:id/assignments",
+											"raw": "{{baseURL}}/courses/:id/assignments",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
 												"courses",
 												":id",
@@ -203,7 +313,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "8599ef83-2c95-44e3-993e-eca3df54ba88",
 													"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -216,10 +326,23 @@
 						{
 							"name": "Get Course By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "/courses/:id",
+									"raw": "{{baseURL}}/courses/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"courses",
 										":id"
@@ -227,7 +350,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
+											"value": "eab89abe-0850-41c5-b3d8-eae955f1cd1d",
 											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 										}
 									]
@@ -238,11 +361,21 @@
 						{
 							"name": "Update Course By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PATCH",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"subject\": \"CS\",\r\n    \"number\": \"493\",\r\n    \"title\": \"Cloud Application Development\",\r\n    \"term\": \"sp22\",\r\n    \"instructorId\": \"123\"\r\n}",
+									"raw": "{\r\n    \"subject\": \"CS\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -250,7 +383,10 @@
 									}
 								},
 								"url": {
-									"raw": "/courses/:id",
+									"raw": "{{baseURL}}/courses/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"courses",
 										":id"
@@ -258,8 +394,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
-											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+											"value": "4af38ad4-546e-49db-8801-7b64a66200e8"
 										}
 									]
 								}
@@ -269,10 +404,23 @@
 						{
 							"name": "Remove Course By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "/courses/:id",
+									"raw": "{{baseURL}}/courses/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"courses",
 										":id"
@@ -280,7 +428,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
+											"value": "4cd8ac21-2089-4571-931f-67c67d4c2510",
 											"description": "Unique ID of a Course.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 										}
 									]
@@ -296,7 +444,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/courses?page=1&subject=CS&number=493&term=sp22",
+							"raw": "{{baseURL}}/courses",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"courses"
 							],
@@ -304,22 +455,22 @@
 								{
 									"key": "page",
 									"value": "1",
-									"description": "Page of Courses to fetch."
+									"disabled": true
 								},
 								{
 									"key": "subject",
 									"value": "CS",
-									"description": "Fetch only Courses with the specified subject code."
+									"disabled": true
 								},
 								{
 									"key": "number",
 									"value": "493",
-									"description": "Fetch only Courses with the specified course number."
+									"disabled": true
 								},
 								{
 									"key": "term",
-									"value": "sp22",
-									"description": "Fetch only Courses in the specified academic term."
+									"value": "sp24",
+									"disabled": true
 								}
 							]
 						}
@@ -329,11 +480,21 @@
 				{
 					"name": "Create Course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"subject\": \"CS\",\r\n    \"number\": \"493\",\r\n    \"title\": \"Cloud Application Development\",\r\n    \"term\": \"sp22\",\r\n    \"instructorId\": \"123\"\r\n}",
+							"raw": "{\r\n    \"subject\": \"CS\",\r\n    \"number\": \"499\",\r\n    \"title\": \"STUPID COURSE\",\r\n    \"term\": \"sp22\",\r\n    \"instructorId\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -341,7 +502,10 @@
 							}
 						},
 						"url": {
-							"raw": "/courses",
+							"raw": "{{baseURL}}/courses",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"courses"
 							]
@@ -363,12 +527,25 @@
 								{
 									"name": "Get Submissions By Assignment ID",
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "/assignment/:id/submissions?page=1&studentId=123",
+											"raw": "{{baseURL}}/assignments/:id/submissions?page=1",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
-												"assignment",
+												"assignments",
 												":id",
 												"submissions"
 											],
@@ -380,14 +557,14 @@
 												},
 												{
 													"key": "studentId",
-													"value": "123",
-													"description": "Fetch assignments only for the specified student ID.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+													"value": null,
+													"disabled": true
 												}
 											],
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "06d568d1-489b-4c2f-9b71-d5458e64ce42",
 													"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -397,20 +574,47 @@
 								},
 								{
 									"name": "Create Submission",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const jsonData = pm.response.json();\r",
+													"pm.environment.set(\"submissionID\", (jsonData.id))"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{jwt}}",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"assignmentId\": \"123\",\r\n    \"studentId\": \"123\",\r\n    \"timestamp\": \"2022-06-14T17:00:00-07:00\",\r\n    \"grade\": 94.5,\r\n    \"file\": \"\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file",
+													"type": "file",
+													"src": "/C:/Users/ethan/Downloads/kitty.jpg"
 												}
-											}
+											]
 										},
 										"url": {
-											"raw": "/assignments/:id/submissions",
+											"raw": "{{baseURL}}/assignments/:id/submissions",
+											"host": [
+												"{{baseURL}}"
+											],
 											"path": [
 												"assignments",
 												":id",
@@ -419,7 +623,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "123",
+													"value": "7fa9da7b-185d-40c6-bea3-4b7ba8ff009a",
 													"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 												}
 											]
@@ -435,7 +639,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "/assignments/:id",
+									"raw": "{{baseURL}}/assignments/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"assignments",
 										":id"
@@ -443,8 +650,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
-											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
+											"value": "6329f66e-2aee-4a16-b7ef-f5a54c678abd"
 										}
 									]
 								}
@@ -454,11 +660,21 @@
 						{
 							"name": "Update Assignment By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PATCH",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"courseId\": \"123\",\r\n    \"title\": \"Assignment 3\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
+									"raw": "{\r\n    \"courseId\": \"56e826c6-de79-4d8c-a1b0-6d14e417b6cb\",\r\n    \"title\": \"Assignment EDIT\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -466,7 +682,10 @@
 									}
 								},
 								"url": {
-									"raw": "/assignments/:id",
+									"raw": "{{baseURL}}/assignments/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"assignments",
 										":id"
@@ -474,7 +693,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
+											"value": "6329f66e-2aee-4a16-b7ef-f5a54c678abd",
 											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 										}
 									]
@@ -485,10 +704,23 @@
 						{
 							"name": "Remove Assignment By ID",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{jwt}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "/assignments/:id",
+									"raw": "{{baseURL}}/assignments/:id",
+									"host": [
+										"{{baseURL}}"
+									],
 									"path": [
 										"assignments",
 										":id"
@@ -496,7 +728,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "123",
+											"value": "6329f66e-2aee-4a16-b7ef-f5a54c678abd",
 											"description": "Unique ID of an Assignment.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 										}
 									]
@@ -508,12 +740,35 @@
 				},
 				{
 					"name": "Create Assignment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.environment.set(\"assignmentID\", (jsonData.id))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"courseId\": \"123\",\r\n    \"title\": \"Assignment 3\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
+							"raw": "{\r\n    \"courseId\": \"9acfbd2b-ef51-4c25-9474-6dfa1f04ed93\",\r\n    \"title\": \"Assignment Test\",\r\n    \"points\": 100,\r\n    \"due\": \"2022-06-14T17:00:00-07:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -521,7 +776,10 @@
 							}
 						},
 						"url": {
-							"raw": "/assignments",
+							"raw": "{{baseURL}}/assignments",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"assignments"
 							]
@@ -537,11 +795,21 @@
 				{
 					"name": "Update Submission By ID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"assignmentId\": \"123\",\r\n    \"studentId\": \"123\",\r\n    \"timestamp\": \"2022-06-14T17:00:00-07:00\",\r\n    \"grade\": 94.5,\r\n    \"file\": \"\"\r\n}",
+							"raw": "\r\n{\r\n    \"grade\": 94.5\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -549,7 +817,10 @@
 							}
 						},
 						"url": {
-							"raw": "/submissions/:id",
+							"raw": "{{baseURL}}/submissions/:id",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"submissions",
 								":id"
@@ -557,7 +828,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "123",
+									"value": "06d568d1-489b-4c2f-9b71-d5458e64ce42",
+									"type": "string",
 									"description": "Unique ID of a Submission.  Exact type/format will depend on your implementation but will likely be either an integer or a string."
 								}
 							]
@@ -573,10 +845,23 @@
 				{
 					"name": "Download Submission By Filename",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/media/submissions/:filename",
+							"raw": "{{baseURL}}/media/submissions/:filename",
+							"host": [
+								"{{baseURL}}"
+							],
 							"path": [
 								"media",
 								"submissions",
@@ -594,6 +879,44 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "jwt",
+			"value": "-1",
+			"type": "string"
+		},
+		{
+			"key": "currId",
+			"value": "-1",
+			"type": "string"
 		}
 	]
 }
