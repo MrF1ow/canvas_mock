@@ -59,7 +59,7 @@ export class EditCourseHandler extends Handler {
 
       // Check for all required parameters.
       if (!id) {
-        res.status(404).send({
+        res.status(400).send({
           error: MESSAGE_HANDLER_PARAMETER_MISSING(
             'course',
             'ID',

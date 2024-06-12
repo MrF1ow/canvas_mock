@@ -205,7 +205,7 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
       return null;
     }
 
-    return this.findOne({ _id: new ObjectId(id) });
+    return this.findOne({ _id: id });
   }
 
   /**
@@ -313,6 +313,9 @@ export class DataAccessObject<T> implements DataAccessObjectInterface<T> {
     if ('_id' in conditions && !(conditions._id instanceof ObjectId)) {
       cleanedFilter._id = new ObjectId(`${conditions._id}`);
     }
+
+    console.log(cleanedFilter);
+    console.log(alteredUpdate);
 
     const response = await this._collection.updateOne(
       cleanedFilter as Filter<Document>,

@@ -140,6 +140,7 @@ export const requiresAdmin = async (
       res.status(403).send({
         error: MESSAGE_UNAUTHORIZED_ERROR,
       });
+      return;
     }
 
     next();
@@ -173,6 +174,7 @@ export const requiresInstructor = async (
       res.status(403).send({
         error: MESSAGE_UNAUTHORIZED_ERROR,
       });
+      return;
     }
 
     next();

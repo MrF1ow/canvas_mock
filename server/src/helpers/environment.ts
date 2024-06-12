@@ -202,4 +202,14 @@ export class Environment {
   static isWarningLayerEnabled(): boolean {
     return process.env.ENABLE_WARNING_LAYER === 'true';
   }
+
+  /**
+   * Whether to not care.
+   *
+   * @default false
+   * @returns {boolean} Whether to not care.
+   */
+  static lazyPermissions(): boolean {
+    return process.env.LAZY_PERMISSIONS === 'true';
+  }
 }
