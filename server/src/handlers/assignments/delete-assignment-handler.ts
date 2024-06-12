@@ -26,7 +26,7 @@ export class DeleteAssignmentHandler extends Handler {
     super(
       REQUEST_TYPE.DELETE,
       '/:id',
-      AUTHORIZATION_TYPE.INSTRUCTOR || AUTHORIZATION_TYPE.ADMIN,
+      AUTHORIZATION_TYPE.INSTRUCTOR,
     );
   }
 

@@ -9,6 +9,7 @@
     "docker:down": "docker-compose down",
     "docker:clear": "docker-compose down -v",
     "docker:logs": "docker-compose logs -f",
+    "docker:reset": "docker-compose down -v && docker-compose --env-file .env up",
     "docker:restart": "docker-compose restart",
     "docker:stop": "docker-compose stop",
     "mongo-shell": "mongosh --username root --password helloworld1208 --authenticationDatabase admin"

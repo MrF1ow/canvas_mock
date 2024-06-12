@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 
 // Local Imports
 import { MESSAGE_INTERNAL_SERVER_ERROR } from '../../config/messages';
-import { AUTHORIZATION_TYPE, REQUEST_TYPE } from '../../config';
+import { AUTHORIZATION_TYPE, REQUEST_TYPE, USER_ROLE } from '../../config';
 import { Monitor } from '../../helpers/monitor';
 import { fileTypes, encryptName, uploadSubmission } from '../../helpers/grid';
 import { Handler } from '../handler';
+import { MongoDatabase } from '../../database/mongo-database';
 
 // Types
 import {
@@ -27,7 +28,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
     super(
       REQUEST_TYPE.POST,
       '/:id/submissions',
-      AUTHORIZATION_TYPE.NONE,
+      AUTHORIZATION_TYPE.REQUIRED,
       true,
     );
   }
@@ -52,10 +53,27 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
         return;
       }
 
-      // ADD CODE TO ACCEPT MULTIPART FORM DATA
       if (!req.file) {
         res.status(400).send({
           error: 'No file uploaded',
+        });
+        return;
+      }
+
+      console.log(`== req.user: ${req.user}`);
+
+      const user = await Handler._database.users.findById(req.user);
+
+      if (!user) {
+        res.status(404).send({
+          error: 'User not found',
+        });
+        return;
+      }
+
+      if (user.role !== USER_ROLE.STUDENT) {
+        res.status(403).send({
+          error: 'Unauthorized',
         });
         return;
       }
@@ -66,7 +84,7 @@ export class CreateAssignmentSubmissionsHandler extends Handler {
       req.file.originalname = encryptedFileName + '.' + extension;
 
       // upload the submission to the database
-      const client = Handler._database.mongoClient as MongoClient;
+      const client = (Handler._database as MongoDatabase).client();
       await uploadSubmission(client, req.file);
 
       // clear the buffer after uploading

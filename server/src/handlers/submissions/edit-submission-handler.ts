@@ -8,7 +8,10 @@ import { Handler } from '../handler';
 import { ServerRequest, ServerResponse } from '../../types';
 
 /**
- * Performs a partial update on the data for the Assignment.  Note that submissions cannot be modified via this endpoint.  Only an authenticated User with 'admin' role or an authenticated 'instructor' User whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId` can update an Assignment.
+ * Performs a partial update on the data for the Assignment.  Note that submissions 
+ * cannot be modified via this endpoint.  Only an authenticated User with 'admin' 
+ * role or an authenticated 'instructor' User whose ID matches the `instructorId` of 
+ * the Course corresponding to the Assignment's `courseId` can update an Assignment.
  */
 export class EditSubmissionHandler extends Handler {
   /**
@@ -17,8 +20,8 @@ export class EditSubmissionHandler extends Handler {
   constructor() {
     super(
       REQUEST_TYPE.PATCH,
-      '/assignments/:id',
-      AUTHORIZATION_TYPE.REQUIRED,
+      '/:id',
+      AUTHORIZATION_TYPE.INSTRUCTOR,
     );
   }
 
@@ -36,14 +39,7 @@ export class EditSubmissionHandler extends Handler {
       const { id } = req.params;
       const { body } = req;
 
-
-      if (!body || Object.keys(body).length === 0 || !('grade' in body) || Object.keys(body).length > 1) {
-        res.status(400).send({
-          error: 'The request body was either not present, did not contain a grade field, or contained additional fields.',
-        });
-        return;
-      }
-
+      const requestUser = await Handler._database.users.findById(req.user);
 
       const submission = await Handler._database.submissions.findById(id);
       if (!submission) {
@@ -53,6 +49,27 @@ export class EditSubmissionHandler extends Handler {
         return;
       }
 
+      if (requestUser.role !== 'admin') {
+        const assignment = await Handler._database.assignments.findById(submission.assignmentId);
+        const course = await Handler._database.courses.findById(assignment.courseId);
+
+        if (course.instructorId !== requestUser._id) {
+          res.status(403).send({
+            error: 'Unauthorized.',
+          });
+          return;
+        }
+        
+      }
+
+
+      if (!body || Object.keys(body).length === 0 || !('grade' in body) || Object.keys(body).length > 1) {
+        res.status(400).send({
+          error: 'The request body was either not present, did not contain a grade field, or contained additional fields.',
+        });
+        return;
+      }
+    
       const updatedSubmission = await Handler._database.submissions.update(
         { id },
         { grade: body.grade },
