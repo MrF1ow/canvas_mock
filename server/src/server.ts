@@ -5,15 +5,16 @@ import express, { Express } from 'express';
 import {
   AssignmentRoutes,
   CourseRoutes,
+  MediaRoutes,
   SubmissionRoutes,
   UserRoutes,
 } from './handlers';
 import { AbstractDatabase } from './database/abstract-database';
 import { populateDatabase } from './utils/mock-data';
 import { Environment } from './helpers/environment';
+import { RateLimiter } from './helpers/rate-limit';
 import { getDatabase } from './database';
 import { Monitor } from './helpers/monitor';
-import { RateLimiter } from './helpers/rate-limit';
 
 /**
  * Wrapper around all the server layers.
@@ -50,6 +51,7 @@ export class Server {
 
     AssignmentRoutes.apply(Server._app);
     CourseRoutes.apply(Server._app);
+    MediaRoutes.apply(Server._app);
     SubmissionRoutes.apply(Server._app);
     UserRoutes.apply(Server._app);
 
