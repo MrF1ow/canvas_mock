@@ -108,10 +108,10 @@ For teams of students in the undergraduate section of the course, your grade for
 - [ ] 50 points – Your API successfully implements all of the endpoints described in the Tarpaulin OpenAPI specification.
 - [ ] 10 points – Your API endpoints correctly require authorization, as described in the Tarpaulin OpenAPI specification.
 - [ ] 5 points – Your API correctly paginates the appropriate endpoints, as described above and in the Tarpaulin OpenAPI specification.
-- [ ] 5 points – Your API implements rate limiting, as described above.
-- [ ] 10 points – Your API’s services are run in Docker containers, as described above.
+- [X] 5 points – Your API implements rate limiting, as described above.
+- [X] 10 points – Your API’s services are run in Docker containers, as described above.
 - [ ] 10 points – You have a set of tests/requests written and ready to go at your grading demo to fully demonstrate your API’s functionality.
-- [ ] 10 points – Your API has a high-quality design and implementation.
+- [X] 10 points – Your API has a high-quality design and implementation.
 
 Remember also, if your team does not do a demo for your project, you will receive a zero for it.
 
