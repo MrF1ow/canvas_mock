@@ -238,7 +238,7 @@ export const getUser = async (
  * @returns {PublicUser} User public data.
  */
 export const cleanUser = (user: User): PublicUser => ({
-  _id: user._id,
+  id: user.id,
   name: user.name,
   email: user.email,
   role: user.role,

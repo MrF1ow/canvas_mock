@@ -70,7 +70,7 @@ export class DeleteCourseHandler extends Handler {
       for (let i = 0; i < assignments.length; i += 1) {
         const assignment = assignments[i];
 
-        promises.push(Handler._database.submissions.delete({ assignmentId: assignment._id }));
+        promises.push(Handler._database.submissions.delete({ assignmentId: assignment.id }));
       }
 
       await Promise.all(promises);

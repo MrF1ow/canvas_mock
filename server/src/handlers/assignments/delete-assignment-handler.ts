@@ -77,7 +77,7 @@ export class DeleteAssignmentHandler extends Handler {
       });
 
       for (const submission of submissions) {
-        await Handler._database.submissions.deleteById(submission._id);
+        await Handler._database.submissions.deleteById(submission.id);
       }
 
       const status = await Handler._database.assignments.deleteById(id);

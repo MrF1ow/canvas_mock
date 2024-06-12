@@ -61,7 +61,7 @@ export class GetCourseAssignmentsHandler extends Handler {
 
       // the response needs to be paginated
       res.status(200).send({
-        assignments: assignments.map((assignment: Assignment) => assignment._id),
+        assignments: assignments.map((assignment: Assignment) => assignment.id),
       });
       // res.status(200).send({
       //   assignments,
