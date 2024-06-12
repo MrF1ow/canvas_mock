@@ -11,12 +11,13 @@ import {
   requiresAuthorization,
   requiresInstructor,
 } from '../helpers/authorization';
-import { upload } from '../helpers/grid';
 import {
   AUTHORIZATION_TYPE,
   REQUEST_TYPE,
 } from '../config';
+import { RateLimiter } from '../helpers/rate-limit';
 import { Handler } from './handler';
+import { upload } from '../helpers/grid';
 
 // Types
 import { Middleware } from '../types';
@@ -73,6 +74,8 @@ export class Router {
       if (handler.getUpload() == true) {
         middleware.unshift(upload.single('file'));
       }
+
+      middleware.unshift(RateLimiter.rateLimit);
 
       if (handler.getAuthorization() === AUTHORIZATION_TYPE.REQUIRED) {
         middleware.unshift(requiresAuthorization);
