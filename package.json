@@ -7,6 +7,7 @@
     "docker": "docker-compose --env-file .env up",
     "docker:exec": "docker exec -it mongo-server /bin/bash",
     "docker:down": "docker-compose down",
+    "docker:clear": "docker-compose down -v",
     "docker:logs": "docker-compose logs -f",
     "docker:restart": "docker-compose restart",
     "docker:stop": "docker-compose stop",
