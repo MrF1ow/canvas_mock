@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
   version: 1.0.0
-  title: The Tarpaulin API
+  title: Canvas Mock API
   description: API for an "alternative" to Canvas.
 
 paths:
@@ -869,7 +869,7 @@ components:
   schemas:
     User:
       description: >
-        An object representing information about a Tarpaulin application user.
+        An object representing information about an application user.
       type: object
       properties:
         name:
